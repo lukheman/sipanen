@@ -9,7 +9,7 @@ class UniqueEmailAllUsers implements Rule
 {
     public function passes($attribute, $value)
     {
-        $tables = ['admin', 'petani', 'penyuluh', 'kepala_dinas'];
+        $tables = ['admin', 'petugas', 'kepala_dinas'];
 
         foreach ($tables as $table) {
             if (DB::table($table)->where('email', $value)->exists()) {

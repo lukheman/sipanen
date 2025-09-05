@@ -1,44 +1,58 @@
-# Kebutuhan
+# SISTEM INFORMASI PELAPORAN HASIL PANEN DI DINAS PERTANIAN DAN PERKEBUNAN KOLAKA
 
-1. PHP 8.2
-2. Composer
-3. Git
+## Fitur Umum
 
-# Perintah untuk instalasi
+- [ ] Login/logout ke aplikasi [free]
+- [ ] Landing page [free]
+- [ ] Dashboard pada 3 role [free]
 
-- git clone https://github.com/lukheman/tanipedia.git
-- cd tanipedia
-- composer install
-- php artisan migrate
-- php artisan migrate:fresh --seed
-- php artisan storage:link
+## Fitur Khusus
 
-# perintah untuk menjalankan
+- [ ] Input data yang oleh petugas lapangan harus divalidasi oleh admin (validator) [100]
+- [x] Cetak laporan dalam bentuk pdf [free]
 
-php artisan serve
+## Role Admin
 
-Nama: Admin
-email: admin@gmail.com
+- [x] Mengelola data petugas lapangan [free]
+- [x] Mengelola data petani [free]
+- [ ] Mengelola akun pengguna [50]
+- [ ] Validasi data yang diinput petugas [telah dihitung]
 
-Nama: Petani 1
-email: petani1@gmail.com
+### Laporan
 
-Nama: Petani 2
-email: petani2@gmail.com
-
-Nama: Ahli Pertanian
-email: ahlipertanian@gmail.com
-
-Nama: KEPALADINAS
-email: kepaladinas@gmail.com
+- [ ] Laporan/rekap hasil panen [50]
+- [x] Laporan data pengguna/petugas lapangan [50]
+- [x] Laporan data petani [50]
+- [ ] Laporan validasi [50]
 
 
-password semua user: password123
+### Grafik
 
-# Revisi
+- [ ] Rekap dan grafik panen [70]
 
-- Pisahkan pisah table setiap role
-- ganti id -> id_konsultasi pada table konsultasi
-- ganti id jadi id_nama_table di semua table
-- pisahkan login petani dan login admin
 
+## Role Petugas Lapangan
+
+- [x] Mengelola data petani [free]
+- [x] Mengelola data panen [30]
+- [x] Mengelola data tanaman [30]
+- [ ] Mengelola data lokasi [30]
+- [ ] Menerima status validasi [telah dihitung]
+
+## Role Kepala Dinas
+
+- [ ] melihat laporan yang telah dibuat oleh Admin [free]
+- [x] Cetak laporan dalam bentuk pdf [telah dihitung]
+
+## Rincian Harga
+
+| Keterangan                     | Harga          |
+|-------------------------------|----------------|
+| Total fitur                   | Rp   510.000   |
+| Pengerjaan dan revisi         | Rp 1.000.000   |
+| **Total Keseluruhan**         | **Rp 1.510.000** |
+
+## Catatan
+
+- Penambahan fitur **sederhana** masih bisa dimasukkan dalam revisi tanpa biaya tambahan
+- Penambahan fitur **kompleks** tikak termasuk dalam revisi dan dikenai biaya tambahan sesuai tingkat kesulitan fitur yang diminta

@@ -104,14 +104,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('landing')}}#video">Video Edukasi</a>
                     </li>
-                    <li class="nav-item">
-                        @auth
-                        <a class="nav-link" href="{{ route('tambah-konsultasi') }}" wire:navigate>Konsultasi</a>
-
-                        @else
-                        <a class="nav-link" href="{{ route('login')}}?redirect={{ urlencode(route('tambah-konsultasi'))}}" wire:navigate>Konsultasi</a>
-                        @endauth
-                    </li>
 
                     @if (getActiveGuard())
                     <li class="nav-item">

@@ -13,14 +13,11 @@ return new class extends Migration
     {
         Schema::create('admin', function (Blueprint $table) {
             $table->id('id_admin');
-            $table->string('name');
+            $table->string('nama_admin');
             $table->string('email')->unique();
             $table->string('password')->default(bcrypt('password123'));
-            $table->string('telepon');
-            $table->date('tanggal_lahir');
             $table->string('photo')->nullable();
             $table->string('alamat')->nullable();
-            $table->foreignId('id_desa')->nullable()->constrained('desa', 'id_desa')->nullOnDelete();
             $table->rememberToken();
             $table->timestamps();
         });

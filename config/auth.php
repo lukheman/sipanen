@@ -38,13 +38,13 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'petani',
+            'provider' => 'admin',
         ],
 
-        'petani' => [
-            'driver' => 'session',
-            'provider' => 'petani',
-        ],
+        // 'petani' => [
+        //     'driver' => 'session',
+        //     'provider' => 'petani',
+        // ],
 
         'admin' => [
             'driver' => 'session',
@@ -56,9 +56,9 @@ return [
             'provider' => 'kepala_dinas',
         ],
 
-        'penyuluh' => [
+        'petugas' => [
             'driver' => 'session',
-            'provider' => 'penyuluh',
+            'provider' => 'petugas',
         ],
     ],
 
@@ -90,14 +90,14 @@ return [
             'model' => App\Models\Admin::class,
         ],
 
-        'petani' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ],
+        // 'petani' => [
+        //     'driver' => 'eloquent',
+        //     'model' => App\Models\User::class,
+        // ],
 
-        'penyuluh' => [
+        'petugas' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Penyuluh::class,
+            'model' => App\Models\Petugas::class,
         ],
 
         'kepala_dinas' => [

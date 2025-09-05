@@ -17,9 +17,4 @@ class Admin extends Authenticatable
     {
         return Role::ADMIN;
     }
-
-    public function desa()
-    {
-        return $this->hasOne(Desa::class, 'id_desa');
-    }
 }

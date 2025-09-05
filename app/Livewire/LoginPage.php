@@ -36,22 +36,11 @@ class LoginPage extends Component
     {
         $credentials = $this->validate();
 
-        foreach (['admin', 'petani', 'penyuluh', 'kepala_dinas'] as $guard) {
+        foreach (['admin', 'petugas', 'kepala_dinas'] as $guard) {
             if (Auth::guard($guard)->attempt($credentials)) {
 
                 // regenerate session agar tidak session fixation
                 Auth::guard($guard)->login(Auth::guard($guard)->user(), true);
-
-                // khusus redirect tambah-konsultasi → hanya petani yg boleh login
-                if ($this->redirect === route('tambah-konsultasi')) {
-                    if ($guard !== 'petani') {
-                        Auth::guard($guard)->logout();
-                        flash('Silakan login sebagai petani untuk melakukan konsultasi.', 'danger');
-                        return;
-                    }
-
-                    flash('Berhasil login sebagai petani');
-                }
 
                 flash('Berhasil login sebagai ' . $guard);
 

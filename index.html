@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Landing Page</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- AOS Animation -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+    }
+    /* Navbar */
+    .navbar {
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    /* Hero Section */
+    .hero {
+      background: url('https://desacandirejo-semin.gunungkidulkab.go.id/assets/files/artikel/sedang_16460427285e29921146d88.jpg') no-repeat center center;
+      background-size: cover;
+      background-attachment: fixed; /* Parallax effect */
+      color: #fff;
+      padding: 120px 0;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: bold;
+    }
+    .hero p {
+      font-size: 1.2rem;
+    }
+    /* Flat shadow cards */
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    /* Button shadow */
+    .btn-custom {
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 30px;
+      padding: 10px 25px;
+      box-shadow: 0 6px 12px rgba(0,123,255,0.3);
+      transition: 0.3s;
+    }
+    .btn-custom:hover {
+      background-color: #0056b3;
+    }
+    /* About section */
+    .about img {
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+    /* Contact form */
+    .form-control, .btn {
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-primary" href="#">MyBrand</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero d-flex align-items-center" id="home">
+    <div class="container" data-aos="fade-up">
+      <h1>Welcome to Our Landing Page</h1>
+      <p class="mt-3">Kami memberikan solusi modern untuk bisnis Anda.</p>
+      <a href="#services" class="btn btn-custom mt-4">Get Started</a>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="py-5" id="services">
+    <div class="container text-center">
+      <h2 class="mb-4" data-aos="fade-up">Our Services</h2>
+      <div class="row g-4">
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="card p-4">
+            <div class="card-body">
+              <div class="mb-3 fs-1 text-primary">💡</div>
+              <h5 class="card-title">Creative Ideas</h5>
+              <p class="card-text">Kami membantu Anda menemukan ide kreatif untuk mengembangkan bisnis.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+          <div class="card p-4">
+            <div class="card-body">
+              <div class="mb-3 fs-1 text-primary">⚡</div>
+              <h5 class="card-title">Fast Development</h5>
+              <p class="card-text">Pengembangan cepat dengan teknologi terbaru dan desain modern.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+          <div class="card p-4">
+            <div class="card-body">
+              <div class="mb-3 fs-1 text-primary">🔒</div>
+              <h5 class="card-title">Secure System</h5>
+              <p class="card-text">Kami menjamin keamanan sistem dan data Anda dengan standar tinggi.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="py-5 bg-light about" id="about">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6" data-aos="fade-right">
+          <img src="https://picsum.photos/600/400" alt="About Us" class="img-fluid">
+        </div>
+        <div class="col-md-6" data-aos="fade-left">
+          <h2>About Us</h2>
+          <p>Kami adalah tim profesional yang berdedikasi untuk memberikan solusi digital terbaik bagi Anda. Dengan pengalaman dan inovasi, kami siap membantu bisnis Anda berkembang lebih cepat.</p>
+          <a href="#contact" class="btn btn-custom">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="py-5" id="contact">
+    <div class="container">
+      <h2 class="text-center mb-4" data-aos="fade-up">Contact Us</h2>
+      <div class="row justify-content-center">
+        <div class="col-md-8" data-aos="fade-up" data-aos-delay="200">
+          <form>
+            <div class="mb-3">
+              <input type="text" class="form-control" placeholder="Nama">
+            </div>
+            <div class="mb-3">
+              <input type="email" class="form-control" placeholder="Email">
+            </div>
+            <div class="mb-3">
+              <textarea class="form-control" rows="5" placeholder="Pesan"></textarea>
+            </div>
+            <button type="submit" class="btn btn-custom w-100">Kirim</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-4 bg-white text-center">
+    <p class="mb-0 text-muted">&copy; 2025 MyBrand. All rights reserved.</p>
+  </footer>
+
+  <!-- Bootstrap JS + AOS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 1000,
+      once: true
+    });
+  </script>
+</body>
+</html>

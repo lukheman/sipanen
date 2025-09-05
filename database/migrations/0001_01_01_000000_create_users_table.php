@@ -13,22 +13,11 @@ return new class extends Migration
     {
         Schema::create('petani', function (Blueprint $table) {
             $table->id('id_petani');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password')->default(bcrypt('password123'));
+            $table->string('nama_petani');
             $table->string('telepon');
-            $table->date('tanggal_lahir');
-            $table->string('photo')->nullable();
-            $table->string('alamat')->nullable();
-            $table->foreignId('id_desa')->nullable()->constrained('desa', 'id_desa')->nullOnDelete();
-            $table->rememberToken();
+            $table->string('lokasi');
+            $table->foreignId('id_petugas')->nullable()->constrained('petugas', 'id_petugas')->cascadeOnDelete(); // TODO: hilangkan nullable
             $table->timestamps();
-        });
-
-        Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
         });
 
         Schema::create('sessions', function (Blueprint $table) {
@@ -39,6 +28,7 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
     }
 
     /**
@@ -47,7 +37,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
     }
 };

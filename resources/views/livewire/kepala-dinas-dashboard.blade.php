@@ -30,7 +30,7 @@
                     </div>
                     <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
                         <h6 class="text-muted font-semibold">Jumlah Ahli Pertanian</h6>
-                        <h6 class="font-extrabold mb-0">{{ $jumlah_ahli_pertanian }}</h6>
+                        <h6 class="font-extrabold mb-0">{{ $jumlah_petugas }}</h6>
                     </div>
                 </div>
             </div>

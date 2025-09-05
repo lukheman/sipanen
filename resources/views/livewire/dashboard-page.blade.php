@@ -8,8 +8,6 @@
 
     @if(auth('admin')->check())
         <livewire:admin-dashboard />
-    @elseif(auth('petani')->check())
-        <livewire:petani-dashboard />
     @elseif(auth('penyuluh')->check())
         <livewire:ahli-pertanian-dashboard />
     @elseif(auth('kepala_dinas')->check())

@@ -8,5 +8,5 @@ enum State: string
     case CREATE = 'create';
     case SHOW = 'show';
     case LISTDATA = 'listdata';
-    case KOMENTAR = 'komentar';
+    case LAPORAN = 'laporan';
 }

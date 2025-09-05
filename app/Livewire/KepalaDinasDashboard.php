@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use App\Enums\Role;
 use App\Models\Konsultasi;
-use App\Models\Penyuluh;
+use App\Models\Petugas;
 use App\Models\User;
 use Livewire\Component;
 
@@ -14,7 +14,7 @@ class KepalaDinasDashboard extends Component
     {
         return view('livewire.kepala-dinas-dashboard', [
             'jumlah_petani' => User::count(),
-            'jumlah_ahli_pertanian' => Penyuluh::count(),
+            'jumlah_petugas' => Petugas::count(),
             'jumlah_konsultasi' => Konsultasi::count(),
         ]);
     }

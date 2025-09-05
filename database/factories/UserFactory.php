@@ -13,14 +13,14 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name,
-            'email' => $this->faker->unique()->safeEmail,
+            'nama_petani' => $this->faker->name,
+            // 'email' => $this->faker->unique()->safeEmail,
             // 'role' => $this->faker->randomElement(Role::values()),
-            'password' => bcrypt('password123'),
+            // 'password' => bcrypt('password123'),
             'telepon' => $this->faker->phoneNumber,
-            'tanggal_lahir' => $this->faker->date(),
-            'alamat' => $this->faker->streetAddress(),
-            'remember_token' => Str::random(10),
+            // 'tanggal_lahir' => $this->faker->date(),
+            'lokasi' => $this->faker->streetAddress(),
+            // 'remember_token' => Str::random(10),
         ];
     }
 

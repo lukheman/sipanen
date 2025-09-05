@@ -13,7 +13,7 @@ class AdminDashboard extends Component
     {
         return view('livewire.admin-dashboard', [
             'jumlah_petani' => User::count(),
-            'jumlah_ahli_pertanian' => User::count(),
+            'jumlah_petugas' => User::count(),
             'jumlah_berita' => Berita::count(),
             'jumlah_video' => Edukasi::count(),
         ]);

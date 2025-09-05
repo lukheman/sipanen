@@ -22,34 +22,35 @@ Route::get('/nonton-video/{id}', \App\Livewire\NontonVideo::class)->name('nonton
 Route::get('/semua-berita', \App\Livewire\BeritaIndex::class)->name('berita.index');
 Route::get('/semua-video', \App\Livewire\VideoIndex::class)->name('video.index');
 
-Route::get('/edit-berita/{id}', \App\Livewire\FormBeritaPage::class)->name('berita.edit')->middleware(MultiAuth::class.':admin');
-Route::get('/tambah-berita', \App\Livewire\FormBeritaPage::class)->name('berita.add')->middleware(MultiAuth::class.':admin');
-Route::get('/berita', \App\Livewire\BeritaPage::class)->name('berita')->middleware(MultiAuth::class.':admin');
-
 Route::get('/dashboard', \App\Livewire\DashboardPage::class)
     ->name('dashboard')
-    ->middleware(MultiAuth::class.':petani,admin,penyuluh,kepala_dinas');
+    ->middleware(MultiAuth::class.':admin,penyuluh,kepala_dinas');
 
 Route::get('/video', \App\Livewire\VideoPage::class)->name('video')->middleware(MultiAuth::class.':admin');
 Route::get('/video/{id}/komentar', \App\Livewire\KomentarPage::class)->name('video.komentar')->middleware(MultiAuth::class.':admin');
 
-Route::get('/pengguna', \App\Livewire\PenggunaPage::class)->name('pengguna')->middleware(MultiAuth::class.':admin');
+Route::get('/pengguna', \App\Livewire\PenggunaTable::class)->name('pengguna')->middleware(MultiAuth::class.':admin');
 
-Route::get('/konsultasi', \App\Livewire\KonsultasiPage::class)->name('konsultasi')->middleware(MultiAuth::class.':admin,penyuluh,petani');
+Route::get('/petani', \App\Livewire\PetaniTable::class)->name('petani-table')->middleware(MultiAuth::class.':admin');
+Route::get('/petugas', \App\Livewire\PetugasTable::class)->name('petugas-table')->middleware(MultiAuth::class.':admin');
 
-Route::get('/tambah-konsultasi', \App\Livewire\FormKonsultasiPage::class)
-    ->name('tambah-konsultasi')
-    ->middleware(MultiAuth::class.':petani');
+Route::get('/tanaman', \App\Livewire\TanamanTable::class)->name('tanaman-table')->middleware(MultiAuth::class.':admin');
+Route::get('/hasil-panen', \App\Livewire\HasilPanenTable::class)->name('hasil-panen-table')->middleware(MultiAuth::class.':admin');
 
-Route::get('/laporan/petani', \App\Livewire\Laporan\LaporanPetaniPage::class)->name('laporan.petani')->middleware(MultiAuth::class . ':kepala_dinas');
-Route::get('/laporan/ahli-pertanian', \App\Livewire\Laporan\LaporanAhliPertanianPage::class)->name('laporan.ahli-pertanian')->middleware(MultiAuth::class . ':kepala_dinas');
-Route::get('/laporan/konsultasi', \App\Livewire\Laporan\LaporanKonsultasiPage::class)->name('laporan.konsultasi')->middleware(MultiAuth::class . ':kepala_dinas');
 
-Route::get('/profile', \App\Livewire\Profile::class)->name('profile')->middleware(MultiAuth::class.':admin,petani,penyuluh,kepala_dinas');
+Route::get('/laporan/petani', \App\Livewire\Laporan\LaporanDataPetani::class)->name('laporan.petani')->middleware(MultiAuth::class . ':kepala_dinas,admin');
 
-Route::get('/cetak-laporan/petani', [LaporanController::class, 'laporanPetani'])->name('print-laporan.petani')->middleware(MultiAuth::class . ':kepala_dinas');
-Route::get('/cetak-laporan/ahli-pertanian', [LaporanController::class, 'laporanAhliPertanian'])->name('print-laporan.ahli-pertanian')->middleware(MultiAuth::class . ':kepala_dinas');
-Route::post('/cetak-laporan/konsultasi', [LaporanController::class, 'laporanKonsultasi'])->name('print-laporan.konsultasi')->middleware(MultiAuth::class . ':kepala_dinas');
-Route::post('/cetak-laporan/konsultasi-kecamatan', [LaporanController::class, 'laporanKonsultasiKecamatan'])->name('print-laporan.konsultasi-kecamatan')->middleware(MultiAuth::class . ':kepala_dinas');
+Route::get('/laporan/petugas', \App\Livewire\Laporan\LaporanDataPetugas::class)->name('laporan.petugas')->middleware(MultiAuth::class . ':kepala_dinas,admin');
 
-Route::post('/upload-image', UploadImageController::class)->name('upload.image')->middleware(MultiAuth::class . ':admin');
+Route::get('/laporan/hasil-panen', \App\Livewire\Laporan\LaporanDataHasilPanen::class)->name('laporan.hasil-panen')->middleware(MultiAuth::class . ':kepala_dinas,admin');
+
+Route::get('/profile', \App\Livewire\Profile::class)->name('profile')->middleware(MultiAuth::class.':admin,penyuluh,kepala_dinas');
+
+Route::get('/cetak-laporan/petani', [LaporanController::class, 'laporanPetani'])->name('print-laporan.petani')->middleware(MultiAuth::class . ':kepala_dinas,admin');
+
+Route::get('/cetak-laporan/petugas', [LaporanController::class, 'laporanPetugas'])->name('print-laporan.petugas')->middleware(MultiAuth::class . ':kepala_dinas,admin');
+
+Route::get('/cetak-laporan/hasil-panen', [LaporanController::class, 'laporanHasilPanen'])->name('print-laporan.hasil-panen')->middleware(MultiAuth::class . ':kepala_dinas,admin');
+
+
+// Route::post('/upload-image', UploadImageController::class)->name('upload.image')->middleware(MultiAuth::class . ':admin');
