@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\Role;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Petugas extends Authenticatable
@@ -25,6 +26,11 @@ class Petugas extends Authenticatable
     public function getIdAttribute()
     {
         return $this->id_petugas;
+    }
+
+    public function kecamatan(): BelongsTo {
+        return $this->belongsTo(Kecamatan::class, 'id_kecamatan');
+
     }
 
 }

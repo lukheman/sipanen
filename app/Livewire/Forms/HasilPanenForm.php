@@ -20,7 +20,7 @@ class HasilPanenForm extends Form
     {
         return [
             'tanggal_panen' => ['required', 'date'],
-            'jumlah' => ['required', 'string', 'min:1', 'max:100'],
+            'jumlah' => ['required', 'numeric'],
             'satuan' => ['required', 'string', 'max:50'],
             'id_tanaman' => ['required', 'exists:tanaman,id_tanaman'],
             'id_petani' => ['required', 'exists:petani,id_petani'],
@@ -34,8 +34,7 @@ class HasilPanenForm extends Form
             'tanggal_panen.date' => 'Tanggal panen harus berupa tanggal yang valid.',
 
             'jumlah.required' => 'Jumlah hasil panen wajib diisi.',
-            'jumlah.min' => 'Jumlah hasil panen minimal 1 karakter.',
-            'jumlah.max' => 'Jumlah hasil panen maksimal 100 karakter.',
+            'jumlah.numeric' => 'Jumlah harus berupa angka',
 
             'satuan.required' => 'Satuan wajib diisi.',
             'satuan.max' => 'Satuan maksimal 50 karakter.',

@@ -90,11 +90,6 @@ return [
             'model' => App\Models\Admin::class,
         ],
 
-        // 'petani' => [
-        //     'driver' => 'eloquent',
-        //     'model' => App\Models\User::class,
-        // ],
-
         'petugas' => [
             'driver' => 'eloquent',
             'model' => App\Models\Petugas::class,

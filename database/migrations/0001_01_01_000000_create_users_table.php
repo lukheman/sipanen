@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id('id_petani');
             $table->string('nama_petani');
             $table->string('telepon');
-            $table->string('lokasi');
-            $table->foreignId('id_petugas')->nullable()->constrained('petugas', 'id_petugas')->cascadeOnDelete(); // TODO: hilangkan nullable
+            $table->string('alamat');
+            $table->foreignId('id_desa')->constrained('desa', 'id_desa')->cascadeOnDelete();
             $table->timestamps();
         });
 

@@ -1,4 +1,16 @@
 @props(['id'])
-<button wire:click="detail({{ $id }})" class="btn btn-sm btn-info text-white">Detail</button>
-<button wire:click="edit({{ $id }})" class="btn btn-sm btn-warning text-white">Edit</button>
-<button wire:click="delete({{ $id }})" class="btn btn-sm btn-danger">Hapus</button>
+
+<div class="btn-group">
+
+<button wire:click="detail({{ $id }})" class="btn  btn-info text-white">
+<i class="bi bi-eye"></i>
+</button>
+
+<button wire:click="edit({{ $id }})" class="btn  btn-warning text-white">
+<i class="bi bi-pencil"></i>
+ </button>
+
+<button wire:click="delete({{ $id }})" class="btn  btn-danger">
+    <i class="bi bi-trash"></i>
+</button>
+</div>

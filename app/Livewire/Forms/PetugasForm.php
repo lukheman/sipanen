@@ -11,12 +11,14 @@ class PetugasForm extends Form
 {
     public ?Petugas $petugas = null;
 
-    public $nama_petugas = '';
-    public $email = '';
-    // public $password = '';
-    public $telepon = '';
-    public $jabatan = '';
+    public string $nama_petugas = '';
+    public string $email = '';
+    public ?string $password = '';
+    public string $telepon = '';
+    public string $jabatan = '';
     public $photo = null;
+
+    public $id_kecamatan;
 
     public function rules(): array
     {
@@ -31,6 +33,8 @@ class PetugasForm extends Form
             'telepon' => ['required', 'string', 'min:10', 'max:15'],
             'jabatan' => ['nullable', 'string', 'max:50'],
             'photo' => ['nullable', 'image', 'max:2048'], // 2MB
+            'password' => ['nullable', 'min:4'],
+            'id_kecamatan' => 'required|exists:kecamatan,id_kecamatan',
         ];
     }
 
@@ -45,9 +49,12 @@ class PetugasForm extends Form
             'telepon.required' => 'Nomor telepon wajib diisi.',
             'telepon.min' => 'Nomor telepon minimal 10 digit.',
             'telepon.max' => 'Nomor telepon maksimal 15 digit.',
+            'password.min' => 'Password minimal 4 karakter.',
             'jabatan.max' => 'Jabatan maksimal 50 karakter.',
             'photo.image' => 'File photo harus berupa gambar.',
             'photo.max' => 'Ukuran photo maksimal 2MB.',
+            'id_kecamatan.required' => 'Silakan pilih kecamatan.',
+            'id_kecamatan.exists' => 'Kecamatan yang dipilih tidak tersedia di sistem.',
         ];
     }
 
@@ -63,6 +70,7 @@ class PetugasForm extends Form
             'email'        => $this->email,
             'telepon'      => $this->telepon,
             'jabatan'      => $this->jabatan,
+            'id_kecamatan' => $this->id_kecamatan
         ]);
     }
 
@@ -72,18 +80,50 @@ class PetugasForm extends Form
      */
     public function update(): bool
     {
+
         $this->validate();
 
-        return $this->petugas->update([
-            'nama_petugas' => $this->nama_petugas,
-            'email'        => $this->email,
-            // 'password'     => $this->password
-            //                     ? Hash::make($this->password)
-            //                     : $this->petugas->password,
-            'telepon'      => $this->telepon,
-            'jabatan'      => $this->jabatan,
-            // 'photo'        => $this->photo,
-        ]);
+        $updates = [];
+
+        if ($this->nama_petugas !== $this->petugas->nama_petugas) {
+            $updates['nama_petugas'] = $this->nama_petugas;
+        }
+
+        if ($this->email !== $this->petugas->email) {
+            $updates['email'] = $this->email;
+        }
+
+        if (! empty($this->password)) {
+            $updates['password'] = \Hash::make($this->password);
+        }
+
+        if ($this->telepon !== $this->petugas->telepon) {
+            $updates['telepon'] = $this->telepon;
+        }
+
+        if ($this->jabatan !== $this->petugas->jabatan) {
+            $updates['jabatan'] = $this->jabatan;
+        }
+
+        if ($this->id_kecamatan !== $this->petugas->id_kecamatan) {
+            $updates['id_kecamatan'] = $this->id_kecamatan;
+        }
+
+        if ($this->photo) {
+            // Hapus foto lama kalau ada
+            if ($this->petugas->photo) {
+                \Storage::disk('public')->delete($this->petugas->photo);
+            }
+
+            // Simpan foto baru
+            $path = $this->photo->store('photos', 'public');
+            $updates['photo'] = $path;
+        }
+
+        if (! empty($updates)) {
+            $this->petugas->update($updates);
+            return true;
+        }
     }
 
     public function delete()
@@ -103,5 +143,7 @@ class PetugasForm extends Form
         $this->telepon      = $petugas->telepon;
         $this->jabatan      = $petugas->jabatan;
         $this->photo        = $petugas->photo;
+        $this->id_kecamatan = $petugas->id_kecamatan;
     }
+
 }

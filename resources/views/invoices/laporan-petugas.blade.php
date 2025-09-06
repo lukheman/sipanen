@@ -18,7 +18,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($users as $item)
+            @forelse ($users as $item)
                 <tr>
                     <td class="center">{{ $loop->index + 1 }}</td>
                     <td>{{ $item->nama_petugas}}</td>
@@ -26,7 +26,13 @@
                     <td>{{ $item->telepon }}</td>
                     <td>{{ $item->jabatan }}</td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="6" class="text-center">
+                        Tidak ada data petugas.
+                    </td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 

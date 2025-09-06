@@ -17,18 +17,21 @@ class UserForm extends Form
 
     public string $telepon = '';
 
-    public string $lokasi = '';
+    public string $alamat = '';
+
+    public ?int $id_desa;
 
     protected function rules(): array
     {
-        // TODO: tambahkan id petugas
         return [
             'nama_petani' => 'required|string|max:255',
             'telepon' => [
                 'required',
                 'regex:/^0[0-9]{9,14}$/',
+                'numeric'
             ],
-            'lokasi' => 'required|max:255',
+            'alamat' => 'required|max:255',
+            'id_desa' => 'required|exists:desa,id_desa',
         ];
     }
 
@@ -39,11 +42,15 @@ class UserForm extends Form
             'nama_petani.string' => 'Nama hanya boleh berisi huruf atau karakter yang valid.',
             'nama_petani.max' => 'Nama maksimal 255 karakter.',
 
-            'lokasi.required' => 'Mohon isi alamat Anda.',
-            'lokasi.max' => 'Alamat maksimal 255 karakter',
+            'alamat.required' => 'Mohon isi alamat Anda.',
+            'alamat.max' => 'Alamat maksimal 255 karakter',
 
             'telepon.required' => 'Mohon masukkan nomor telepon Anda.',
             'telepon.regex' => 'Nomor telepon harus format Indonesia, diawali 0, dan panjang 10–15 digit.',
+            'telepon.numeric' => 'Nomor telepon hanya boleh berisi angka',
+            'telepon.numeric' => 'Nomor telepon hanya boleh berisi angka',
+            'id_desa.required' => 'Silakan pilih desa.',
+            'id_desa.exists' => 'Desa yang dipilih tidak tersedia di sistem.',
 
         ];
     }

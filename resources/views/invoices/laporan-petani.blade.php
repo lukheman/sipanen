@@ -17,14 +17,20 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($users as $item)
+            @forelse ($users as $item)
                 <tr>
                     <td class="center">{{ $loop->index + 1 }}</td>
                     <td>{{ $item->nama_petani }}</td>
                     <td>{{ $item->telepon }}</td>
                     <td>{{ $item->lokasi }}</td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="6" class="text-center">
+                        Tidak ada data petani.
+                    </td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 

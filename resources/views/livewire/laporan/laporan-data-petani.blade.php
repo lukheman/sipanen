@@ -1,3 +1,3 @@
 <div>
-    <livewire:petani-table :currentState="\App\Enums\State::LAPORAN"/>
+    <livewire:table.petani-table :currentState="\App\Enums\State::LAPORAN"/>
 </div>

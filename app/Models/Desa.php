@@ -15,9 +15,9 @@ class Desa extends Model
 
     protected $guarded = [];
 
-    public function user()
+    public function petani()
     {
-        return $this->hasMany(User::class, 'id_user', 'id_desa');
+        return $this->hasMany(User::class, 'id_petani', 'id_desa');
     }
 
     public function kecamatan()

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('telepon');
             $table->string('jabatan')->nullable();
             $table->string('photo')->nullable();
+            $table->foreignId('id_kecamatan')->constrained('kecamatan', 'id_kecamatan')->cascadeOnDelete();
             $table->rememberToken();
             $table->timestamps();
         });

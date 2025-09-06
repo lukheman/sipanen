@@ -11,11 +11,8 @@
     </div>
     <div class="col-6">
 
-        <!-- Pencarian -->
-        <div class="input-group">
-            <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
-            <input  wire:model.live="search" type="text" class="form-control" placeholder="Cari {{ strtolower($table )}}...">
-        </div>
+        <x-datatable.search :table="$table"></x-datatable.search>
+
     </div>
 
 </div>

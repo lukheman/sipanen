@@ -31,9 +31,9 @@ class LaporanController extends Controller
 
     }
 
-    public function laporanHasilPanen() {
+    public function laporanHasilPanen($idTanaman) {
 
-        $hasilPanen = HasilPanen::with(['petani', 'tanaman'])->get();
+        $hasilPanen = HasilPanen::with(['petani', 'tanaman', 'petani.desa', 'petani.desa.kecamatan'])->where('id_tanaman', $idTanaman)->get();
 
         $pdf = Pdf::loadView('invoices.laporan-hasil-panen', ['hasilPanen' => $hasilPanen, 'label' => 'Hasil Panen']);
 

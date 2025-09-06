@@ -19,7 +19,7 @@ class UserFactory extends Factory
             // 'password' => bcrypt('password123'),
             'telepon' => $this->faker->phoneNumber,
             // 'tanggal_lahir' => $this->faker->date(),
-            'lokasi' => $this->faker->streetAddress(),
+            'alamat' => $this->faker->streetAddress(),
             // 'remember_token' => Str::random(10),
         ];
     }

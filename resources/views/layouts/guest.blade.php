@@ -3,137 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tani Pedia - Berita & Video Edukasi</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts for modern typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>{{ $title ?? 'SIPANEN Kolaka' }}</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
+        :root {
+            --primary: #4CAF50; /* hijau padi */
+            --text-dark: #2E2E2E;
+            --text-muted: #6c757d;
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f4f7f3;
-            position: relative;
+            color: var(--text-dark);
         }
+
+        /* Navbar */
         .navbar {
-            background-color: #435ebe;
+            background-color: white !important;
         }
         .navbar-brand, .nav-link {
-            color: #fff !important;
+            color: var(--text-dark) !important;
+            font-weight: 500;
         }
-        .header-section {
-            background: linear-gradient(135deg, #435ebe 0%, #1e2f6e 100%);
-            color: white;
-            padding: 100px 0;
+        .nav-link.active, .nav-link:hover {
+            color: var(--primary) !important;
+        }
+
+        /* Parallax */
+        .parallax {
+            background-image: url("{{ asset('img/hero.jpg')}}");
+            min-height: 100vh;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            position: relative;
-            overflow: hidden;
+            padding: 0 1rem;
         }
-        .header-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.1"%3E%3Cpath d="M100 20c-10 0-18 8-18 18s8 18 18 18 18-8 18-18-8-18-18-18zm0 24c-3.3 0-6-2.7-6-6s2.7-6 6-6 6 2.7 6 6-2.7 6-6 6zm50 50c0-10-8-18-18-18s-18 8-18 18 8 18 18 18 18-8 18-18zm-24 0c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6-6-2.7-6-6zm-100 0c0-10 8-18 18-18s18 8 18 18-8 18-18 18-18-8-18-18zm24 0c0 3.3-2.7 6-6 6s-6-2.7-6-6 2.7-6 6-6 6 2.7 6 6zm100 50c-10 0-18 8-18 18s8 18 18 18 18-8 18-18-8-18-18-18zm0 24c-3.3 0-6-2.7-6-6s2.7-6 6-6 6 2.7 6 6-2.7 6-6 6z" fill="%23ffffff"/%3E%3C/svg%3E');
-            background-repeat: repeat;
-            opacity: 0.1;
+
+        .parallax h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.4);
         }
-        .header-section h1 {
-            font-size: 3rem;
-            font-weight: 600;
+
+        .parallax p {
+            color: white;
+            font-size: 1.1rem;
         }
-        .news-card, .video-card, .consultation-card {
-            transition: transform 0.3s;
+
+        /* Card */
+        .shadow-card {
             border: none;
-            border-radius: 15px;
-            overflow: hidden;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
         }
-        .news-card:hover, .video-card:hover, .consultation-card:hover {
-            transform: translateY(-10px);
+
+        .shadow-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
-        .news-card img, .video-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-        .section-title {
-            color: #435ebe;
+
+        /* Section Title */
+        h2.section-title {
             font-weight: 600;
-            margin-bottom: 30px;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
         }
-        .btn-custom {
-            background-color: #435ebe;
+
+        .btn-primary {
+            background-color: var(--primary);
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+        }
+
+        .btn-primary:hover {
+            background-color: #43A047;
+        }
+
+        .btn-outline-primary {
+            border-color: var(--primary);
+            color: var(--primary);
+            border-radius: 8px;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
             color: white;
-            border-radius: 25px;
-            padding: 10px 20px;
         }
-        .btn-custom:hover {
-            background-color: #344a9e;
-        }
+
         footer {
-            background-color: #435ebe;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-        }
-        .consultation-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
+            background-color: #f8f9fa;
+            color: var(--text-muted);
         }
     </style>
 
-        @stack('styles')
 </head>
 <body>
+
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="#">Tani Pedia</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand fw-bold" href="#">SIPANEN Kolaka</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('landing')}}#berita">Berita</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('landing')}}#video">Video Edukasi</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link @if (request()->routeIs('landing'))
+    active
 
-                    @if (getActiveGuard())
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('dashboard')}}">Dashboard</a>
-                    </li>
+                    @endif" href="{{ route('landing')}}">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('landing')}}#about">Tentang</a></li>
+                    <li class="nav-item"><a wire:navigate class="nav-link @if (request()->routeIs('login'))
+    active
 
-                    @else
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login')}}" wire:navigate>Login</a>
-                    </li>
-
-                    @endif
-
-
+                    @endif" href="{{ route('login')}}">Login</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-
-    {{ $slot }}
+    <!-- Content -->
+    <main class="mt-5 pt-4">
+        {{ $slot }}
+    </main>
 
     <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Tani Pedia. Semua hak dilindungi.</p>
-        </div>
+    <footer class="py-3 text-center mt-5">
+        <small>&copy; {{ date('Y') }} Dinas Pertanian dan Perkebunan Kolaka. Semua Hak Dilindungi.</small>
     </footer>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
