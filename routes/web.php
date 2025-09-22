@@ -43,5 +43,7 @@ Route::get('/cetak-laporan/petugas', [LaporanController::class, 'laporanPetugas'
 
 Route::get('/cetak-laporan/hasil-panen/{idTanaman}', [LaporanController::class, 'laporanHasilPanen'])->name('print-laporan.hasil-panen')->middleware(MultiAuth::class . ':kepala_dinas,admin');
 
+Route::post('/laporan/hasil-panen/pdf', [LaporanController::class, 'generatePDF'])->name('laporan.panen.pdf');
+
 
 // Route::post('/upload-image', UploadImageController::class)->name('upload.image')->middleware(MultiAuth::class . ':admin');

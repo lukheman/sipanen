@@ -1,6 +1,8 @@
 
 
-<x-laporan>
+<x-laporan.index>
+
+    <x-laporan.navbar-download :pdf="$pdf" />
 
     <h5 class="report-title">Laporan Data {{ $label ?? ''}}</h5>
 
@@ -43,4 +45,4 @@
 
     <!-- Tanda Tangan -->
     <!-- <x-signature /> -->
-</x-laporan>
+</x-laporan.index>

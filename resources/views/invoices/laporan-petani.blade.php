@@ -1,6 +1,8 @@
 
 
-<x-laporan>
+<x-laporan.index>
+
+    <x-laporan.navbar-download :pdf="$pdf" />
 
     <h5 class="report-title">Laporan Data {{ $label ?? ''}}</h5>
 
@@ -39,6 +41,4 @@
         <p>Total {{ $label ?? 'data'}}: <strong>{{ $users->count() }}</strong></p>
     </div>
 
-    <!-- Tanda Tangan -->
-    <!-- <x-signature /> -->
-</x-laporan>
+</x-laporan.index>
