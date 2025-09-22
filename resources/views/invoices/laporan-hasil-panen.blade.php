@@ -14,7 +14,7 @@
             <div id="chartTop5"></div>
 @if(!empty($chartPath))
     <div style="text-align:center; margin:20px 0;">
-        <img src="{{ public_path('charts/'.$chartPath) }}" style="width:500px; height:auto;">
+        <img src="{{storage_path('app/public/' . $chartPath)}}" style="width:500px; height:auto;">
     </div>
 @endif
     </div>

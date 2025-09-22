@@ -7,6 +7,7 @@ use App\Models\Petugas;
 use App\Models\HasilPanen;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class LaporanController extends Controller
 {
@@ -81,30 +82,27 @@ class LaporanController extends Controller
     public function generatePDF(Request $request)
     {
         $hasilPanen = HasilPanen::with(['petani', 'tanaman', 'petani.desa.kecamatan'])->get();
+          $chartPath = null;
 
         // Ambil chart base64
         $chartImage = $request->input('chart_image');
 
         if ($chartImage) {
-            // Decode Base64
+                // Decode Base64
             $chartImage = str_replace('data:image/png;base64,', '', $chartImage);
             $chartImage = str_replace(' ', '+', $chartImage);
+
             $imageName = 'chart_' . time() . '.png';
 
-            $path = public_path('charts');
-
-            // pastikan folder ada
-            if (!\File::exists($path)) {
-                \File::makeDirectory($path, 0755, true);
-            }
-
-            \File::put(public_path('charts/'.$imageName), base64_decode($chartImage));
+            // Simpan ke storage/app/public/charts
+            $chartPath = 'charts/' . $imageName;
+            Storage::disk('public')->put($chartPath, base64_decode($chartImage));
         }
 
-        $pdf = \Pdf::loadView('invoices.laporan-hasil-panen', [
+        $pdf = Pdf::loadView('invoices.laporan-hasil-panen', [
             'hasilPanen' => $hasilPanen,
             'label' => 'Hasil Panen',
-            'chartPath' => $imageName ?? null,
+            'chartPath' => $chartPath,
             'pdf' => true
         ]);
 
