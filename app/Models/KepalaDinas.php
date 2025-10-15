@@ -18,8 +18,4 @@ class KepalaDinas extends Authenticatable
         return Role::KEPALADINAS;
     }
 
-    public function desa()
-    {
-        return $this->hasOne(Desa::class, 'id_desa');
-    }
 }

@@ -41,11 +41,6 @@ return [
             'provider' => 'admin',
         ],
 
-        // 'petani' => [
-        //     'driver' => 'session',
-        //     'provider' => 'petani',
-        // ],
-
         'admin' => [
             'driver' => 'session',
             'provider' => 'admin',
@@ -80,10 +75,6 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
-        ],
 
         'admin' => [
             'driver' => 'eloquent',
@@ -100,10 +91,6 @@ return [
             'model' => App\Models\KepalaDinas::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*

@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('jumlah');
             $table->string('satuan');
             $table->foreignId('id_tanaman')->constrained('tanaman', 'id_tanaman')->cascadeOnDelete();
-            $table->foreignId('id_petani')->constrained('petani', 'id_petani')->cascadeOnDelete();
             $table->timestamps();
         });
     }

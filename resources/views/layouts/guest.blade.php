@@ -147,7 +147,7 @@
 
     <!-- Footer -->
     <footer class="py-3 text-center mt-5">
-        <small>&copy; {{ date('Y') }} Dinas Pertanian dan Perkebunan Kolaka. Semua Hak Dilindungi.</small>
+        <small>&copy; {{ date('Y') }} Dinas Perkebunan Dan Peternakan Kabupatan Kolaka. Semua Hak Dilindungi.</small>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

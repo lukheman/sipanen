@@ -20,8 +20,4 @@ class HasilPanen extends Model
         return $this->hasOne(Tanaman::class, 'id_tanaman', 'id_tanaman');
     }
 
-    public function petani(): HasOne {
-        return $this->hasOne(User::class, 'id_petani', 'id_petani');
-    }
-
 }

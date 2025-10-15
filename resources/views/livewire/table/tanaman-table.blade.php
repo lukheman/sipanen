@@ -6,7 +6,11 @@
 
 
     @if ($currentState !== State::LAPORAN)
-        <x-datatable.header icon="fa-user" table="Tanaman" />
+        @if (auth('admin')->check())
+            <x-datatable.header icon="fa-user" table="Tanaman" />
+        @else
+        <x-datatable.search table="Tanaman"></x-datatable.search>
+        @endif
     @elseif($currentState === State::LAPORAN)
 
     <div class="raw">
@@ -93,7 +97,24 @@
                             <td>{{ $item->musim_tanam }}</td>
                             <td class="text-end">
                             @if ($currentState !== State::LAPORAN)
-                                <x-datatable.actions :id="$item->id_tanaman"/>
+                            <div class="btn-group">
+
+                            <button wire:click="detail({{ $item->id_tanaman }})" class="btn  btn-info text-white">
+                            <i class="bi bi-eye"></i>
+                            </button>
+
+                            @if (auth('admin')->check())
+
+                            <button wire:click="edit({{ $item->id_tanaman }})" class="btn  btn-warning text-white">
+                            <i class="bi bi-pencil"></i>
+                             </button>
+
+                            <button wire:click="delete({{ $item->id_tanaman }})" class="btn  btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
+
+                            @endif
+                            </div>
                             @else
                             <a href="{{ route('print-laporan.hasil-panen', ['idTanaman' => $item->id_tanaman]) }}" class="btn btn-danger">
                                 <i class="bi bi-printer"></i>

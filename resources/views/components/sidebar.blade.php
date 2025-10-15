@@ -62,15 +62,15 @@
                 @if(auth('admin')->check())
 
                     <x-nav-link icon="bi-people-fill"
-                        href="{{ route('petani-table')}}"
-                        :active="request()->routeIs('petani-table')">
-                        Manajemen Petani
-                    </x-nav-link>
-
-                    <x-nav-link icon="bi-people-fill"
                         href="{{ route('petugas-table')}}"
                         :active="request()->routeIs('petugas-table')">
                         Manajemen Petugas
+                    </x-nav-link>
+
+                    <x-nav-link icon="bi-people-fill"
+                        href="{{ route('tanaman-table')}}"
+                        :active="request()->routeIs('tanaman-table')">
+                        Manajemen Tanaman
                     </x-nav-link>
 
 
@@ -82,11 +82,6 @@
                 @if(auth('petugas')->check())
                 <li class="sidebar-title">Manajemen Data</li>
 
-                    <x-nav-link icon="bi-people-fill"
-                        href="{{ route('petani-table')}}"
-                        :active="request()->routeIs('petani-table')">
-                        Manajemen Petani
-                    </x-nav-link>
 
                     <x-nav-link icon="bi-people-fill"
                         href="{{ route('tanaman-table')}}"

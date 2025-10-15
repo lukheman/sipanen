@@ -20,7 +20,6 @@ class AdminDashboard extends Component
             ->get();
 
         return view('livewire.dashboard.admin-dashboard', [
-            'jumlah_petani' => User::count(),
             'jumlah_petugas' => Petugas::count(),
             'topHasilPanen' => $topHasilPanen
         ]);
