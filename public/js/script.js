@@ -36,34 +36,31 @@ animate__faster`
             });
     });
 
-    Livewire.on('toast', ({ message, variant, reload }) => {
-        if (reload) {
-            sessionStorage.setItem('reload', 'true');
-            sessionStorage.setItem('variant', variant);
-            sessionStorage.setItem('message', message);
-        }
+Livewire.on('toast', ({ message, variant, reload }) => {
+    if (reload) {
+        sessionStorage.setItem('reload', 'true');
+        sessionStorage.setItem('variant', variant);
+        sessionStorage.setItem('message', message);
+    }
 
-        const borderColors = {
-            success: "#435ebe",
-            warning: "#ffc107",
-            error: "#dc3545"
-        };
+    const swalOptions = {
+        title: message,
+        icon: variant === 'success'
+            ? 'success'
+            : variant === 'warning'
+            ? 'warning'
+            : variant === 'error'
+            ? 'error'
+            : 'info',
+        // timer: 2500,
+        showConfirmButton: true,
+        timerProgressBar: true,
+        background: '#fff',
+        color: '#111827'
+    };
 
-        Toastify({
-            text: message,
-            duration: 3000,
-            close: false,
-            gravity: "top",
-            position: "right",
-            stopOnFocus: true,
-            style: {
-                background: "#ffffff",
-                border: `2px solid ${borderColors[variant] || "#374151"}`,
-                color: "#111827",
-                borderRadius: "15px"
-            },
-        }).showToast();
-    });
+    Swal.fire(swalOptions);
+});
 });
 
 // setelah halaman dimuat ulang, periksa apakah ada notifikasi
