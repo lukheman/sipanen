@@ -6,7 +6,7 @@
 
 
     @if ($currentState !== State::LAPORAN)
-        @if (auth('admin')->check())
+        @if (activeRole() === \App\Enums\Role::ADMIN)
             <x-datatable.header icon="fa-user" table="Tanaman" />
         @else
         <x-datatable.search table="Tanaman"></x-datatable.search>
@@ -49,14 +49,6 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="jenis" class="form-label">Jenis</label>
-                                <input wire:model="form.jenis" type="text" class="form-control" id="jenis" placeholder="Masukkan jenis tanaman" @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
-                                @error('form.jenis')
-                                    <small class="d-block mt-1 text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-
-                            <div class="mb-3">
                                 <label for="musim_tanam" class="form-label">Musim Tanam</label>
                                 <input wire:model="form.musim_tanam" type="text" class="form-control" id="musim_tanam" name="musim_tanam" placeholder="Contoh: Musim Hujan" @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
                                 @error('form.musim_tanam')
@@ -83,8 +75,8 @@
             <table class="table table-striped   ">
                 <thead class="thead-dark">
                     <tr>
+                        <th>No</th>
                         <th>Nama Tanaman</th>
-                        <th>Jenis</th>
                         <th>Musim Tanam</th>
                         <th class="text-end">Aksi</th>
                     </tr>
@@ -92,8 +84,8 @@
                 <tbody>
                     @foreach ($this->tanaman as $item)
                         <tr>
+                            <td>{{ $loop->index + 1 }}</td>
                             <td>{{ $item->nama_tanaman }}</td>
-                            <td>{{ $item->jenis }}</td>
                             <td>{{ $item->musim_tanam }}</td>
                             <td class="text-end">
                             @if ($currentState !== State::LAPORAN)
@@ -103,7 +95,7 @@
                             <i class="bi bi-eye"></i>
                             </button>
 
-                            @if (auth('admin')->check())
+                            @if (activeRole() === \App\Enums\Role::ADMIN || activeRole() === \App\Enums\Role::PETUGAS)
 
                             <button wire:click="edit({{ $item->id_tanaman }})" class="btn  btn-warning text-white">
                             <i class="bi bi-pencil"></i>

@@ -131,6 +131,7 @@ use App\Enums\State;
             <table class="table table-striped">
                 <thead class="thead-dark">
                     <tr>
+                        <th>No</th>
                         <th>Nama Petani</th>
                         <th>Nama Tanaman</th>
                         <th>Tanggal Panen</th>
@@ -143,6 +144,7 @@ use App\Enums\State;
                 <tbody>
                     @foreach ($this->hasilPanen as $item)
                         <tr>
+                            <td>{{ $loop->index + 1 }}</td>
                             <td>{{ $item->petani->nama_petani }}</td>
                             <td>{{ $item->tanaman->nama_tanaman}}</td>
                             <td>{{ $item->tanggal_panen }}</td>

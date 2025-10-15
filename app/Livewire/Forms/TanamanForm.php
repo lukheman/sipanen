@@ -11,14 +11,12 @@ class TanamanForm extends Form
     public ?Tanaman $tanaman = null;
 
     public string $nama_tanaman = '';
-    public string $jenis = '';
     public string $musim_tanam = '';
 
   public function rules(): array
     {
         return [
             'nama_tanaman' => ['required', 'string', 'min:3', 'max:100'],
-            'jenis' => ['required', 'string', 'min:3', 'max:50'],
             'musim_tanam' => ['required', 'string', 'min:3', 'max:50'],
         ];
     }
@@ -29,10 +27,6 @@ class TanamanForm extends Form
             'nama_tanaman.required' => 'Nama tanaman wajib diisi.',
             'nama_tanaman.min' => 'Nama tanaman minimal 3 karakter.',
             'nama_tanaman.max' => 'Nama tanaman maksimal 100 karakter.',
-
-            'jenis.required' => 'Jenis tanaman wajib diisi.',
-            'jenis.min' => 'Jenis tanaman minimal 3 karakter.',
-            'jenis.max' => 'Jenis tanaman maksimal 50 karakter.',
 
             'musim_tanam.required' => 'Musim tanam wajib diisi.',
             'musim_tanam.min' => 'Musim tanam minimal 3 karakter.',
@@ -47,7 +41,6 @@ class TanamanForm extends Form
     {
         $this->tanaman = $tanaman;
         $this->nama_tanaman = $tanaman->nama_tanaman;
-        $this->jenis = $tanaman->jenis;
         $this->musim_tanam = $tanaman->musim_tanam;
     }
 
@@ -70,7 +63,6 @@ class TanamanForm extends Form
         if ($this->tanaman) {
             $this->tanaman->update([
                 'nama_tanaman' => $this->nama_tanaman,
-                'jenis' => $this->jenis,
                 'musim_tanam' => $this->musim_tanam,
             ]);
         }

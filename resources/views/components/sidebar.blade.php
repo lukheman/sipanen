@@ -1,3 +1,8 @@
+@php
+    use \App\Enums\Role;
+
+    $role = activeRole();
+@endphp
 <div id="sidebar">
     <div class="sidebar-wrapper active">
         <div class="sidebar-header position-relative">
@@ -40,13 +45,9 @@
                     </div>
 
                     {{-- tampilkan nama user sesuai guard --}}
-                    @if(auth('admin')->check())
-                        <p class="font-bold ms-3 mb-0">Admin - {{ auth('admin')->user()->nama_admin }}</p>
-                    @elseif(auth('petugas')->check())
-                        <p class="font-bold ms-3 mb-0">Petugas - {{ auth('petugas')->user()->nama_petugas }}</p>
-                    @elseif(auth('kepala_dinas')->check())
-                        <p class="font-bold ms-3 mb-0">Kepala Dinas - {{ auth('kepala_dinas')->user()->nama_kepala_dinas }}</p>
-                    @endif
+                    <p class="font-bold ms-3 mb-0"> {{ $role }} - {{ getActiveUser()->nama }}</p>
+
+
                 </div>
                 <hr>
 
@@ -59,12 +60,12 @@
                 </x-nav-link>
 
                 {{-- ADMIN --}}
-                @if(auth('admin')->check())
+                @if($role === Role::ADMIN)
 
                     <x-nav-link icon="bi-people-fill"
-                        href="{{ route('petugas-table')}}"
-                        :active="request()->routeIs('petugas-table')">
-                        Manajemen Petugas
+                        href="{{ route('pengguna-table')}}"
+                        :active="request()->routeIs('pengguna-table')">
+                        Manajemen Pengguna
                     </x-nav-link>
 
                     <x-nav-link icon="bi-people-fill"
@@ -79,7 +80,7 @@
 
 
                 {{-- PETUGAS --}}
-                @if(auth('petugas')->check())
+                @if($role === Role::PETUGAS)
                 <li class="sidebar-title">Manajemen Data</li>
 
 
@@ -99,7 +100,7 @@
                 @endif
 
                 {{-- KEPALA DINAS --}}
-                @if(auth('kepala_dinas')->check())
+                @if($role === Role::KEPALADINAS)
 
                 <li class="sidebar-title">Laporan</li>
 

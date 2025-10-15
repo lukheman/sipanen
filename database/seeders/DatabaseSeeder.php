@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Role;
 use App\Models\Admin;
 use App\Models\Desa;
 use App\Models\Kecamatan;
@@ -42,28 +43,28 @@ class DatabaseSeeder extends Seeder
         // HasilPanen::factory(10)->create();
 
         // Buat user dengan id_desa secara acak
-        Admin::query()->create([
-            'nama_admin' => 'Admin',
+        User::query()->create([
+            'nama' => 'Admin',
             'email' => 'admin@gmail.com',
+            'role' => Role::ADMIN
         ]);
 
-        Petugas::factory()->create([
-            'nama_petugas' => 'Petugas 1',
+        User::query()->create([
+            'nama' => 'Petugas 1',
             'email' => 'petugas1@gmail.com',
-            'id_kecamatan' => 1
+            'role' => Role::PETUGAS
         ]);
 
-        Petugas::factory()->create([
-            'nama_petugas' => 'Petugas 2',
+        User::query()->create([
+            'nama' => 'Petugas 2',
             'email' => 'petugas2@gmail.com',
-            'id_kecamatan' => 2
+            'role' => Role::PETUGAS
         ]);
 
-        KepalaDinas::query()->create([
-            'nama_kepala_dinas' => 'Kepala Dinas Kolaka',
+        User::query()->create([
+            'nama' => 'Kepala Dinas Kolaka',
             'email' => 'kepaladinas@gmail.com',
-            'telepon' => '08225002210021',
-            'tanggal_lahir' => fake()->date()
+            'role' => Role::KEPALADINAS
         ]);
 
     }

@@ -38,22 +38,7 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'admin',
-        ],
-
-        'admin' => [
-            'driver' => 'session',
-            'provider' => 'admin',
-        ],
-
-        'kepala_dinas' => [
-            'driver' => 'session',
-            'provider' => 'kepala_dinas',
-        ],
-
-        'petugas' => [
-            'driver' => 'session',
-            'provider' => 'petugas',
+            'provider' => 'users',
         ],
     ],
 
@@ -76,19 +61,9 @@ return [
 
     'providers' => [
 
-        'admin' => [
+        'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Admin::class,
-        ],
-
-        'petugas' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Petugas::class,
-        ],
-
-        'kepala_dinas' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\KepalaDinas::class,
+            'model' => App\Models\User::class,
         ],
 
     ],

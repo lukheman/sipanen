@@ -16,12 +16,10 @@ class TanamanFactory extends Factory
      */
     public function definition(): array
     {
-        $jenis = ['Pangan', 'Hortikultura', 'Perkebunan'];
         $musim = ['Musim Hujan', 'Musim Kemarau', 'Sepanjang Tahun'];
 
         return [
             'nama_tanaman' => $this->faker->unique()->word(),
-            'jenis' => $this->faker->randomElement($jenis),
             'musim_tanam' => $this->faker->randomElement($musim),
         ];
     }

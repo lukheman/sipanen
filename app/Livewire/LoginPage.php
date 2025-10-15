@@ -13,7 +13,7 @@ class LoginPage extends Component
     #[Rule(['required', 'email'])]
     public string $email = '';
 
-    #[Rule(['required'])]
+    #[Rule(['required', 'min:6'])]
     public string $password = '';
 
     public ?string $redirect = null;
@@ -24,31 +24,42 @@ class LoginPage extends Component
             'email.required' => 'Email harus diisi.',
             'email.email' => 'Format email tidak valid.',
             'password.required' => 'Password harus diisi.',
+            'password.min' => 'Password minimal 6 karakter.',
         ];
     }
 
     public function mount()
     {
+        // Ambil query string "redirect" jika ada
         $this->redirect = request()->query('redirect');
     }
 
     public function submit()
     {
+        // Validasi input sesuai rule
         $credentials = $this->validate();
 
-        foreach (['admin', 'petugas', 'kepala_dinas'] as $guard) {
-            if (Auth::guard($guard)->attempt($credentials)) {
+        // Coba login
+        if (Auth::attempt([
+            'email' => $this->email,
+            'password' => $this->password,
+        ])) {
+            // Regenerate session ID untuk keamanan
+            request()->session()->regenerate();
 
-                // regenerate session agar tidak session fixation
-                Auth::guard($guard)->login(Auth::guard($guard)->user(), true);
+            // Ambil user aktif
+            $user = Auth::user();
 
-                flash('Berhasil login sebagai ' . $guard);
+            // Flash message sukses
+            flash('Berhasil login sebagai ' . $user->nama);
 
-                return redirect()->intended($this->redirect ?? route('dashboard'));
-            }
+            // Redirect ke halaman tujuan atau dashboard
+            return redirect()->intended($this->redirect ?? route('dashboard'));
         }
 
-        return flash('Email atau password tidak valid.', 'danger');
+        // Jika gagal
+        flash('Email atau password tidak valid.', 'danger');
+        return null;
     }
 
     public function render()

@@ -5,7 +5,6 @@ namespace App\Enums;
 enum Role: string
 {
     case ADMIN = 'Admin';
-    case PETANI = 'Petani';
     case PETUGAS = 'Petugas Lapangan';
     case KEPALADINAS = 'Kepala Dinas';
 
@@ -18,7 +17,6 @@ enum Role: string
     {
         return match ($this) {
             self::ADMIN => 'primary',
-            self::PETANI => 'success',
             self::PETUGAS => 'danger',
             self::KEPALADINAS => 'warning',
             default => 'default'

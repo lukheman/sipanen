@@ -16,13 +16,12 @@ Route::get('/registrasi', \App\Livewire\RegistrasiPage::class)->name('registrasi
 
 Route::get('/dashboard', \App\Livewire\Dashboard\Index::class)
     ->name('dashboard')
-    ->middleware(MultiAuth::class.':admin,petugas,kepala_dinas');
+    ->middleware(MultiAuth::class.':Admin,Petugas,Kepala Dinas');
 
-Route::get('/pengguna', \App\Livewire\Table\PenggunaTable::class)->name('pengguna')->middleware(MultiAuth::class.':admin');
+Route::get('/tanaman', \App\Livewire\Table\TanamanTable::class)->name('tanaman-table')->middleware(MultiAuth::class.':Admin');
 
-Route::get('/petugas', \App\Livewire\Table\PetugasTable::class)->name('petugas-table')->middleware(MultiAuth::class.':admin');
+Route::get('/pengguna', \App\Livewire\Table\PenggunaTable::class)->name('pengguna-table')->middleware(MultiAuth::class.':Admin');
 
-Route::get('/tanaman', \App\Livewire\Table\TanamanTable::class)->name('tanaman-table')->middleware(MultiAuth::class.':admin,petugas');
 Route::get('/hasil-panen', \App\Livewire\Table\HasilPanenTable::class)->name('hasil-panen-table')->middleware(MultiAuth::class.':admin,petugas');
 
 
@@ -30,7 +29,7 @@ Route::get('/laporan/petugas', \App\Livewire\Laporan\LaporanDataPetugas::class)-
 
 Route::get('/laporan/hasil-panen', \App\Livewire\Laporan\LaporanDataHasilPanen::class)->name('laporan.hasil-panen')->middleware(MultiAuth::class . ':kepala_dinas,admin');
 
-Route::get('/profile', \App\Livewire\Profile\Index::class)->name('profile')->middleware(MultiAuth::class.':admin,kepala_dinas,petugas');
+Route::get('/profile', \App\Livewire\Profile\PenggunaProfile::class)->name('profile')->middleware(MultiAuth::class.':Admin,Kepala Dinas,Petugas');
 
 Route::get('/cetak-laporan/petugas', [LaporanController::class, 'laporanPetugas'])->name('print-laporan.petugas')->middleware(MultiAuth::class . ':kepala_dinas,admin');
 
