@@ -116,6 +116,12 @@
                         Laporan Hasil Panen
                     </x-nav-link>
 
+                    <x-nav-link icon="bi-people-fill"
+                        href="{{ route('laporan.hasil-panen')}}"
+                        :active="request()->routeIs('laporan.hasil-panen')">
+                        Laporan Hasil Panen
+                    </x-nav-link>
+
 
                 @endif
 
