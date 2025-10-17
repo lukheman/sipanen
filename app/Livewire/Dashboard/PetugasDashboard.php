@@ -12,13 +12,17 @@ use Livewire\Component;
 class PetugasDashboard extends Component
 {
 
+    public $user;
+
+    public function mount() {
+        $this->user = getActiveUser();
+        $this->user->load('kecamatan');
+    }
+
     public function jumlahHasilPanen(): int {
         return HasilPanen::query()->count();
     }
 
-    public function jumlahKecamatan(): int {
-        return Kecamatan::query()->count();
-    }
 
     public function render()
     {
