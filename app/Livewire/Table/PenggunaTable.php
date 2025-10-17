@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Table;
 
+use App\Enums\Role;
 use App\Models\Petugas;
 use App\Livewire\Forms\PenggunaForm;
 use App\Models\User;
@@ -91,6 +92,7 @@ class PenggunaTable extends Component
             ->when($this->search, fn($q) => $q->where('nama', 'like', "%{$this->search}%")
                                             ->orWhere('email', 'like', "%{$this->search}%"))
             ->latest()
+            ->when($this->currentState === State::LAPORAN, fn($q) => $q->where('role', Role::PETUGAS))
             ->paginate(10);
     }
 

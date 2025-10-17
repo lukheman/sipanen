@@ -12,18 +12,16 @@ class HasilPanenForm extends Form
 
     public string $tanggal_panen = '';
     public string $jumlah = '';
-    public string $satuan = '';
     public ?int $id_tanaman;
-    public ?int $id_petani;
+    public ?int $id_kecamatan;
 
     public function rules(): array
     {
         return [
             'tanggal_panen' => ['required', 'date'],
             'jumlah' => ['required', 'numeric'],
-            'satuan' => ['required', 'string', 'max:50'],
             'id_tanaman' => ['required', 'exists:tanaman,id_tanaman'],
-            'id_petani' => ['required', 'exists:petani,id_petani'],
+            'id_kecamatan' => ['required', 'exists:kecamatan,id_kecamatan']
         ];
     }
 
@@ -36,14 +34,13 @@ class HasilPanenForm extends Form
             'jumlah.required' => 'Jumlah hasil panen wajib diisi.',
             'jumlah.numeric' => 'Jumlah harus berupa angka',
 
-            'satuan.required' => 'Satuan wajib diisi.',
-            'satuan.max' => 'Satuan maksimal 50 karakter.',
 
             'id_tanaman.required' => 'Tanaman wajib dipilih.',
             'id_tanaman.exists' => 'Tanaman tidak ditemukan.',
 
-            'id_petani.required' => 'Petani wajib dipilih.',
-            'id_petani.exists' => 'Petani tidak ditemukan.',
+            'id_kecamatan.required' => 'Kecamatan wajib dipilih.',
+            'id_kecamatan.exists' => 'Kecamatan tidak ditemukan.',
+
         ];
     }
 
@@ -55,9 +52,8 @@ class HasilPanenForm extends Form
         $this->hasilPanen = $hasilPanen;
         $this->tanggal_panen = $hasilPanen->tanggal_panen;
         $this->jumlah = $hasilPanen->jumlah;
-        $this->satuan = $hasilPanen->satuan;
         $this->id_tanaman = $hasilPanen->id_tanaman;
-        $this->id_petani = $hasilPanen->id_petani;
+        $this->id_kecamatan = $hasilPanen->id_kecamatan;
     }
 
     /**
@@ -80,9 +76,8 @@ class HasilPanenForm extends Form
             $this->hasilPanen->update([
                 'tanggal_panen' => $this->tanggal_panen,
                 'jumlah' => $this->jumlah,
-                'satuan' => $this->satuan,
                 'id_tanaman' => $this->id_tanaman,
-                'id_petani' => $this->id_petani,
+                'id_kecamatan' => $this->id_kecamatan,
             ]);
         }
     }

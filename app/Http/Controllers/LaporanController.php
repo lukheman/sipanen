@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Role;
+use App\Models\Kecamatan;
+use App\Models\Tanaman;
 use App\Models\User;
 use App\Models\Petugas;
 use App\Models\HasilPanen;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class LaporanController extends Controller
@@ -14,7 +18,7 @@ class LaporanController extends Controller
     public function laporanPetugas()
     {
 
-        $users = Petugas::all();
+        $users = User::query()->with('kecamatan')->where('role', Role::PETUGAS)->get();
 
         $pdf = Pdf::loadView('invoices.laporan-petugas', ['users' => $users, 'label' => 'Petugas Lapangan', 'pdf' => true]);
 
@@ -22,15 +26,59 @@ class LaporanController extends Controller
 
     }
 
+    public function laporanHasilPanenByKecamatan(Request $request) {
+
+        // Ambil data kecamatan
+        $kecamatan = Kecamatan::findOrFail($request->idKecamatan);
+
+        // Hitung total hasil panen tiap tanaman di kecamatan tersebut
+        $hasilPanenPerTanaman = HasilPanen::select('id_tanaman', DB::raw('SUM(jumlah) as total'))
+            ->with('tanaman') // relasi ke tabel tanaman
+            ->where('id_kecamatan', $request->idKecamatan)
+            ->groupBy('id_tanaman')
+            ->orderByDesc('total')
+            ->get();
+
+
+        return view('invoices.laporan-hasil-panen-kecamatan', [
+            'kecamatan' => $kecamatan,
+            'hasilPanenPerTanaman' => $hasilPanenPerTanaman,
+            'label' => "Laporan Total Hasil Panen di Kecamatan {$kecamatan->nama_kecamatan}",
+            'pdf' => false
+        ]);
+
+    }
+
+    public function laporanHasilPanenByTanaman($idTanaman)
+    {
+    // Ambil data tanaman
+    $tanaman = Tanaman::findOrFail($idTanaman);
+
+    // Hitung total hasil panen per kecamatan untuk tanaman tersebut
+    $hasilPanenPerKecamatan = HasilPanen::select('id_kecamatan', DB::raw('SUM(jumlah) as total'))
+        ->with('kecamatan') // relasi ke kecamatan
+        ->where('id_tanaman', $idTanaman)
+        ->groupBy('id_kecamatan')
+        ->orderByDesc('total')
+        ->get();
+
+    return view('invoices.laporan-hasil-panen-tanaman', [
+        'tanaman' => $tanaman,
+        'hasilPanenPerKecamatan' => $hasilPanenPerKecamatan,
+        'label' => "Laporan Total Hasil Panen " . ucfirst($tanaman->nama_tanaman) . " Pada Tiap Kecamatan",
+        'pdf' => false
+
+    ]);
+}
+
     public function laporanHasilPanen($idTanaman) {
 
-        $hasilPanen = HasilPanen::with(['petani', 'tanaman', 'petani.desa', 'petani.desa.kecamatan'])->where('id_tanaman', $idTanaman)->get();
+        $hasilPanen = HasilPanen::with('tanaman', 'kecamatan')->where('id_tanaman', $idTanaman)->get();
 
         // $hasilPanenPerKecamatan = $hasilPanen->groupBy(function ($item) {
         //     return $item->petani->desa->kecamatan->nama;
         // });
 
-        // dd($hasilPanenPerKecamatan);
 
         $hasilPanenPerKecamatan = $hasilPanen->groupBy(function ($item) {
             return $item->petani->desa->kecamatan->nama;
@@ -63,7 +111,8 @@ class LaporanController extends Controller
             'label' => 'Hasil Panen',
             'labels' => $labels,
             'series' => $series,
-            'pdf' => false
+            'pdf' => false,
+            'id_tanaman' => $idTanaman
         ]);
 
 
@@ -71,8 +120,19 @@ class LaporanController extends Controller
 
     public function generatePDF(Request $request)
     {
-        $hasilPanen = HasilPanen::with(['petani', 'tanaman', 'petani.desa.kecamatan'])->get();
-          $chartPath = null;
+
+
+        $tanaman = Tanaman::findOrFail($request->id_tanaman);
+
+
+        $hasilPanenPerKecamatan = HasilPanen::select('id_kecamatan', DB::raw('SUM(jumlah) as total'))
+            ->with('kecamatan') // relasi ke kecamatan
+            ->where('id_tanaman', $request->id_tanaman)
+            ->groupBy('id_kecamatan')
+            ->orderByDesc('total')
+            ->get();
+
+        $chartPath = null;
 
         // Ambil chart base64
         $chartImage = $request->input('chart_image');
@@ -89,9 +149,10 @@ class LaporanController extends Controller
             Storage::disk('public')->put($chartPath, base64_decode($chartImage));
         }
 
-        $pdf = Pdf::loadView('invoices.laporan-hasil-panen', [
-            'hasilPanen' => $hasilPanen,
-            'label' => 'Hasil Panen',
+        $pdf = Pdf::loadView('invoices.laporan-hasil-panen-tanaman', [
+            'tanaman' => $tanaman,
+            'hasilPanenPerKecamatan' => $hasilPanenPerKecamatan,
+            'label' => "Laporan Total Hasil Panen " . ucfirst($tanaman->nama_tanaman) . " Pada Tiap Kecamatan",
             'chartPath' => $chartPath,
             'pdf' => true
         ]);

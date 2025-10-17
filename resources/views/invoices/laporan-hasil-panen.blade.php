@@ -42,7 +42,7 @@
                         - Kecamatan {{ $item->petani->desa->kecamatan->nama }}
                     </td>
                     <td>{{ $item->tanaman->nama_tanaman }}</td>
-                    <td>{{ $item->jumlah }} {{ $item->satuan }}</td>
+                    <td>{{ $item->jumlah }}</td>
                 </tr>
             @empty
                 <tr>

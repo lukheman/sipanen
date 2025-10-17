@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id('id_hasil_panen');
             $table->date('tanggal_panen');
             $table->string('jumlah');
-            $table->string('satuan');
             $table->foreignId('id_tanaman')->constrained('tanaman', 'id_tanaman')->cascadeOnDelete();
+            $table->foreignId('id_kecamatan')->constrained('kecamatan', 'id_kecamatan')->cascadeOnDelete();
             $table->timestamps();
         });
     }

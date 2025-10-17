@@ -74,6 +74,12 @@
                         Manajemen Tanaman
                     </x-nav-link>
 
+                    <x-nav-link icon="bi-people-fill"
+                        href="{{ route('kecamatan-table')}}"
+                        :active="request()->routeIs('kecamatan-table')">
+                        Kecamatan
+                    </x-nav-link>
+
 
 
                 @endif
@@ -83,12 +89,6 @@
                 @if($role === Role::PETUGAS)
                 <li class="sidebar-title">Manajemen Data</li>
 
-
-                    <x-nav-link icon="bi-people-fill"
-                        href="{{ route('tanaman-table')}}"
-                        :active="request()->routeIs('tanaman-table')">
-                        Manajemen Tanaman
-                    </x-nav-link>
 
                     <x-nav-link icon="bi-people-fill"
                         href="{{ route('hasil-panen-table')}}"
@@ -103,12 +103,6 @@
                 @if($role === Role::KEPALADINAS)
 
                 <li class="sidebar-title">Laporan</li>
-
-                    <x-nav-link icon="bi-people-fill"
-                        href="{{ route('laporan.petani')}}"
-                        :active="request()->routeIs('laporan.petani')">
-                        Laporan Petani
-                    </x-nav-link>
 
                     <x-nav-link icon="bi-people-fill"
                         href="{{ route('laporan.petugas')}}"

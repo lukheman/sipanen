@@ -19,6 +19,10 @@ class Kecamatan extends Model
 
     public function petugas(): HasOne
     {
-        return $this->hasOne(Petugas::class, 'id_petugas', 'id_kecamatan');
+        return $this->hasOne(User::class, 'id_kecamatan', 'id_kecamatan');
+    }
+
+    public function hasilPanen(): HasMany {
+        return $this->hasMany(HasilPanen::class, 'id_kecamatan', 'id_kecamatan');
     }
 }

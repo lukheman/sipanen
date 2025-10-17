@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Table;
 
+use App\Models\Kecamatan;
 use App\Models\Petugas;
 use App\Traits\Traits\WithModal;
 use App\Traits\WithNotify;
@@ -35,56 +36,23 @@ class HasilPanenTable extends Component
     #[Computed]
     public function hasilPanen()
     {
-        $guard = getActiveGuard(); // guard aktif
-        $user = Auth::guard('petugas')->user();
-
-        $query = HasilPanen::with(['petani.desa', 'tanaman'])
+        $query = HasilPanen::with('tanaman', 'kecamatan')
             ->when($this->search, function ($query) {
-                $query->whereHas('petani', function ($q) {
-                    $q->where('nama_petani', 'like', '%' . $this->search . '%');
-                })->orWhereHas('tanaman', function ($q) {
+                $query->whereHas('tanaman', function ($q) {
                     $q->where('nama_tanaman', 'like', '%' . $this->search . '%');
+                })
+                ->orWhereHas('kecamatan', function($q) {
+                    $q->where('nama', 'like', '%' . $this->search . '%');
                 });
             });
-
-        if ($guard === 'petugas') {
-            // ambil data petugas
-            $petugas = Petugas::find($user->id_petugas);
-
-            if ($petugas && $petugas->id_kecamatan) {
-                // filter hanya hasil panen dari petani di kecamatan yang sama
-                $query->whereHas('petani.desa', function ($q) use ($petugas) {
-                    $q->where('id_kecamatan', $petugas->id_kecamatan);
-                });
-            }
-        }
 
         // admin -> tidak ada filter tambahan, otomatis ambil semua
         return $query->latest()->paginate(10);
     }
 
     #[Computed]
-    public function petaniList() {
-        $guard = getActiveGuard();
-        $user = Auth::guard($guard)->user();
-
-        $query = User::query();
-
-        if($guard === 'petugas') {
-
-            // cari kecamatan tempat petugas berada
-            $kecamatanPetugas = Petugas::query()->find($user->id_petugas);
-
-
-            if ($kecamatanPetugas) {
-                $query->whereHas('desa', function ($q) use ($kecamatanPetugas) {
-                    $q->where('id_kecamatan', $kecamatanPetugas->id_kecamatan);
-                });
-            }
-
-        }
-
-        return $query->latest()->get();
+    public function kecamatanList() {
+        return Kecamatan::all();
     }
 
     #[Computed]

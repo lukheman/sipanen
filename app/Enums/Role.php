@@ -5,7 +5,7 @@ namespace App\Enums;
 enum Role: string
 {
     case ADMIN = 'Admin';
-    case PETUGAS = 'Petugas Lapangan';
+    case PETUGAS = 'Petugas';
     case KEPALADINAS = 'Kepala Dinas';
 
     public function getLabel(): ?string

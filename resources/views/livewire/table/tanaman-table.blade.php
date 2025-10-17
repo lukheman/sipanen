@@ -9,21 +9,67 @@
         @if (activeRole() === \App\Enums\Role::ADMIN)
             <x-datatable.header icon="fa-user" table="Tanaman" />
         @else
-        <x-datatable.search table="Tanaman"></x-datatable.search>
+            <x-datatable.search table="Tanaman"></x-datatable.search>
         @endif
     @elseif($currentState === State::LAPORAN)
 
-    <div class="raw">
-    <div class="col-6 float-end">
-        <x-datatable.search table="Tanaman"></x-datatable.search>
-    </div>
+    <div class="row">
+        <div class="col-6">
+
+            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-form-laporan-hasil-panen-kecamatan">
+                <i class="bi bi-printer"></i>
+                Download Laporan
+            </button>
+
+        </div>
+        <div class="col-6">
+            <x-datatable.search table="Tanaman"></x-datatable.search>
+        </div>
     </div>
 
     @endif
 
 
         <!-- Modal Form Tanaman -->
-        <div class="modal fade" id="modal-form-tanaman" tabindex="-1" wire:ignore.self>
+        <div class="modal fade" id="modal-form-laporan-hasil-panen-kecamatan" tabindex="-1" wire:ignore.self>
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content ">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title text-white">
+                            Laporan Hasil Panen
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ route('print-laporan.hasil-panen-kecamatan') }}" method="POST">
+    @csrf
+                    <div class="modal-body">
+
+                            <div class="mb-3">
+                                <label for="musim_tanam" class="form-label">Kecamatan</label>
+                                <select id="tanaman" class="form-control"  @if ($currentState === \App\Enums\State::SHOW) disabled @endif name="idKecamatan">
+                                    <option value="">Pilih Kecamatan</option>
+                                    @foreach ($this->kecamatanList as $kecamatan)
+                                    <option value="{{ $kecamatan->id_kecamatan}}">{{ $kecamatan->nama}}</option>
+                                    @endforeach
+                                </select>
+
+                            </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger">
+
+<i class="bi bi-printer"></i>
+    Cetak
+    </button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Form Tanaman -->
+        <div class="modal fade" id="modal-form-hasil-panen" tabindex="-1" wire:ignore.self>
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content ">
                     <div class="modal-header bg-primary text-white">
@@ -68,6 +114,7 @@
                 </div>
             </div>
         </div>
+
     </div>
     <div class="card-body">
 

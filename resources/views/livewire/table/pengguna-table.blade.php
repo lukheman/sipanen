@@ -5,7 +5,7 @@
 <div class="card my-4">
     <div class="card-header">
         @if ($currentState === State::LAPORAN)
-            <a href="{{ route('print-laporan.pengguna') }}" class="btn btn-danger">
+            <a href="{{ route('print-laporan.petugas') }}" class="btn btn-danger">
                 <i class="bi bi-printer"></i>
                 Download Laporan
             </a>

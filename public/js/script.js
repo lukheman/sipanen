@@ -55,8 +55,10 @@ Livewire.on('toast', ({ message, variant, reload }) => {
         // timer: 2500,
         showConfirmButton: true,
         timerProgressBar: true,
-        background: '#fff',
-        color: '#111827'
+        customClass: {
+            confirmButton: 'btn btn-primary',
+            cancelButton: 'btn btn-danger'
+        },
     };
 
     Swal.fire(swalOptions);

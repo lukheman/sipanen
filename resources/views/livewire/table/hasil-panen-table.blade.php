@@ -40,27 +40,28 @@ use App\Enums\State;
                                 <div class="col-md-6">
 
                             <div class="mb-3">
-                                <label for="petani" class="form-label">Petani</label>
+                                <label for="kecamatan" class="form-label">Kecamatan</label>
 
-                                <select wire:model="form.id_petani" id="petani" class="form-control"  @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
-                                    <option value="">Pilih petani</option>
-                                    @foreach ($this->petaniList as $petani)
-                                    <option value="{{ $petani->id_petani}}">{{ $petani->nama_petani}}</option>
+                                <select wire:model="form.id_kecamatan" id="kecamatan" class="form-control"  @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
+                                    <option value="">Pilih Kecamatan</option>
+                                    @foreach ($this->kecamatanList as $kecamatan)
+                                    <option value="{{ $kecamatan->id_kecamatan}}">{{ $kecamatan->nama}}</option>
                                     @endforeach
                                 </select>
 
                                 {{--
                                 <input  type="date" class="form-control" id="tanggal_panen" @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
                                 --}}
-                                @error('form.id_petani')
+                                @error('form.id_tanaman')
                                     <small class="d-block mt-1 text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
+
                                 </div>
                                 <div class="col-md-6">
 
                             <div class="mb-3">
-                                <label for="tanaman" class="form-label">tanaman</label>
+                                <label for="tanaman" class="form-label">Jenis Komoditi</label>
 
                                 <select wire:model="form.id_tanaman" id="tanaman" class="form-control"  @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
                                     <option value="">Pilih tanaman</option>
@@ -84,7 +85,7 @@ use App\Enums\State;
                                 <div class="col-md-6">
 
                             <div class="mb-3">
-                                <label for="jumlah" class="form-label">Jumlah</label>
+                                <label for="jumlah" class="form-label">Jumlah Produksi (Kg)</label>
                                 <input wire:model="form.jumlah" type="number" class="form-control" id="jumlah" placeholder="Masukkan jumlah hasil panen" @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
                                 @error('form.jumlah')
                                     <small class="d-block mt-1 text-danger">{{ $message }}</small>
@@ -93,13 +94,6 @@ use App\Enums\State;
                                     </div>
                                 <div class="col-md-6">
 
-                            <div class="mb-3">
-                                <label for="satuan" class="form-label">Satuan</label>
-                                <input wire:model="form.satuan" type="text" class="form-control" id="satuan" placeholder="Kg / Ton / Ikat" @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
-                                @error('form.satuan')
-                                    <small class="d-block mt-1 text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
                                     </div>
                             </div>
 
@@ -132,10 +126,10 @@ use App\Enums\State;
                 <thead class="thead-dark">
                     <tr>
                         <th>No</th>
-                        <th>Nama Petani</th>
-                        <th>Nama Tanaman</th>
+                        <th>Jenis Komoditi</th>
                         <th>Tanggal Panen</th>
-                        <th>Jumlah</th>
+                        <th>Kecamatan</th>
+                        <th>Jumlah Produksi</th>
                         @if ($currentState !== State::LAPORAN)
                         <th class="text-end">Aksi</th>
 @endif
@@ -145,10 +139,10 @@ use App\Enums\State;
                     @foreach ($this->hasilPanen as $item)
                         <tr>
                             <td>{{ $loop->index + 1 }}</td>
-                            <td>{{ $item->petani->nama_petani }}</td>
                             <td>{{ $item->tanaman->nama_tanaman}}</td>
                             <td>{{ $item->tanggal_panen }}</td>
-                            <td>{{ $item->jumlah }} {{ $item->satuan }}</td>
+                            <td>{{ $item->kecamatan->nama}}</td>
+                            <td>{{ $item->jumlah }} Kg</td>
                         @if ($currentState !== State::LAPORAN)
                             <td class="text-end">
                             <x-datatable.actions :id="$item->id_hasil_panen"/>

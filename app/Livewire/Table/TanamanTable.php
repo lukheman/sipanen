@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Table;
 
+use App\Models\Kecamatan;
 use App\Traits\Traits\WithModal;
 use App\Traits\WithNotify;
 use Livewire\Attributes\Computed;
@@ -27,6 +28,13 @@ class TanamanTable extends Component
     public string $idModal = 'modal-form-tanaman';
 
     public string $search = '';
+
+    #[Computed]
+    public function kecamatanList() {
+
+        return Kecamatan::all();
+
+    }
 
     #[Computed]
     public function tanaman() {
