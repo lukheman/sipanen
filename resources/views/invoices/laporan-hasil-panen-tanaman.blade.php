@@ -27,7 +27,13 @@
 
     <h5 class="report-title text-center" style="text-align: center;">Laporan {{ $label ?? '' }}</h5>
     <p class="report-date">
-        <strong>Komoditi</strong>: {{ $tanaman->nama_tanaman }}
+
+  <div class="d-grid" style="grid-template-columns: auto 1fr; column-gap: 8px; font-weight: bold;">
+    <span>KABUPATEN</span><span>: KOLAKA</span>
+    <span>PROVINSI</span><span>: SULAWESI TENGGARA</span>
+    <span>KOMODITI</span><span>: {{ strtoupper($tanaman->nama_tanaman )}}</span>
+  </div>
+
     </p>
 
     <!-- Table Data Hasil Panen -->

@@ -96,6 +96,7 @@ class ProfileForm extends Form
 
     public function fillFromModel(User $user): void {
         $this->user = $user;
+        $this->user->load('kecamatan');
         $this->nama = $user->nama;
         $this->email = $user->email;
         $this->photo = $user->photo;

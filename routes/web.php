@@ -29,15 +29,15 @@ Route::get('/kecamatan', \App\Livewire\Table\KecamatanTable::class)->name('kecam
 
 Route::get('/laporan/petugas', \App\Livewire\Laporan\LaporanDataPetugas::class)->name('laporan.petugas')->middleware(MultiAuth::class . ':Kepala Dinas');
 
-Route::get('/laporan/hasil-panen', \App\Livewire\Laporan\LaporanDataHasilPanen::class)->name('laporan.hasil-panen')->middleware(MultiAuth::class . ':Kepala Dinas');
+Route::get('/laporan/hasil-panen', \App\Livewire\Laporan\LaporanDataHasilPanen::class)->name('laporan.hasil-panen')->middleware(MultiAuth::class . ':Kepala Dinas,Petugas,Admin');
 
 Route::get('/profile', \App\Livewire\Profile\PenggunaProfile::class)->name('profile')->middleware(MultiAuth::class.':Admin,Kepala Dinas,Petugas');
 
 Route::get('/cetak-laporan/petugas', [LaporanController::class, 'laporanPetugas'])->name('print-laporan.petugas')->middleware(MultiAuth::class . ':Kepala Dinas');
 
-Route::get('/cetak-laporan/hasil-panen/{idTanaman}', [LaporanController::class, 'laporanHasilPanenByTanaman'])->name('print-laporan.hasil-panen')->middleware(MultiAuth::class . ':Kepala Dinas');
+Route::get('/cetak-laporan/hasil-panen/{idTanaman}', [LaporanController::class, 'laporanHasilPanenByTanaman'])->name('print-laporan.hasil-panen')->middleware(MultiAuth::class . ':Kepala Dinas,Petugas,Admin');
 
-Route::post('/cetak-laporan/hasil-panen-kecamatan', [LaporanController::class, 'laporanHasilPanenByKecamatan'])->name('print-laporan.hasil-panen-kecamatan')->middleware(MultiAuth::class . ':Kepala Dinas');
+Route::post('/cetak-laporan/hasil-panen-kecamatan', [LaporanController::class, 'laporanHasilPanenByKecamatan'])->name('print-laporan.hasil-panen-kecamatan')->middleware(MultiAuth::class . ':Kepala Dinas,Admin,Petugas');
 
 Route::post('/laporan/hasil-panen/pdf', [LaporanController::class, 'generatePDF'])->name('laporan.panen.pdf');
 

@@ -15,7 +15,6 @@ class HasilPanenFactory extends Factory
     public function definition(): array
     {
         return [
-            'tanggal_panen' => $this->faker->date(),
             'jumlah' => $this->faker->numberBetween(10, 500), // jumlah produksi
             'id_tanaman' => Tanaman::inRandomOrder()->first()->id_tanaman ?? Tanaman::factory(),
             'id_kecamatan' => Kecamatan::inRandomOrder()->first()->id_kecamatan ?? Kecamatan::factory(),

@@ -33,10 +33,16 @@ class HasilPanenTable extends Component
 
     public string $idModal = 'modal-form-hasil-panen';
 
+    public ?User $user;
+
+    public function mount() {
+        $this->user = getActiveUser()->load('kecamatan');
+    }
+
     #[Computed]
     public function hasilPanen()
     {
-        $query = HasilPanen::with('tanaman', 'kecamatan')
+        $query = HasilPanen::with('tanaman',)
             ->when($this->search, function ($query) {
                 $query->whereHas('tanaman', function ($q) {
                     $q->where('nama_tanaman', 'like', '%' . $this->search . '%');
@@ -44,7 +50,8 @@ class HasilPanenTable extends Component
                 ->orWhereHas('kecamatan', function($q) {
                     $q->where('nama', 'like', '%' . $this->search . '%');
                 });
-            });
+            })
+            ->where('id_kecamatan', $this->user->kecamatan->id_kecamatan);
 
         // admin -> tidak ada filter tambahan, otomatis ambil semua
         return $query->latest()->paginate(10);
@@ -91,6 +98,8 @@ class HasilPanenTable extends Component
 
         if ($this->currentState === State::CREATE) {
 
+            $this->form->id_kecamatan = $this->user->kecamatan->id_kecamatan;
+
             $this->form->store();
             $this->notifySuccess('Hasil panen berhasil ditambahkan!');
         } elseif ($this->currentState === State::UPDATE) {
@@ -105,7 +114,8 @@ class HasilPanenTable extends Component
     public function delete(int $id)
     {
 
-        $this->form->hasil_panen = HasilPanen::findOrFail($id);
+        $this->form->hasilPanen = HasilPanen::findOrFail($id);
+
 
         $this->dispatch('deleteConfirmation', message: 'Yakin untuk menghapus hasil panen ini?');
     }

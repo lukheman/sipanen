@@ -1,5 +1,14 @@
 <div class="row g-4">
 
+<div class="col-12">
+    <div class="alert alert-secondary">
+        <!-- <h4 class="alert-heading">Secondary</h4> -->
+        <p>Selamat datang, Anda login sebagai <b>Admin</b></p>
+    </div>
+</div>
+
+    {{--
+
 <!-- Jumlah Kecamatan -->
 <div class="col-6 col-md-6">
     <div class="card rounded-3 h-100">
@@ -17,8 +26,9 @@
         </div>
     </div>
 </div>
+    --}}
 
-    <div class="col-6 col-md-6">
+    <div class="col-6">
         <div class="card rounded-3 h-100">
             <div class="card-body d-flex align-items-center p-4">
                 <!-- Icon -->

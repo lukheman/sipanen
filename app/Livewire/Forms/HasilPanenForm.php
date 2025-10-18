@@ -10,7 +10,6 @@ class HasilPanenForm extends Form
 {
     public ?HasilPanen $hasilPanen = null;
 
-    public string $tanggal_panen = '';
     public string $jumlah = '';
     public ?int $id_tanaman;
     public ?int $id_kecamatan;
@@ -18,7 +17,6 @@ class HasilPanenForm extends Form
     public function rules(): array
     {
         return [
-            'tanggal_panen' => ['required', 'date'],
             'jumlah' => ['required', 'numeric'],
             'id_tanaman' => ['required', 'exists:tanaman,id_tanaman'],
             'id_kecamatan' => ['required', 'exists:kecamatan,id_kecamatan']
@@ -28,8 +26,6 @@ class HasilPanenForm extends Form
     public function messages(): array
     {
         return [
-            'tanggal_panen.required' => 'Tanggal panen wajib diisi.',
-            'tanggal_panen.date' => 'Tanggal panen harus berupa tanggal yang valid.',
 
             'jumlah.required' => 'Jumlah hasil panen wajib diisi.',
             'jumlah.numeric' => 'Jumlah harus berupa angka',
@@ -49,11 +45,8 @@ class HasilPanenForm extends Form
      */
     public function fillFromModel(HasilPanen $hasilPanen): void
     {
-        $this->hasilPanen = $hasilPanen;
-        $this->tanggal_panen = $hasilPanen->tanggal_panen;
         $this->jumlah = $hasilPanen->jumlah;
         $this->id_tanaman = $hasilPanen->id_tanaman;
-        $this->id_kecamatan = $hasilPanen->id_kecamatan;
     }
 
     /**
@@ -74,7 +67,6 @@ class HasilPanenForm extends Form
 
         if ($this->hasilPanen) {
             $this->hasilPanen->update([
-                'tanggal_panen' => $this->tanggal_panen,
                 'jumlah' => $this->jumlah,
                 'id_tanaman' => $this->id_tanaman,
                 'id_kecamatan' => $this->id_kecamatan,

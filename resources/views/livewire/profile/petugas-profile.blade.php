@@ -75,6 +75,15 @@
                         @enderror
                     </div>
 
+                    <!-- kecamatan -->
+                    <div class="form-group">
+                        <label for="kecamatan" class="form-label">Kecamatan</label>
+                        <input wire:model="form.kecamatan" type="text" class="form-control">
+                        @error('form.kecamatan')
+                        <small class="d-block mt-1 text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+
                     <!-- Tombol Simpan -->
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>

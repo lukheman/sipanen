@@ -62,6 +62,7 @@
                 {{-- ADMIN --}}
                 @if($role === Role::ADMIN)
 
+                <li class="sidebar-title">Manajemen Data</li>
                     <x-nav-link icon="bi-people-fill"
                         href="{{ route('pengguna-table')}}"
                         :active="request()->routeIs('pengguna-table')">
@@ -78,6 +79,14 @@
                         href="{{ route('kecamatan-table')}}"
                         :active="request()->routeIs('kecamatan-table')">
                         Kecamatan
+                    </x-nav-link>
+
+                <li class="sidebar-title">Manajemen Data</li>
+
+                    <x-nav-link icon="bi-people-fill"
+                        href="{{ route('laporan.hasil-panen')}}"
+                        :active="request()->routeIs('laporan.hasil-panen')">
+                        Laporan Hasil Panen
                     </x-nav-link>
 
 

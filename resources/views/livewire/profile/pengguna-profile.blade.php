@@ -1,3 +1,11 @@
+@php
+
+use App\Enums\Role;
+
+$role = activeRole();
+    
+@endphp
+
 <div class="row">
     <div class="col-12 col-lg-4">
         <div class="card">
@@ -56,6 +64,18 @@
                         <small class="d-block mt-1 text-danger">{{ $message }}</small>
                         @enderror
                     </div>
+
+
+                    @if ($role === Role::PETUGAS)
+
+                    <!-- kecamatan -->
+                    <div class="form-group">
+                        <label for="kecamatan" class="form-label">Kecamatan</label>
+                        <input type="text" class="form-control" value="{{ $form->user->kecamatan->nama}}" disabled>
+                    </div>
+
+                    @endif
+
 
                     <!-- Tombol Simpan -->
                     <div class="form-group">

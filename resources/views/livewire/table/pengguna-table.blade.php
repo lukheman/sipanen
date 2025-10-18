@@ -57,6 +57,24 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-12">
+
+                                <div class="mb-3">
+                                    <label for="kecamatan" class="form-label">Jenis Komoditi</label>
+
+                                    <select wire:model="form.id_kecamatan" class="form-control"  @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
+                                        <option value="">Pilih Kecamatan</option>
+                                        @foreach ($this->kecamatanList as $kecamatan)
+                                        <option value="{{ $kecamatan->id_kecamatan}}">{{ $kecamatan->nama}}</option>
+                                        @endforeach
+                                    </select>
+
+                                    @error('form.id_kecamatan')
+                                        <small class="d-block mt-1 text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                </div>
+
                             @if ($currentState === \App\Enums\State::CREATE || $currentState === \App\Enums\State::UPDATE)
 
                             <div class="mb-3">
@@ -105,6 +123,7 @@
                         <th>No</th>
                         <th>Nama</th>
                         <th>Email</th>
+                        <th>Unit Pengguna</th>
                         <th>Role</th>
                         @if ($currentState !== State::LAPORAN)
                             <th class="text-end">Aksi</th>
@@ -117,6 +136,7 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->nama }}</td>
                             <td>{{ $item->email }}</td>
+                            <td>{{ $item->kecamatan->nama ?? '-'}}</td>
                             <td><span class="badge bg-{{ $item->role->getColor()}}">{{ $item->role->value}}</span></td>
                             @if ($currentState !== State::LAPORAN)
                                 <td class="text-end">

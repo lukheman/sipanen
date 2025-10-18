@@ -39,8 +39,8 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        // Tanaman::factory(10)->create();
-        // HasilPanen::factory(200)->create();
+        Tanaman::factory(10)->create();
+        HasilPanen::factory(200)->create();
 
         // Buat user dengan id_desa secara acak
         User::query()->create([
@@ -50,14 +50,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::query()->create([
-            'nama' => 'Petugas 1',
+            'nama' => 'Petugas Baula',
             'email' => 'petugas1@gmail.com',
             'role' => Role::PETUGAS,
             'id_kecamatan' => Kecamatan::query()->first()->id_kecamatan
         ]);
 
         User::query()->create([
-            'nama' => 'Petugas 2',
+            'nama' => 'Petugas Iwoimendaa',
             'email' => 'petugas2@gmail.com',
             'role' => Role::PETUGAS,
             'id_kecamatan' => 2

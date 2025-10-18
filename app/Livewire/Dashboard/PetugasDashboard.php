@@ -20,7 +20,7 @@ class PetugasDashboard extends Component
     }
 
     public function jumlahHasilPanen(): int {
-        return HasilPanen::query()->count();
+        return HasilPanen::query()->where('id_kecamatan', $this->user->kecamatan->id_kecamatan)->count();
     }
 
 

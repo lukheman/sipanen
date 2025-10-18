@@ -24,7 +24,6 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Tanggal Panen</th>
                 <th>Nama Petani</th>
                 <th>Lokasi</th>
                 <th>Nama Tanaman</th>
@@ -35,7 +34,6 @@
             @forelse ($hasilPanen as $item)
                 <tr>
                     <td style="text-align:center;">{{ $loop->index + 1 }}</td>
-                    <td>{{ $item->tanggal_panen }}</td>
                     <td>{{ $item->petani->nama_petani }}</td>
                     <td>
                         Desa {{ $item->petani->desa->nama }}

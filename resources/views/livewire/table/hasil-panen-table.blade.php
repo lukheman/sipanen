@@ -1,7 +1,21 @@
 @php
 use App\Enums\State;
+use App\Enums\Role;
+$role = activeRole();
 
 @endphp
+
+<div>
+
+<div class="alert alert-secondary">
+  <div class="d-grid" style="grid-template-columns: auto 1fr; column-gap: 8px;">
+    <span>Kecamatan</span><span>: {{ $user->kecamatan->nama }}</span>
+    <span>Kabupaten</span><span>: Kolaka</span>
+    <span>Provinsi</span><span>: Sulawesi Tenggara</span>
+  </div>
+</div>
+
+
 <div class="card my-4">
     <div class="card-header">
 
@@ -19,7 +33,7 @@ use App\Enums\State;
 
         <!-- Modal Form Hasil Panen -->
         <div class="modal fade" id="modal-form-hasil-panen" tabindex="-1" wire:ignore.self>
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable ">
                 <div class="modal-content">
                     <div class="modal-header bg-primary text-white">
                         <h5 class="modal-title text-white">
@@ -37,52 +51,28 @@ use App\Enums\State;
                         <form>
 
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
 
-                            <div class="mb-3">
-                                <label for="kecamatan" class="form-label">Kecamatan</label>
+                                <div class="mb-3">
+                                    <label for="tanaman" class="form-label">Jenis Komoditi</label>
 
-                                <select wire:model="form.id_kecamatan" id="kecamatan" class="form-control"  @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
-                                    <option value="">Pilih Kecamatan</option>
-                                    @foreach ($this->kecamatanList as $kecamatan)
-                                    <option value="{{ $kecamatan->id_kecamatan}}">{{ $kecamatan->nama}}</option>
-                                    @endforeach
-                                </select>
+                                    <select wire:model="form.id_tanaman" id="tanaman" class="form-control"  @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
+                                        <option value="">Jenis Komoditas</option>
+                                        @foreach ($this->tanamanList as $tanaman)
+                                        <option value="{{ $tanaman->id_tanaman}}">{{ $tanaman->nama_tanaman}}</option>
+                                        @endforeach
+                                    </select>
 
-                                {{--
-                                <input  type="date" class="form-control" id="tanggal_panen" @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
-                                --}}
-                                @error('form.id_tanaman')
-                                    <small class="d-block mt-1 text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-
+                                    @error('form.id_tanaman')
+                                        <small class="d-block mt-1 text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
-                                <div class="col-md-6">
-
-                            <div class="mb-3">
-                                <label for="tanaman" class="form-label">Jenis Komoditi</label>
-
-                                <select wire:model="form.id_tanaman" id="tanaman" class="form-control"  @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
-                                    <option value="">Pilih tanaman</option>
-                                    @foreach ($this->tanamanList as $tanaman)
-                                    <option value="{{ $tanaman->id_tanaman}}">{{ $tanaman->nama_tanaman}}</option>
-                                    @endforeach
-                                </select>
-
-                                {{--
-                                <input  type="date" class="form-control" id="tanggal_panen" @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
-                                --}}
-                                @error('form.id_tanaman')
-                                    <small class="d-block mt-1 text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
                                 </div>
                             </div>
 
 
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
 
                             <div class="mb-3">
                                 <label for="jumlah" class="form-label">Jumlah Produksi (Kg)</label>
@@ -95,14 +85,6 @@ use App\Enums\State;
                                 <div class="col-md-6">
 
                                     </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="tanggal_panen" class="form-label">Tanggal Panen</label>
-                                <input wire:model="form.tanggal_panen" type="date" class="form-control" id="tanggal_panen" @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
-                                @error('form.tanggal_panen')
-                                    <small class="d-block mt-1 text-danger">{{ $message }}</small>
-                                @enderror
                             </div>
 
 
@@ -126,9 +108,8 @@ use App\Enums\State;
                 <thead class="thead-dark">
                     <tr>
                         <th>No</th>
+                        <th>Tanggal input data</th>
                         <th>Jenis Komoditi</th>
-                        <th>Tanggal Panen</th>
-                        <th>Kecamatan</th>
                         <th>Jumlah Produksi</th>
                         @if ($currentState !== State::LAPORAN)
                         <th class="text-end">Aksi</th>
@@ -139,13 +120,20 @@ use App\Enums\State;
                     @foreach ($this->hasilPanen as $item)
                         <tr>
                             <td>{{ $loop->index + 1 }}</td>
+                            <td>{{ $item->created_at }}</td>
                             <td>{{ $item->tanaman->nama_tanaman}}</td>
-                            <td>{{ $item->tanggal_panen }}</td>
-                            <td>{{ $item->kecamatan->nama}}</td>
                             <td>{{ $item->jumlah }} Kg</td>
                         @if ($currentState !== State::LAPORAN)
                             <td class="text-end">
+                            @if ($role === Role::PETUGAS)
+
+<button wire:click="delete({{ $item->id_hasil_panen }})" class="btn  btn-danger">
+    <i class="bi bi-trash"></i>
+</button>
+                            @else
                             <x-datatable.actions :id="$item->id_hasil_panen"/>
+
+                            @endif
                             </td>
 
                         @endif
@@ -156,4 +144,5 @@ use App\Enums\State;
             <x-pagination :items="$this->hasilPanen" />
         </div>
     </div>
+</div>
 </div>

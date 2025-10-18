@@ -14,6 +14,7 @@ class PenggunaForm extends Form
     public string $email = '';
     public ?string $photo = null;
     public string $role = '';
+    public $id_kecamatan;
 
     /**
      * Aturan validasi
@@ -29,6 +30,7 @@ class PenggunaForm extends Form
             ],
             'photo' => ['nullable', 'string'],
             'role' => ['required', 'string'],
+            'id_kecamatan' => ['nullable', 'exists:kecamatan,id_kecamatan']
         ];
     }
 
@@ -49,6 +51,8 @@ class PenggunaForm extends Form
      */
     public function fillFromModel(User $user): void
     {
+        $user->load('kecamatan');
+        $this->id_kecamatan = $user->kecamatan->id_kecamatan ?? null;
         $this->user = $user;
         $this->nama = $user->nama;
         $this->email = $user->email;
