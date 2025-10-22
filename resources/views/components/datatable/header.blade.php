@@ -1,4 +1,4 @@
-@props(['icon' => 'fa-plus', 'table', 'is_add' => true])
+@props(['icon' => 'bi-house', 'table', 'is_add' => true])
 
 <div class="row">
 
@@ -7,7 +7,7 @@
     @if ($is_add)
         <!-- Tombol Modal Form Petani -->
         <button wire:click="add" class="btn btn-primary">
-            <i class="fa {{ $icon }}"></i>
+            <i class="bi {{ $icon }}"></i>
             Tambah {{ $table }}
         </button>
 

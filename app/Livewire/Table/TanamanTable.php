@@ -29,6 +29,8 @@ class TanamanTable extends Component
 
     public string $search = '';
 
+    public bool $isLaporan = false;
+
     #[Computed]
     public function kecamatanList() {
 

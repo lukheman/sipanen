@@ -1,17 +1,66 @@
 @php
     use App\Enums\State;
+    $role = activeRole();
 @endphp
 <div class="card my-4">
+
+<!-- Modal Form Tanaman -->
+<div class="modal fade" id="modal-form-tanaman" tabindex="-1" wire:ignore.self>
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title text-white">
+                    @if ($currentState === \App\Enums\State::CREATE)
+                        Tambah Tanaman
+                    @elseif ($currentState === \App\Enums\State::UPDATE)
+                        Perbarui Tanaman
+                    @elseif ($currentState === \App\Enums\State::SHOW)
+                        Detail Tanaman
+                    @endif
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="nama_tanaman" class="form-label">Nama Tanaman</label>
+                        <input
+                            wire:model="form.nama_tanaman"
+                            type="text"
+                            class="form-control"
+                            id="nama_tanaman"
+                            placeholder="Masukkan nama tanaman"
+                            @if ($currentState === \App\Enums\State::SHOW) disabled @endif
+                        >
+                        @error('form.nama_tanaman')
+                            <small class="d-block mt-1 text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                @if ($currentState === \App\Enums\State::CREATE)
+                    <button type="button" wire:click="save" class="btn btn-primary">Tambahkan</button>
+                @elseif ($currentState === \App\Enums\State::UPDATE)
+                    <button type="button" wire:click="save" class="btn btn-primary">Perbarui</button>
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+
     <div class="card-header">
 
 
-    @if ($currentState !== State::LAPORAN)
-        @if (activeRole() === \App\Enums\Role::ADMIN)
-            <x-datatable.header icon="fa-user" table="Tanaman" />
+    @if (!$isLaporan)
+        @if ($role === \App\Enums\Role::ADMIN)
+            <x-datatable.header icon="bi-leaf-fill" table="Tanaman" />
         @else
             <x-datatable.search table="Tanaman"></x-datatable.search>
         @endif
-    @elseif($currentState === State::LAPORAN)
+    @elseif($isLaporan)
 
     <div class="row">
         <div class="col-6">
@@ -126,14 +175,14 @@
                             <td>{{ $loop->index + 1 }}</td>
                             <td>{{ $item->nama_tanaman }}</td>
                             <td class="text-end">
-                            @if ($currentState !== State::LAPORAN)
+                            @if (!$isLaporan)
                             <div class="btn-group">
 
                             <button wire:click="detail({{ $item->id_tanaman }})" class="btn  btn-info text-white">
                             <i class="bi bi-eye"></i>
                             </button>
 
-                            @if (activeRole() === \App\Enums\Role::ADMIN || activeRole() === \App\Enums\Role::PETUGAS)
+                            @if ($role === \App\Enums\Role::ADMIN || $role === \App\Enums\Role::PETUGAS)
 
                             <button wire:click="edit({{ $item->id_tanaman }})" class="btn  btn-warning text-white">
                             <i class="bi bi-pencil"></i>
@@ -146,6 +195,24 @@
                             @endif
                             </div>
                             @else
+
+
+                            <div class="btn-group">
+
+<button wire:click="detail({{ $item->id_tanaman }})" class="btn  btn-info text-white">
+<i class="bi bi-eye"></i>
+</button>
+
+<button wire:click="edit({{ $item->id_tanaman }})" class="btn  btn-warning text-white">
+<i class="bi bi-pencil"></i>
+ </button>
+
+<button wire:click="delete({{ $item->id_tanaman }})" class="btn  btn-danger">
+    <i class="bi bi-trash"></i>
+</button>
+
+                            </div>
+
                             <a href="{{ route('print-laporan.hasil-panen', ['idTanaman' => $item->id_tanaman]) }}" class="btn btn-danger">
                                 <i class="bi bi-printer"></i>
                             </a>

@@ -1,3 +1,3 @@
 <div>
-    <livewire:table.tanaman-table :currentState="\App\Enums\State::LAPORAN" />
+    <livewire:table.tanaman-table isLaporan="true" />
 </div>
