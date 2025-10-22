@@ -42,7 +42,6 @@ class TanamanTable extends Component
             ->when($this->search, function ($query) {
                 $query->where('nama_tanaman', 'like', '%'.$this->search.'%')
                 ->orWhere('jenis', 'like', '%'.$this->search.'%')
-                ->orWhere('musim_tanam', 'like', '%'.$this->search.'%')
                 ;
             })
             ->latest()

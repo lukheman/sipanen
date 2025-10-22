@@ -16,11 +16,9 @@ class TanamanFactory extends Factory
      */
     public function definition(): array
     {
-        $musim = ['Musim Hujan', 'Musim Kemarau', 'Sepanjang Tahun'];
 
         return [
             'nama_tanaman' => $this->faker->unique()->word(),
-            'musim_tanam' => $this->faker->randomElement($musim),
         ];
     }
 }

@@ -45,8 +45,8 @@
                     <div class="modal-body">
 
                             <div class="mb-3">
-                                <label for="musim_tanam" class="form-label">Kecamatan</label>
-                                <select id="tanaman" class="form-control"  @if ($currentState === \App\Enums\State::SHOW) disabled @endif name="idKecamatan">
+                                <label for="kecamatan" class="form-label">Kecamatan</label>
+                                <select id="kecamatan" class="form-control"  @if ($currentState === \App\Enums\State::SHOW) disabled @endif name="idKecamatan">
                                     <option value="">Pilih Kecamatan</option>
                                     @foreach ($this->kecamatanList as $kecamatan)
                                     <option value="{{ $kecamatan->id_kecamatan}}">{{ $kecamatan->nama}}</option>
@@ -94,13 +94,6 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-3">
-                                <label for="musim_tanam" class="form-label">Musim Tanam</label>
-                                <input wire:model="form.musim_tanam" type="text" class="form-control" id="musim_tanam" name="musim_tanam" placeholder="Contoh: Musim Hujan" @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
-                                @error('form.musim_tanam')
-                                    <small class="d-block mt-1 text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
 
                         </form>
                     </div>
@@ -124,7 +117,6 @@
                     <tr>
                         <th>No</th>
                         <th>Nama Tanaman</th>
-                        <th>Musim Tanam</th>
                         <th class="text-end">Aksi</th>
                     </tr>
                 </thead>
@@ -133,7 +125,6 @@
                         <tr>
                             <td>{{ $loop->index + 1 }}</td>
                             <td>{{ $item->nama_tanaman }}</td>
-                            <td>{{ $item->musim_tanam }}</td>
                             <td class="text-end">
                             @if ($currentState !== State::LAPORAN)
                             <div class="btn-group">
