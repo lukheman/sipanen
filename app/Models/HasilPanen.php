@@ -27,4 +27,16 @@ class HasilPanen extends Model
         return $this->belongsTo(Tanaman::class, 'id_tanaman', 'id_tanaman');
     }
 
+    public function laporan() {
+        return $this->hasOne(Laporan::class, 'id_hasil_panen', 'id_hasil_panen');
+    }
+
+    public static function booted() {
+        static::created(function($hasilPanen) {
+            $hasilPanen->laporan()->create([
+                'id_petugas' => getActiveUser()->id
+            ]);
+        });
+    }
+
 }

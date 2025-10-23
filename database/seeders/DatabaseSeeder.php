@@ -1,22 +1,17 @@
 <?php
 
 use App\Enums\Role;
-use App\Models\Admin;
-use App\Models\Desa;
-use App\Models\Kecamatan;
-use App\Models\KepalaDinas;
 use App\Models\User;
-use App\Models\Petugas;
-use App\Models\HasilPanen;
 use App\Models\Tanaman;
+use App\Models\HasilPanen;
+use App\Models\Kecamatan;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-
-        // Data kecamatan
+        // === 1. Data kecamatan ===
         $kecamatanList = [
             'Baula',
             'Iwoimendaa',
@@ -34,40 +29,40 @@ class DatabaseSeeder extends Seeder
 
         // Tambahkan ke database
         foreach ($kecamatanList as $namaKecamatan) {
-            Kecamatan::query()->create([
-                'nama' => $namaKecamatan,
-            ]);
+            Kecamatan::create(['nama' => $namaKecamatan]);
         }
 
-        // Tanaman::factory(10)->create();
+        // === 2. Data tanaman & hasil panen ===
+        // Tanaman::factory(20)->create();
         // HasilPanen::factory(200)->create();
 
-        // Buat user dengan id_desa secara acak
-        User::query()->create([
+        // === 3. User admin ===
+        User::create([
             'nama' => 'Admin',
             'email' => 'admin@gmail.com',
-            'role' => Role::ADMIN
+            'role' => Role::ADMIN,
         ]);
 
-        User::query()->create([
-            'nama' => 'Petugas Baula',
-            'email' => 'petugas1@gmail.com',
-            'role' => Role::PETUGAS,
-            'id_kecamatan' => Kecamatan::query()->first()->id_kecamatan
-        ]);
-
-        User::query()->create([
-            'nama' => 'Petugas Iwoimendaa',
-            'email' => 'petugas2@gmail.com',
-            'role' => Role::PETUGAS,
-            'id_kecamatan' => 2
-        ]);
-
-        User::query()->create([
+        // === 4. User kepala dinas ===
+        User::create([
             'nama' => 'Kepala Dinas Kolaka',
             'email' => 'kepaladinas@gmail.com',
-            'role' => Role::KEPALADINAS
+            'role' => Role::KEPALADINAS,
         ]);
 
+        // === 5. Buat petugas untuk setiap kecamatan ===
+        $kecamatanList = Kecamatan::all();
+
+        foreach ($kecamatanList as $kecamatan) {
+            // ubah nama kecamatan jadi format email-friendly
+            $slug = strtolower(str_replace(' ', '', $kecamatan->nama));
+
+            User::create([
+                'nama' => 'Petugas ' . $kecamatan->nama,
+                'email' => "petugas_{$slug}@gmail.com",
+                'role' => Role::PETUGAS,
+                'id_kecamatan' => $kecamatan->id_kecamatan,
+            ]);
+        }
     }
 }

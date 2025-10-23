@@ -21,8 +21,12 @@ class User extends Authenticatable
         ];
     }
 
-    public function kecamatan(): BelongsTo { 
+    public function kecamatan(): BelongsTo {
         return $this->belongsTo(Kecamatan::class, 'id_kecamatan', 'id_kecamatan');
+    }
+
+    public function laporan() {
+        return $this->hasMany(Laporan::class, 'id_petugas');
     }
 
 }
