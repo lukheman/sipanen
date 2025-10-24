@@ -12,6 +12,7 @@ $role = activeRole();
     <span>Kecamatan</span><span>: {{ $user->kecamatan->nama }}</span>
     <span>Kabupaten</span><span>: Kolaka</span>
     <span>Provinsi</span><span>: Sulawesi Tenggara</span>
+    <span>Tahun</span><span>: {{ date('Y')}}</span>
   </div>
 </div>
 
