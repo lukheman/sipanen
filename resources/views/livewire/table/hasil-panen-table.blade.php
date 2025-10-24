@@ -12,7 +12,7 @@ $role = activeRole();
     <span>Kecamatan</span><span>: {{ $user->kecamatan->nama }}</span>
     <span>Kabupaten</span><span>: Kolaka</span>
     <span>Provinsi</span><span>: Sulawesi Tenggara</span>
-    <span>Tahun</span><span>: {{ date('Y')}}</span>
+    <span>Tahun</span><span>: {{ $tahun }}</span>
   </div>
 </div>
 
@@ -28,7 +28,49 @@ $role = activeRole();
     Download Laporan
 </a>
 @else
-    <x-datatable.header icon="fa-user" table="Hasil Panen" />
+<div class="row">
+
+
+    <div class="col-6">
+    @if ($is_add)
+        <!-- Tombol Modal Form Petani -->
+        <button wire:click="add" class="btn btn-primary">
+            <i class="bi bi-fill-leaf"></i>
+            Tambah Hasil Panen
+        </button>
+
+
+    @endif
+    </div>
+
+
+
+    <div class="col-6">
+
+        <div class="row">
+            <div class="col-3">
+
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="inputGroup-sizing-default">Tahun</span>
+                                        <input type="text" class="form-control" wire:model.live="tahun">
+                                    </div>
+            </div>
+            <div class="col-9">
+
+        <!-- Pencarian -->
+        <div class="input-group">
+            <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
+            <input  wire:model.live="search" type="text" class="form-control" placeholder="Cari hasil panen...">
+        </div>
+
+                        </div>
+        </div>
+
+
+
+    </div>
+
+</div>
 @endif
 
 
@@ -117,30 +159,33 @@ $role = activeRole();
 @endif
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach ($this->hasilPanen as $item)
-                        <tr>
-                            <td>{{ $loop->index + 1 }}</td>
-                            <td>{{ $item->created_at }}</td>
-                            <td>{{ $item->tanaman->nama_tanaman}}</td>
-                            <td>{{ $item->jumlah }} Kg</td>
-                        @if ($currentState !== State::LAPORAN)
-                            <td class="text-end">
-                            @if ($role === Role::PETUGAS)
-
-<button wire:click="delete({{ $item->id_hasil_panen }})" class="btn  btn-danger">
-    <i class="bi bi-trash"></i>
-</button>
-                            @else
-                            <x-datatable.actions :id="$item->id_hasil_panen"/>
-
-                            @endif
-                            </td>
-
+<tbody>
+    @if ($this->hasilPanen->isEmpty())
+        <tr>
+            <td colspan="5" class="text-center text-muted">Tidak ada data hasil panen.</td>
+        </tr>
+    @else
+        @foreach ($this->hasilPanen as $item)
+            <tr>
+                <td>{{ $loop->index + 1 }}</td>
+                <td>{{ $item->created_at }}</td>
+                <td>{{ $item->tanaman->nama_tanaman }}</td>
+                <td>{{ $item->jumlah }} Kg</td>
+                @if ($currentState !== State::LAPORAN)
+                    <td class="text-end">
+                        @if ($role === Role::PETUGAS)
+                            <button wire:click="delete({{ $item->id_hasil_panen }})" class="btn btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        @else
+                            <x-datatable.actions :id="$item->id_hasil_panen" />
                         @endif
-                        </tr>
-                    @endforeach
-                </tbody>
+                    </td>
+                @endif
+            </tr>
+        @endforeach
+    @endif
+</tbody>
             </table>
             <x-pagination :items="$this->hasilPanen" />
         </div>

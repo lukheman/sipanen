@@ -25,11 +25,15 @@ class HasilPanenTable extends Component
     use WithNotify;
     use WithPagination;
 
+    public $is_add = true;
+
     public HasilPanenForm $form;
 
     public $currentState = State::CREATE;
 
     public string $search = '';
+
+    public ?int $tahun;
 
     public string $idModal = 'modal-form-hasil-panen';
 
@@ -37,12 +41,14 @@ class HasilPanenTable extends Component
 
     public function mount() {
         $this->user = getActiveUser()->load('kecamatan');
+
+        $this->tahun = date('Y');
     }
 
     #[Computed]
     public function hasilPanen()
     {
-        $query = HasilPanen::with('tanaman',)
+        $query = HasilPanen::with('tanaman')
             ->when($this->search, function ($query) {
                 $query->whereHas('tanaman', function ($q) {
                     $q->where('nama_tanaman', 'like', '%' . $this->search . '%');
@@ -51,9 +57,11 @@ class HasilPanenTable extends Component
                     $q->where('nama', 'like', '%' . $this->search . '%');
                 });
             })
-            ->where('id_kecamatan', $this->user->kecamatan->id_kecamatan);
+            ->where('id_kecamatan', $this->user->kecamatan->id_kecamatan)
+            ->when($this->tahun, function ($query) {
+                $query->whereYear('created_at', $this->tahun);
+            });
 
-        // admin -> tidak ada filter tambahan, otomatis ambil semua
         return $query->latest()->paginate(10);
     }
 
