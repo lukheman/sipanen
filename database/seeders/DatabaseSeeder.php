@@ -63,7 +63,7 @@ class DatabaseSeeder extends Seeder
         }
 
         // === 2. Data tanaman & hasil panen ===
-        Tanaman::factory(20)->create();
-        HasilPanen::factory(200)->create();
+        // Tanaman::factory(20)->create();
+        // HasilPanen::factory(200)->create();
     }
 }
