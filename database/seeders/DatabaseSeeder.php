@@ -32,9 +32,6 @@ class DatabaseSeeder extends Seeder
             Kecamatan::create(['nama' => $namaKecamatan]);
         }
 
-        // === 2. Data tanaman & hasil panen ===
-        // Tanaman::factory(20)->create();
-        // HasilPanen::factory(200)->create();
 
         // === 3. User admin ===
         User::create([
@@ -64,5 +61,9 @@ class DatabaseSeeder extends Seeder
                 'id_kecamatan' => $kecamatan->id_kecamatan,
             ]);
         }
+
+        // === 2. Data tanaman & hasil panen ===
+        Tanaman::factory(20)->create();
+        HasilPanen::factory(200)->create();
     }
 }
