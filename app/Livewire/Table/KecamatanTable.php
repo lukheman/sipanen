@@ -31,13 +31,17 @@ class KecamatanTable extends Component
     #[Computed]
     public function dataHasilPanen()
     {
-        return HasilPanen::select('id_tanaman', DB::raw('COUNT(*) as total'))
-            ->with('tanaman', 'kecamatan')
+        return HasilPanen::select(
+                'id_tanaman',
+                'tahun',
+                DB::raw('SUM(jumlah) as total')
+            )
+            ->with(['tanaman:id_tanaman,nama_tanaman', 'kecamatan:id_kecamatan,nama'])
             ->when($this->selectedKecamatanId, function ($query) {
                 $query->where('id_kecamatan', $this->selectedKecamatanId);
             })
-            ->groupBy('id_tanaman')
-            ->orderByDesc('total')
+            ->groupBy('id_tanaman', 'tahun')
+            ->orderBy('tahun', 'asc')
             ->get();
     }
 

@@ -34,7 +34,7 @@ class HasilPanen extends Model
     public static function booted() {
         static::created(function($hasilPanen) {
             $hasilPanen->laporan()->create([
-                'id_petugas' => getActiveUser()->id
+                'id_petugas' => getActiveUser()->id ?? 3
             ]);
         });
     }

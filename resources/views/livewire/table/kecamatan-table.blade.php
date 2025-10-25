@@ -67,32 +67,82 @@
 
         if (!el) return;
 
-        // Inisialisasi chart kosong dulu
         chart = new ApexCharts(el, {
-            chart: { type: 'bar', height: 350 },
-            series: [{ name: 'Jumlah Data Panen', data: [] }],
-            xaxis: { categories: [] },
-            plotOptions: {
-                bar: { horizontal: false, columnWidth: '55%', endingShape: 'rounded' }
+            chart: {
+                type: 'bar',
+                height: 400,
+                stacked: false
             },
-            dataLabels: { enabled: true },
-            colors: ['#0d6efd']
+            series: [],
+            xaxis: {
+                categories: []
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '70%', // batang lebih besar
+                    endingShape: 'rounded',
+                    borderRadius: 6,
+                    dataLabels: {
+                        position: 'center'
+                    }
+                }
+            },
+            dataLabels: {
+                enabled: true,
+                style: {
+                    colors: ['#000'], // angka di batang berwarna hitam
+                    fontWeight: 600
+                },
+                formatter: function (val, opts) {
+                    // Jangan tampilkan kalau 0
+                    if (val === 0) return '';
+
+                    // Ambil nama tanaman dari series
+                    const name = opts.w.config.series[opts.seriesIndex].name;
+                    return `${name}: ${val}`;
+                }
+            },
+            legend: {
+                position: 'top'
+            },
+            colors: ['#0d6efd', '#198754', '#dc3545', '#ffc107', '#6610f2'],
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return val + " ton"; // tampilkan satuan di tooltip
+                    }
+                }
+            }
         });
+
         chart.render();
 
-        // Dengarkan event dari Livewire
+        // Event dari Livewire
         Livewire.on('updateChart', (payload) => {
             const data = payload.data ?? [];
-            const totals = data.map(i => i.total);
-            const labels = data.map(i => i.tanaman?.nama_tanaman ?? 'Tidak Diketahui');
+
+            // Ambil daftar tahun unik
+            const years = [...new Set(data.map(i => i.tahun))].sort();
+
+            // Kelompokkan data berdasarkan tanaman
+            const grouped = {};
+            data.forEach(i => {
+                const name = i.tanaman?.nama_tanaman ?? 'Tidak Diketahui';
+                if (!grouped[name]) grouped[name] = {};
+                grouped[name][i.tahun] = i.total;
+            });
+
+            // Bentuk series untuk ApexCharts
+            const series = Object.keys(grouped).map(name => ({
+                name,
+                data: years.map(y => grouped[name][y] ?? 0)
+            }));
 
             chart.updateOptions({
-                xaxis: { categories: labels }
+                xaxis: { categories: years }
             });
-            chart.updateSeries([{
-                name: 'Jumlah Data Panen',
-                data: totals
-            }]);
+            chart.updateSeries(series);
         });
     });
 </script>
