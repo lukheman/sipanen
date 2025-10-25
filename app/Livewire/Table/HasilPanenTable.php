@@ -58,9 +58,8 @@ class HasilPanenTable extends Component
                 });
             })
             ->where('id_kecamatan', $this->user->kecamatan->id_kecamatan)
-            ->when($this->tahun, function ($query) {
-                $query->whereYear('created_at', $this->tahun);
-            });
+            ->where('tahun', $this->tahun);
+
 
         return $query->latest()->paginate(10);
     }
@@ -103,6 +102,8 @@ class HasilPanenTable extends Component
 
     public function save()
     {
+
+        $this->form->tahun = $this->tahun;
 
         if ($this->currentState === State::CREATE) {
 
