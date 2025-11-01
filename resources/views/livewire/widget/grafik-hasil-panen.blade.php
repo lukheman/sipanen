@@ -6,56 +6,56 @@
 </div>
 
 @push('scripts')
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var el = document.querySelector("#chart");
-        if (!el) return;
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var el = document.querySelector("#chart");
+            if (!el) return;
 
-        var options = {
-            chart: {
-                type: 'bar',
-                height: 350
-            },
-            series: [{
-                name: 'Total Panen (Kg)',
-                data: @json($topHasilPanen->pluck('total_panen'))
-            }],
-            xaxis: {
-                categories: @json(
-                    $topHasilPanen->map(fn($item) => $item->tanaman->nama_tanaman)
-                ),
-                labels: {
-                    style: { fontSize: '13px' }
-                }
-            },
-            plotOptions: {
-                bar: {
-                    horizontal: false,
-                    columnWidth: '55%',
-                    endingShape: 'rounded'
-                }
-            },
-            dataLabels: {
-                enabled: true,
-                formatter: function (val) {
-                    return val + " Kg"; // tambahkan satuan di label
+            var options = {
+                chart: {
+                    type: 'bar',
+                    height: 350
                 },
-                style: {
-                    fontSize: '13px'
-                }
-            },
-            tooltip: {
-                y: {
-                    formatter: function (val) {
-                        return val + " Kg"; // tambahkan satuan di tooltip juga
+                series: [{
+                    name: 'Total Panen (Kg)',
+                    data: @json($topHasilPanen->pluck('total_panen'))
+                }],
+                xaxis: {
+                    categories: @json($topHasilPanen->map(fn($item) => $item->tanaman->nama_tanaman)),
+                    labels: {
+                        style: {
+                            fontSize: '13px'
+                        }
                     }
-                }
-            },
-            colors: ['#0d6efd']
-        };
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: '55%',
+                        endingShape: 'rounded'
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                    formatter: function(val) {
+                        return val + " Kg"; // tambahkan satuan di label
+                    },
+                    style: {
+                        fontSize: '13px'
+                    }
+                },
+                tooltip: {
+                    y: {
+                        formatter: function(val) {
+                            return val + " Kg"; // tambahkan satuan di tooltip juga
+                        }
+                    }
+                },
+                colors: ['#0d6efd']
+            };
 
-        var chart = new ApexCharts(el, options);
-        chart.render();
-    });
-</script>
+            var chart = new ApexCharts(el, options);
+            chart.render();
+        });
+    </script>
 @endpush

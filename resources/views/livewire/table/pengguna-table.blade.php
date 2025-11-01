@@ -48,8 +48,8 @@
                                 <div class="col-12">
                                     <div class="mb-3">
                                         <label for="email" class="form-label">Email</label>
-                                        <input wire:model="form.email" type="email" class="form-control" id="email"
-                                            placeholder="Masukkan email pengguna"
+                                        <input wire:model="form.email" type="email" class="form-control"
+                                            id="email" placeholder="Masukkan email pengguna"
                                             @if ($currentState === State::SHOW) disabled @endif>
                                         @error('form.email')
                                             <small class="d-block mt-1 text-danger">{{ $message }}</small>
@@ -59,44 +59,48 @@
 
                                 <div class="col-md-12">
 
-                                <div class="mb-3">
-                                    <label for="kecamatan" class="form-label">Jenis Komoditi</label>
+                                    <div class="mb-3">
+                                        <label for="kecamatan" class="form-label">Jenis Komoditi</label>
 
-                                    <select wire:model="form.id_kecamatan" class="form-control"  @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
-                                        <option value="">Pilih Kecamatan</option>
-                                        @foreach ($this->kecamatanList as $kecamatan)
-                                        <option value="{{ $kecamatan->id_kecamatan}}">{{ $kecamatan->nama}}</option>
-                                        @endforeach
-                                    </select>
+                                        <select wire:model="form.id_kecamatan" class="form-control"
+                                            @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
+                                            <option value="">Pilih Kecamatan</option>
+                                            @foreach ($this->kecamatanList as $kecamatan)
+                                                <option value="{{ $kecamatan->id_kecamatan }}">{{ $kecamatan->nama }}
+                                                </option>
+                                            @endforeach
+                                        </select>
 
-                                    @error('form.id_kecamatan')
-                                        <small class="d-block mt-1 text-danger">{{ $message }}</small>
-                                    @enderror
+                                        @error('form.id_kecamatan')
+                                            <small class="d-block mt-1 text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
                                 </div>
-                                </div>
 
-                            @if ($currentState === \App\Enums\State::CREATE || $currentState === \App\Enums\State::UPDATE)
+                                @if ($currentState === \App\Enums\State::CREATE || $currentState === \App\Enums\State::UPDATE)
 
-                            <div class="mb-3">
-                                <label for="role" class="form-label fw-semibold">Role</label>
-                                <select wire:model.live="form.role" class="form-select" id="role" name="role" @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
-                                    <option value="">Pilih Role</option>
-                                    @foreach (\App\Enums\Role::values() as $role)
-                                        <option value="{{ $role }}">{{ $role }}</option>
-                                    @endforeach
-                                </select>
-                                @error('type')
-                                    <small class="d-block mt-1 text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            @elseif($currentState === \App\Enums\State::SHOW)
-                            <div class="mb-3">
-                                <label for="role" class="form-label fw-semibold">Role</label>
-                                <input type="text" class="form-control" id="role" value="{{ $form->role }}" disabled>
-                            </div>
+                                    <div class="mb-3">
+                                        <label for="role" class="form-label fw-semibold">Role</label>
+                                        <select wire:model.live="form.role" class="form-select" id="role"
+                                            name="role" @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
+                                            <option value="">Pilih Role</option>
+                                            @foreach (\App\Enums\Role::values() as $role)
+                                                <option value="{{ $role }}">{{ $role }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('type')
+                                            <small class="d-block mt-1 text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                @elseif($currentState === \App\Enums\State::SHOW)
+                                    <div class="mb-3">
+                                        <label for="role" class="form-label fw-semibold">Role</label>
+                                        <input type="text" class="form-control" id="role"
+                                            value="{{ $form->role }}" disabled>
+                                    </div>
 
 
-                            @endif
+                                @endif
 
                             </div>
                         </form>
@@ -136,8 +140,9 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->nama }}</td>
                             <td>{{ $item->email }}</td>
-                            <td>{{ $item->kecamatan->nama ?? '-'}}</td>
-                            <td><span class="badge bg-{{ $item->role->getColor()}}">{{ $item->role->value}}</span></td>
+                            <td>{{ $item->kecamatan->nama ?? '-' }}</td>
+                            <td><span class="badge bg-{{ $item->role->getColor() }}">{{ $item->role->value }}</span>
+                            </td>
                             @if ($currentState !== State::LAPORAN)
                                 <td class="text-end">
                                     <x-datatable.actions :id="$item->id" />

@@ -1,4 +1,3 @@
-
 <div class="container py-5 login-page">
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-5">
@@ -11,13 +10,8 @@
                     <!-- Email -->
                     <div class="mb-3">
                         <label for="email" class="form-label fw-semibold">Email</label>
-                        <input
-                            type="email"
-                            class="form-control"
-                            id="email"
-                            wire:model="email"
-                            placeholder="Masukkan email Anda"
-                            required>
+                        <input type="email" class="form-control" id="email" wire:model="email"
+                            placeholder="Masukkan email Anda" required>
                         @error('email')
                             <small class="d-block mt-1 text-danger">{{ $message }}</small>
                         @enderror
@@ -26,13 +20,8 @@
                     <!-- Password -->
                     <div class="mb-3">
                         <label for="password" class="form-label fw-semibold">Kata Sandi</label>
-                        <input
-                            type="password"
-                            class="form-control"
-                            id="password"
-                            wire:model="password"
-                            placeholder="Masukkan kata sandi"
-                            required>
+                        <input type="password" class="form-control" id="password" wire:model="password"
+                            placeholder="Masukkan kata sandi" required>
                         @error('password')
                             <small class="d-block mt-1 text-danger">{{ $message }}</small>
                         @enderror

@@ -1,11 +1,11 @@
 @php
-    use \App\Enums\Role;
+    use App\Enums\Role;
     $role = activeRole();
 @endphp
 
 <div>
 
-    @if($role === Role::ADMIN)
+    @if ($role === Role::ADMIN)
         <livewire:dashboard.admin-dashboard />
     @elseif($role === Role::KEPALADINAS)
         <livewire:dashboard.kepala-dinas-dashboard />

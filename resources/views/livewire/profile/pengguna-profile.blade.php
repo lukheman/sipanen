@@ -1,9 +1,9 @@
 @php
 
-use App\Enums\Role;
+    use App\Enums\Role;
 
-$role = activeRole();
-    
+    $role = activeRole();
+
 @endphp
 
 <div class="row">
@@ -14,10 +14,11 @@ $role = activeRole();
                     <div class="avatar avatar-2xl">
 
                         <img src="{{ $form->photo
-            ? (is_string($form->photo)
-                ? asset('storage/' . $form->photo)
-                : $form->photo->temporaryUrl())
-            : asset('assets/compiled/jpg/1.jpg') }}" alt="">
+                            ? (is_string($form->photo)
+                                ? asset('storage/' . $form->photo)
+                                : $form->photo->temporaryUrl())
+                            : asset('assets/compiled/jpg/1.jpg') }}"
+                            alt="">
 
                     </div>
 
@@ -25,7 +26,8 @@ $role = activeRole();
                         <label for="profile-photo" class="btn btn-outline-primary btn-sm" style="cursor: pointer;">
                             <i class="bi bi-camera"></i> Ganti Foto
                         </label>
-                        <input wire:model="form.photo" type="file" id="profile-photo" class="d-none" accept="image/*">
+                        <input wire:model="form.photo" type="file" id="profile-photo" class="d-none"
+                            accept="image/*">
                     </div>
                     <h3 class="mt-3">{{ $form->nama }}</h3>
                     <p class="text-small">Admin</p>
@@ -41,9 +43,10 @@ $role = activeRole();
                     <!-- Nama -->
                     <div class="form-group">
                         <label for="nama" class="form-label">Nama</label>
-                        <input wire:model="form.nama" type="text" id="nama" class="form-control" placeholder="Nama Lengkap">
+                        <input wire:model="form.nama" type="text" id="nama" class="form-control"
+                            placeholder="Nama Lengkap">
                         @error('form.nama')
-                        <small class="d-block mt-1 text-danger">{{ $message }}</small>
+                            <small class="d-block mt-1 text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
@@ -52,7 +55,7 @@ $role = activeRole();
                         <label for="email" class="form-label">Email</label>
                         <input wire:model="form.email" type="email" id="email" class="form-control">
                         @error('form.email')
-                        <small class="d-block mt-1 text-danger">{{ $message }}</small>
+                            <small class="d-block mt-1 text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
@@ -61,19 +64,18 @@ $role = activeRole();
                         <label for="password" class="form-label">Password</label>
                         <input wire:model="form.password" type="password" id="password" class="form-control">
                         @error('form.password')
-                        <small class="d-block mt-1 text-danger">{{ $message }}</small>
+                            <small class="d-block mt-1 text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
 
                     @if ($role === Role::PETUGAS)
-
-                    <!-- kecamatan -->
-                    <div class="form-group">
-                        <label for="kecamatan" class="form-label">Kecamatan</label>
-                        <input type="text" class="form-control" value="{{ $form->user->kecamatan->nama}}" disabled>
-                    </div>
-
+                        <!-- kecamatan -->
+                        <div class="form-group">
+                            <label for="kecamatan" class="form-label">Kecamatan</label>
+                            <input type="text" class="form-control" value="{{ $form->user->kecamatan->nama }}"
+                                disabled>
+                        </div>
                     @endif
 
 

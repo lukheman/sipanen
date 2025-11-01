@@ -28,7 +28,7 @@
         Laporan {{ $label ?? '' }}
     </h5>
     <p class="report-date">
-        <strong>Kecamatan:</strong> {{ $kecamatan->nama}}
+        <strong>Kecamatan:</strong> {{ $kecamatan->nama }}
     </p>
 
     <!-- Table Data Hasil Panen -->
@@ -63,7 +63,7 @@
             Grafik Total Hasil Panen Tiap Tanaman di Kecamatan {{ ucfirst($kecamatan->nama_kecamatan) }}
         </h5>
 
-        @if(!empty($chartPath))
+        @if (!empty($chartPath))
             <div style="text-align:center; margin:20px 0;">
                 <img src="{{ storage_path('app/public/' . $chartPath) }}" style="width:500px; height:auto;">
             </div>
@@ -73,31 +73,46 @@
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             var chartData = @json($hasilPanenPerTanaman);
             var options = {
-                chart: { type: 'bar', height: 400 },
+                chart: {
+                    type: 'bar',
+                    height: 400
+                },
                 series: [{
                     name: 'Total Panen',
                     data: chartData.map(item => item.total)
                 }],
                 xaxis: {
                     categories: chartData.map(item => item.tanaman.nama_tanaman),
-                    title: { text: 'Tanaman' }
+                    title: {
+                        text: 'Tanaman'
+                    }
                 },
                 yaxis: {
-                    title: { text: 'Jumlah Produksi (Kg)' }
+                    title: {
+                        text: 'Jumlah Produksi (Kg)'
+                    }
                 },
                 colors: ['#28a745'],
                 plotOptions: {
-                    bar: { borderRadius: 6, horizontal: false, columnWidth: '55%' }
+                    bar: {
+                        borderRadius: 6,
+                        horizontal: false,
+                        columnWidth: '55%'
+                    }
                 },
-                dataLabels: { enabled: true }
+                dataLabels: {
+                    enabled: true
+                }
             };
             var chart = new ApexCharts(document.querySelector("#chartHasilPanen"), options);
             chart.render().then(() => {
                 setTimeout(() => {
-                    chart.dataURI().then(({ imgURI }) => {
+                    chart.dataURI().then(({
+                        imgURI
+                    }) => {
                         document.getElementById("chart_image").value = imgURI;
                     });
                 }, 2000);

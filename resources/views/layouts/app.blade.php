@@ -5,18 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $title . " | SiPanen" ?? 'Sipanen' }}</title>
+    <title>{{ $title . ' | SiPanen' ?? 'Sipanen' }}</title>
 
     <link rel="icon" href="{{ asset('img/logo-aplikasi.ico') }}" type="image/x-icon">
 
-    <link rel="stylesheet" href="{{ asset('assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css')}}">
-    <link rel="stylesheet" crossorigin href="{{ asset('/assets/compiled/css/table-datatable-jquery.css')}}">
-    <link rel="stylesheet" crossorigin href="{{ asset('/assets/compiled/css/app.css')}}">
-    <link rel="stylesheet" crossorigin href="{{ asset('/assets/compiled/css/app-dark.css')}}">
-    <link rel="stylesheet" crossorigin href="{{ asset('/assets/compiled/css/iconly.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}">
+    <link rel="stylesheet" crossorigin href="{{ asset('/assets/compiled/css/table-datatable-jquery.css') }}">
+    <link rel="stylesheet" crossorigin href="{{ asset('/assets/compiled/css/app.css') }}">
+    <link rel="stylesheet" crossorigin href="{{ asset('/assets/compiled/css/app-dark.css') }}">
+    <link rel="stylesheet" crossorigin href="{{ asset('/assets/compiled/css/iconly.css') }}">
 
     <!-- Apexcharts -->
-    <script src="{{ asset('assets/extensions/apexcharts/apexcharts.min.js')}}"></script>
+    <script src="{{ asset('assets/extensions/apexcharts/apexcharts.min.js') }}"></script>
 
     <!-- Toastfy -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
@@ -46,7 +46,7 @@
 </head>
 
 <body>
-    <script src="{{ asset('assets/static/js/initTheme.js')}}"></script>
+    <script src="{{ asset('assets/static/js/initTheme.js') }}"></script>
     <div id="app">
         <x-sidebar />
         <div id="main">
@@ -69,21 +69,21 @@
         </div>
     </div>
 
-    <script src="{{ asset('assets/static/js/components/dark.js')}}"></script>
-    <script src="{{ asset('assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js')}}"></script>
-    <script src="{{ asset('assets/compiled/js/app.js')}}"></script>
+    <script src="{{ asset('assets/static/js/components/dark.js') }}"></script>
+    <script src="{{ asset('assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ asset('assets/compiled/js/app.js') }}"></script>
 
-    <script src="{{ asset('assets/extensions/jquery/jquery.min.js')}}"></script>
-    <script src="{{ asset('assets/extensions/datatables.net/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{ asset('assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js')}}"></script>
-    <script src="{{ asset('assets/static/js/pages/datatables.js')}}"></script>
+    <script src="{{ asset('assets/extensions/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/extensions/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/static/js/pages/datatables.js') }}"></script>
 
     <!-- Toastfy -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script src="{{ asset('js/script.js')}}"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
 
     @stack('scripts')
 </body>

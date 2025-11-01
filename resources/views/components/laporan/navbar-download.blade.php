@@ -1,16 +1,13 @@
 @props(['id_tanaman', 'pdf'])
 
-    @if (!$pdf)
-
-            <!-- Navbar -->
-            <div class="navbar">
-                <form action="{{ route('laporan.panen.pdf') }}" method="POST" id="form-pdf">
-                    @csrf
-                    <input type="hidden" name="id_tanaman" value="{{ $id_tanaman}}">
-                    <input type="hidden" name="chart_image" id="chart_image">
-                    <button class="download-btn" type="submit">Download PDF</button>
-                </form>
-            </div>
-
-    @endif
-
+@if (!$pdf)
+    <!-- Navbar -->
+    <div class="navbar">
+        <form action="{{ route('laporan.panen.pdf') }}" method="POST" id="form-pdf">
+            @csrf
+            <input type="hidden" name="id_tanaman" value="{{ $id_tanaman }}">
+            <input type="hidden" name="chart_image" id="chart_image">
+            <button class="download-btn" type="submit">Download PDF</button>
+        </form>
+    </div>
+@endif

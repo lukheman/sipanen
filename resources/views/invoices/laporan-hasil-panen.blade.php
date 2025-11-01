@@ -2,8 +2,8 @@
 
     <x-laporan.navbar-download :pdf="$pdf" />
 
-    <h5 class="report-title">Laporan Data {{ $label ?? ''}}</h5>
-    <p class="report-date">Laporan {{ $label ?? ''}} - {{ date('d F Y')}}</p>
+    <h5 class="report-title">Laporan Data {{ $label ?? '' }}</h5>
+    <p class="report-date">Laporan {{ $label ?? '' }} - {{ date('d F Y') }}</p>
 
     <!-- Chart Top 5 Kecamatan -->
 
@@ -11,12 +11,12 @@
         <h5 style="margin:0 0 12px 0; font-size:1rem; font-weight:600; color:#333;">
             Top 5 Kecamatan Penghasil {{ $hasilPanen->first()->tanaman->nama_tanaman }}
         </h5>
-            <div id="chartTop5"></div>
-@if(!empty($chartPath))
-    <div style="text-align:center; margin:20px 0;">
-        <img src="{{storage_path('app/public/' . $chartPath)}}" style="width:500px; height:auto;">
-    </div>
-@endif
+        <div id="chartTop5"></div>
+        @if (!empty($chartPath))
+            <div style="text-align:center; margin:20px 0;">
+                <img src="{{ storage_path('app/public/' . $chartPath) }}" style="width:500px; height:auto;">
+            </div>
+        @endif
     </div>
 
     <!-- Table -->
@@ -53,41 +53,43 @@
     </table>
 
     <!-- Chart Script -->
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var options = {
-            chart: {
-                type: 'bar',
-                height: 400
-            },
-            series: [{
-                name: 'Total Panen',
-                data: @json($series ?? [])
-            }],
-            xaxis: {
-                categories: @json($labels ?? [])
-            },
-            colors: ['#4CAF50'],
-            plotOptions: {
-                bar: {
-                    borderRadius: 6,
-                    horizontal: false
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var options = {
+                chart: {
+                    type: 'bar',
+                    height: 400
+                },
+                series: [{
+                    name: 'Total Panen',
+                    data: @json($series ?? [])
+                }],
+                xaxis: {
+                    categories: @json($labels ?? [])
+                },
+                colors: ['#4CAF50'],
+                plotOptions: {
+                    bar: {
+                        borderRadius: 6,
+                        horizontal: false
+                    }
                 }
-            }
-        };
+            };
 
-        var chart = new ApexCharts(document.querySelector("#chartTop5"), options);
+            var chart = new ApexCharts(document.querySelector("#chartTop5"), options);
 
-        chart.render().then(() => {
-            setTimeout(() => {
-                chart.dataURI().then(({ imgURI }) => {
-                    document.getElementById("chart_image").value = imgURI;
-                    // jangan auto submit, biar user klik tombol
-                });
-            }, 2000); // kasih delay 1 detik supaya chart pasti sudah ter-render
+            chart.render().then(() => {
+                setTimeout(() => {
+                    chart.dataURI().then(({
+                        imgURI
+                    }) => {
+                        document.getElementById("chart_image").value = imgURI;
+                        // jangan auto submit, biar user klik tombol
+                    });
+                }, 2000); // kasih delay 1 detik supaya chart pasti sudah ter-render
+            });
         });
-    });
-</script>
+    </script>
 
 
 </x-laporan.index>

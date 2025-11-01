@@ -1,12 +1,10 @@
-
-
 <x-laporan.index>
 
     <x-laporan.navbar-download :pdf="$pdf" />
 
-    <h5 class="report-title">Laporan Data {{ $label ?? ''}}</h5>
+    <h5 class="report-title">Laporan Data {{ $label ?? '' }}</h5>
 
-    <p class="report-date">Laporan {{ $label ?? ''}} - {{ date('d F Y')}}</p>
+    <p class="report-date">Laporan {{ $label ?? '' }} - {{ date('d F Y') }}</p>
 
     <!-- Table -->
     <table id="petani">
@@ -38,7 +36,7 @@
 
     <!-- Total -->
     <div class="total">
-        <p>Total {{ $label ?? 'data'}}: <strong>{{ $users->count() }}</strong></p>
+        <p>Total {{ $label ?? 'data' }}: <strong>{{ $users->count() }}</strong></p>
     </div>
 
 </x-laporan.index>

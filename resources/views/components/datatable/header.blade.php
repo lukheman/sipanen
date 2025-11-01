@@ -4,14 +4,13 @@
 
 
     <div class="col-6">
-    @if ($is_add)
-        <!-- Tombol Modal Form Petani -->
-        <button wire:click="add" class="btn btn-primary">
-            <i class="bi {{ $icon }}"></i>
-            Tambah {{ $table }}
-        </button>
-
-    @endif
+        @if ($is_add)
+            <!-- Tombol Modal Form Petani -->
+            <button wire:click="add" class="btn btn-primary">
+                <i class="bi {{ $icon }}"></i>
+                Tambah {{ $table }}
+            </button>
+        @endif
     </div>
 
 

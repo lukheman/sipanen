@@ -4,79 +4,73 @@
 @endphp
 <div class="card my-4">
 
-<!-- Modal Form Tanaman -->
-<div class="modal fade" id="modal-form-tanaman" tabindex="-1" wire:ignore.self>
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title text-white">
+    <!-- Modal Form Tanaman -->
+    <div class="modal fade" id="modal-form-tanaman" tabindex="-1" wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title text-white">
+                        @if ($currentState === \App\Enums\State::CREATE)
+                            Tambah Tanaman
+                        @elseif ($currentState === \App\Enums\State::UPDATE)
+                            Perbarui Tanaman
+                        @elseif ($currentState === \App\Enums\State::SHOW)
+                            Detail Tanaman
+                        @endif
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="nama_tanaman" class="form-label">Nama Tanaman</label>
+                            <input wire:model="form.nama_tanaman" type="text" class="form-control" id="nama_tanaman"
+                                placeholder="Masukkan nama tanaman" @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
+                            @error('form.nama_tanaman')
+                                <small class="d-block mt-1 text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
                     @if ($currentState === \App\Enums\State::CREATE)
-                        Tambah Tanaman
+                        <button type="button" wire:click="save" class="btn btn-primary">Tambahkan</button>
                     @elseif ($currentState === \App\Enums\State::UPDATE)
-                        Perbarui Tanaman
-                    @elseif ($currentState === \App\Enums\State::SHOW)
-                        Detail Tanaman
+                        <button type="button" wire:click="save" class="btn btn-primary">Perbarui</button>
                     @endif
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                        <label for="nama_tanaman" class="form-label">Nama Tanaman</label>
-                        <input
-                            wire:model="form.nama_tanaman"
-                            type="text"
-                            class="form-control"
-                            id="nama_tanaman"
-                            placeholder="Masukkan nama tanaman"
-                            @if ($currentState === \App\Enums\State::SHOW) disabled @endif
-                        >
-                        @error('form.nama_tanaman')
-                            <small class="d-block mt-1 text-danger">{{ $message }}</small>
-                        @enderror
-                    </div>
-                </form>
-            </div>
-
-            <div class="modal-footer">
-                @if ($currentState === \App\Enums\State::CREATE)
-                    <button type="button" wire:click="save" class="btn btn-primary">Tambahkan</button>
-                @elseif ($currentState === \App\Enums\State::UPDATE)
-                    <button type="button" wire:click="save" class="btn btn-primary">Perbarui</button>
-                @endif
+                </div>
             </div>
         </div>
     </div>
-</div>
 
     <div class="card-header">
 
 
-    @if (!$isLaporan)
-        @if ($role === \App\Enums\Role::ADMIN)
-            <x-datatable.header icon="bi-leaf-fill" table="Tanaman" />
-        @else
-            <x-datatable.search table="Tanaman"></x-datatable.search>
+        @if (!$isLaporan)
+            @if ($role === \App\Enums\Role::ADMIN)
+                <x-datatable.header icon="bi-leaf-fill" table="Tanaman" />
+            @else
+                <x-datatable.search table="Tanaman"></x-datatable.search>
+            @endif
+        @elseif($isLaporan)
+            <div class="row">
+                <div class="col-6">
+
+                    <button class="btn btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#modal-form-laporan-hasil-panen-kecamatan">
+                        <i class="bi bi-printer"></i>
+                        Download Laporan
+                    </button>
+
+                </div>
+                <div class="col-6">
+                    <x-datatable.search table="Tanaman"></x-datatable.search>
+                </div>
+            </div>
+
         @endif
-    @elseif($isLaporan)
-
-    <div class="row">
-        <div class="col-6">
-
-            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-form-laporan-hasil-panen-kecamatan">
-                <i class="bi bi-printer"></i>
-                Download Laporan
-            </button>
-
-        </div>
-        <div class="col-6">
-            <x-datatable.search table="Tanaman"></x-datatable.search>
-        </div>
-    </div>
-
-    @endif
 
 
         <!-- Modal Form Tanaman -->
@@ -90,28 +84,29 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form action="{{ route('print-laporan.hasil-panen-kecamatan') }}" method="POST">
-    @csrf
-                    <div class="modal-body">
+                        @csrf
+                        <div class="modal-body">
 
                             <div class="mb-3">
                                 <label for="kecamatan" class="form-label">Kecamatan</label>
-                                <select id="kecamatan" class="form-control"  @if ($currentState === \App\Enums\State::SHOW) disabled @endif name="idKecamatan">
+                                <select id="kecamatan" class="form-control"
+                                    @if ($currentState === \App\Enums\State::SHOW) disabled @endif name="idKecamatan">
                                     <option value="">Pilih Kecamatan</option>
                                     @foreach ($this->kecamatanList as $kecamatan)
-                                    <option value="{{ $kecamatan->id_kecamatan}}">{{ $kecamatan->nama}}</option>
+                                        <option value="{{ $kecamatan->id_kecamatan }}">{{ $kecamatan->nama }}</option>
                                     @endforeach
                                 </select>
 
                             </div>
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-danger">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-danger">
 
-<i class="bi bi-printer"></i>
-    Cetak
-    </button>
-                    </div>
+                                <i class="bi bi-printer"></i>
+                                Cetak
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -137,7 +132,9 @@
                         <form>
                             <div class="mb-3">
                                 <label for="nama_tanaman" class="form-label">Nama Tanaman</label>
-                                <input wire:model="form.nama_tanaman" type="text" class="form-control" id="nama_tanaman" placeholder="Masukkan nama tanaman" @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
+                                <input wire:model="form.nama_tanaman" type="text" class="form-control"
+                                    id="nama_tanaman" placeholder="Masukkan nama tanaman"
+                                    @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
                                 @error('form.nama_tanaman')
                                     <small class="d-block mt-1 text-danger">{{ $message }}</small>
                                 @enderror
@@ -175,49 +172,50 @@
                             <td>{{ $loop->index + 1 }}</td>
                             <td>{{ $item->nama_tanaman }}</td>
                             <td class="text-end">
-                            @if (!$isLaporan)
-                            <div class="btn-group">
+                                @if (!$isLaporan)
+                                    <div class="btn-group">
 
-                            <button wire:click="detail({{ $item->id_tanaman }})" class="btn  btn-info text-white">
-                            <i class="bi bi-eye"></i>
-                            </button>
+                                        <button wire:click="detail({{ $item->id_tanaman }})"
+                                            class="btn  btn-info text-white">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
 
-                            @if ($role === \App\Enums\Role::ADMIN || $role === \App\Enums\Role::PETUGAS)
+                                        @if ($role === \App\Enums\Role::ADMIN || $role === \App\Enums\Role::PETUGAS)
+                                            <button wire:click="edit({{ $item->id_tanaman }})"
+                                                class="btn  btn-warning text-white">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
 
-                            <button wire:click="edit({{ $item->id_tanaman }})" class="btn  btn-warning text-white">
-                            <i class="bi bi-pencil"></i>
-                             </button>
+                                            <button wire:click="delete({{ $item->id_tanaman }})"
+                                                class="btn  btn-danger">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        @endif
+                                    </div>
+                                @else
+                                    <div class="btn-group">
 
-                            <button wire:click="delete({{ $item->id_tanaman }})" class="btn  btn-danger">
-                                <i class="bi bi-trash"></i>
-                            </button>
+                                        <button wire:click="detail({{ $item->id_tanaman }})"
+                                            class="btn  btn-info text-white">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
 
-                            @endif
-                            </div>
-                            @else
+                                        <button wire:click="edit({{ $item->id_tanaman }})"
+                                            class="btn  btn-warning text-white">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
 
+                                        <button wire:click="delete({{ $item->id_tanaman }})" class="btn  btn-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
 
-                            <div class="btn-group">
+                                    </div>
 
-<button wire:click="detail({{ $item->id_tanaman }})" class="btn  btn-info text-white">
-<i class="bi bi-eye"></i>
-</button>
-
-<button wire:click="edit({{ $item->id_tanaman }})" class="btn  btn-warning text-white">
-<i class="bi bi-pencil"></i>
- </button>
-
-<button wire:click="delete({{ $item->id_tanaman }})" class="btn  btn-danger">
-    <i class="bi bi-trash"></i>
-</button>
-
-                            </div>
-
-                            <a href="{{ route('print-laporan.hasil-panen', ['idTanaman' => $item->id_tanaman]) }}" class="btn btn-danger">
-                                <i class="bi bi-printer"></i>
-                            </a>
-
-                            @endif
+                                    <a href="{{ route('print-laporan.hasil-panen', ['idTanaman' => $item->id_tanaman]) }}"
+                                        class="btn btn-danger">
+                                        <i class="bi bi-printer"></i>
+                                    </a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
