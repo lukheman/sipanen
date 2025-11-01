@@ -28,48 +28,39 @@ $role = activeRole();
     Download Laporan
 </a>
 @else
-<div class="row">
-
-
-    <div class="col-6">
-    @if ($is_add)
-        <!-- Tombol Modal Form Petani -->
-        <button wire:click="add" class="btn btn-primary">
-            <i class="bi bi-fill-leaf"></i>
-            Tambah Hasil Panen
-        </button>
-
-
-    @endif
+<div class="row gy-3">
+    <div class="col-12 col-md-6">
+        @if ($is_add)
+            <!-- Tombol Modal Form Petani -->
+            <button wire:click="add" class="btn btn-primary w-md-auto">
+                <i class="bi bi-fill-leaf"></i>
+                Tambah Hasil Panen
+            </button>
+        @endif
     </div>
 
+    <div class="col-12 col-md-6">
+        <div class="row gy-2">
+<div class="col-12 col-md-4">
+    <div class="input-group flex-nowrap">
+        <span class="input-group-text text-truncate">
+            Tahun
+        </span>
+        <input type="text" class="form-control" wire:model.live="tahun" style="width: 100px;">
+    </div>
+</div>
 
-
-    <div class="col-6">
-
-        <div class="row">
-            <div class="col-3">
-
-                                    <div class="input-group">
-                                        <span class="input-group-text" id="inputGroup-sizing-default">Tahun</span>
-                                        <input type="text" class="form-control" wire:model.live="tahun">
-                                    </div>
+            <div class="col-12 col-md-8">
+                <!-- Pencarian -->
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input wire:model.live="search" type="text" class="form-control" placeholder="Cari hasil panen...">
+                </div>
             </div>
-            <div class="col-9">
-
-        <!-- Pencarian -->
-        <div class="input-group">
-            <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
-            <input  wire:model.live="search" type="text" class="form-control" placeholder="Cari hasil panen...">
         </div>
-
-                        </div>
-        </div>
-
-
-
     </div>
-
 </div>
 @endif
 
