@@ -51,7 +51,7 @@ class LoginPage extends Component
             $user = Auth::user();
 
             // Flash message sukses
-            flash('Berhasil login sebagai ' . $user->nama);
+            flash('Berhasil login sebagai '.$user->nama);
 
             // Redirect ke halaman tujuan atau dashboard
             return redirect()->intended($this->redirect ?? route('dashboard'));
@@ -59,6 +59,7 @@ class LoginPage extends Component
 
         // Jika gagal
         flash('Email atau password tidak valid.', 'danger');
+
         return null;
     }
 

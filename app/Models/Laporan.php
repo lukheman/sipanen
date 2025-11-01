@@ -11,14 +11,15 @@ class Laporan extends Model
 
     protected $guarded = [];
 
-    public function petugas(): BelongsTo {
+    public function petugas(): BelongsTo
+    {
 
         return $this->belongsTo(User::class, 'id_petugas');
 
     }
 
-    public function hasilPanen() {
+    public function hasilPanen()
+    {
         return $this->belongsTo(HasilPanen::class, 'id_hasil_panen', 'id_hasil_panen');
     }
-
 }

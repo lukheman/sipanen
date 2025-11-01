@@ -3,7 +3,6 @@
 namespace App\Livewire\Forms;
 
 use App\Models\HasilPanen;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class HasilPanenForm extends Form
@@ -11,15 +10,18 @@ class HasilPanenForm extends Form
     public ?HasilPanen $hasilPanen = null;
 
     public string $jumlah = '';
+
     public ?int $tahun = null;
+
     public ?int $id_tanaman = null;
+
     public ?int $id_kecamatan = null;
 
     public function rules(): array
     {
         return [
             'jumlah' => ['required', 'numeric'],
-            'tahun' => ['required', 'digits:4', 'integer', 'min:2000', 'max:' . date('Y') + 1],
+            'tahun' => ['required', 'digits:4', 'integer', 'min:2000', 'max:'.date('Y') + 1],
             'id_tanaman' => ['required', 'exists:tanaman,id_tanaman'],
             'id_kecamatan' => ['required', 'exists:kecamatan,id_kecamatan'],
         ];

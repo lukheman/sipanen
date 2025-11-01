@@ -17,5 +17,4 @@ class KepalaDinas extends Authenticatable
     {
         return Role::KEPALADINAS;
     }
-
 }

@@ -29,9 +29,10 @@ class SetupCommand extends Command
         $this->info('🚀 Memulai setup aplikasi Laravel...');
 
         // 1. Copy .env jika belum ada
-        if (!File::exists(base_path('.env'))) {
+        if (! File::exists(base_path('.env'))) {
             File::copy(base_path('.env.example'), base_path('.env'));
-            $this->info('✅ File .env berhasil dibuat dari .env.example'); } else {
+            $this->info('✅ File .env berhasil dibuat dari .env.example');
+        } else {
             $this->warn('⚠️  File .env sudah ada, dilewati.');
         }
 

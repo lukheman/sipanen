@@ -11,10 +11,12 @@ use Livewire\WithFileUploads;
 class KepalaDinasProfile extends Component
 {
     public KepalaDinasForm $form;
+
     use WithFileUploads;
     use WithNotify;
 
-    public function mount() {
+    public function mount()
+    {
         $kepala_dinas = KepalaDinas::query()->find(auth()->user()->id_kepala_dinas);
         $this->form->fillFromModel($kepala_dinas);
     }
@@ -22,7 +24,6 @@ class KepalaDinasProfile extends Component
     public function save()
     {
         if ($this->form->update()) {
-
 
             $this->notifySuccess('Berhasil menyimpan perubahan profile');
         }

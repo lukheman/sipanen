@@ -13,7 +13,7 @@ class GrafikHasilPanen extends Component
     public function render()
     {
 
-     $topHasilPanen = HasilPanen::select('id_tanaman', DB::raw('SUM(jumlah) as total_panen'))
+        $topHasilPanen = HasilPanen::select('id_tanaman', DB::raw('SUM(jumlah) as total_panen'))
             ->groupBy('id_tanaman')
             ->orderByDesc('total_panen')
             ->with('tanaman') // relasi ke tabel tanaman
@@ -21,7 +21,7 @@ class GrafikHasilPanen extends Component
             ->get();
 
         return view('livewire.widget.grafik-hasil-panen', [
-            'topHasilPanen' => $topHasilPanen
+            'topHasilPanen' => $topHasilPanen,
         ]);
     }
 }

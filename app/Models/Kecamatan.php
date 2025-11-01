@@ -22,7 +22,8 @@ class Kecamatan extends Model
         return $this->hasOne(User::class, 'id_kecamatan', 'id_kecamatan');
     }
 
-    public function hasilPanen(): HasMany {
+    public function hasilPanen(): HasMany
+    {
         return $this->hasMany(HasilPanen::class, 'id_kecamatan', 'id_kecamatan');
     }
 }

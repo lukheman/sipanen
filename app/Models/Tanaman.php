@@ -9,11 +9,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Tanaman extends Model
 {
     use HasFactory;
+
     protected $table = 'tanaman';
+
     protected $guarded = [];
+
     protected $primaryKey = 'id_tanaman';
 
-    public function hasilPanen(): HasMany {
+    public function hasilPanen(): HasMany
+    {
         return $this->hasMany(HasilPanen::class, 'id_tanaman', 'id_tanaman');
     }
 }

@@ -11,14 +11,13 @@ class MultiAuth
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @param  mixed  ...$roles
      * @return mixed
      */
     public function handle($request, Closure $next, ...$roles)
     {
         // Pastikan user sudah login
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
         }
 

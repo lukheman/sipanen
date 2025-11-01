@@ -2,16 +2,16 @@
 
 namespace App\Livewire\Table;
 
+use App\Enums\State;
+use App\Livewire\Forms\TanamanForm;
 use App\Models\Kecamatan;
+use App\Models\Tanaman;
 use App\Traits\Traits\WithModal;
 use App\Traits\WithNotify;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Component;
-use App\Models\Tanaman;
-use App\Enums\State;
-use App\Livewire\Forms\TanamanForm;
 use Livewire\WithPagination;
 
 #[Title('Tanaman')]
@@ -32,19 +32,20 @@ class TanamanTable extends Component
     public bool $isLaporan = false;
 
     #[Computed]
-    public function kecamatanList() {
+    public function kecamatanList()
+    {
 
         return Kecamatan::all();
 
     }
 
     #[Computed]
-    public function tanaman() {
+    public function tanaman()
+    {
         return Tanaman::query()
             ->when($this->search, function ($query) {
                 $query->where('nama_tanaman', 'like', '%'.$this->search.'%')
-                ->orWhere('jenis', 'like', '%'.$this->search.'%')
-                ;
+                    ->orWhere('jenis', 'like', '%'.$this->search.'%');
             })
             ->latest()
             ->paginate(10);

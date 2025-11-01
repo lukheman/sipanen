@@ -3,26 +3,25 @@
 namespace App\Livewire\Table;
 
 use App\Enums\Role;
-use App\Models\Kecamatan;
-use App\Models\Petugas;
+use App\Enums\State;
 use App\Livewire\Forms\PenggunaForm;
+use App\Models\Kecamatan;
 use App\Models\User;
 use App\Traits\Traits\WithModal;
 use App\Traits\WithNotify;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
-use Livewire\WithPagination;
 use Livewire\Component;
-use App\Enums\State;
+use Livewire\WithPagination;
 
 #[Title('Pengguna')]
 class PenggunaTable extends Component
 {
-    use WithPagination, WithModal, WithNotify;
+    use WithModal, WithNotify, WithPagination;
 
     public $currentState = State::CREATE;
+
     public PenggunaForm $form;
 
     public string $search = '';
@@ -88,20 +87,22 @@ class PenggunaTable extends Component
     }
 
     #[Computed]
-    public function kecamatanList() {
+    public function kecamatanList()
+    {
 
         return Kecamatan::all();
 
     }
 
     #[Computed]
-    public function pengguna() {
+    public function pengguna()
+    {
         return User::query()
             ->with('kecamatan')
-            ->when($this->search, fn($q) => $q->where('nama', 'like', "%{$this->search}%")
-                                            ->orWhere('email', 'like', "%{$this->search}%"))
+            ->when($this->search, fn ($q) => $q->where('nama', 'like', "%{$this->search}%")
+                ->orWhere('email', 'like', "%{$this->search}%"))
             ->latest()
-            ->when($this->currentState === State::LAPORAN, fn($q) => $q->where('role', Role::PETUGAS))
+            ->when($this->currentState === State::LAPORAN, fn ($q) => $q->where('role', Role::PETUGAS))
             ->paginate(10);
     }
 

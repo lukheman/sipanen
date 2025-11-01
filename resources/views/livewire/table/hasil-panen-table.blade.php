@@ -46,8 +46,12 @@
                                     <span class="input-group-text text-truncate">
                                         Tahun
                                     </span>
-                                    <input type="text" class="form-control" wire:model.live="tahun"
-                                        style="width: 100px;">
+                                    <select class="form-control" wire:model.live="tahun">
+                                        <option value="">Pilih Tahun</option>
+                                        @for ($i = 2020; $i <= now()->year; $i++)
+                                            <option value="{{ $i }}">{{ $i }}</option>
+                                        @endfor
+                                    </select>
                                 </div>
                             </div>
 

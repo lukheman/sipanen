@@ -2,20 +2,18 @@
 
 namespace App\Livewire\Table;
 
+use App\Enums\State;
+use App\Livewire\Forms\HasilPanenForm;
+use App\Models\HasilPanen;
 use App\Models\Kecamatan;
-use App\Models\Petugas;
+use App\Models\Tanaman;
+use App\Models\User;
 use App\Traits\Traits\WithModal;
 use App\Traits\WithNotify;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Component;
-use App\Models\Tanaman;
-use App\Models\HasilPanen;
-use App\Models\User;
-use App\Enums\State;
-use App\Livewire\Forms\HasilPanenForm;
 use Livewire\WithPagination;
 
 #[Title('Hasil Panen')]
@@ -39,7 +37,8 @@ class HasilPanenTable extends Component
 
     public ?User $user;
 
-    public function mount() {
+    public function mount()
+    {
         $this->user = getActiveUser()->load('kecamatan');
 
         $this->tahun = date('Y');
@@ -51,29 +50,29 @@ class HasilPanenTable extends Component
         $query = HasilPanen::with('tanaman')
             ->when($this->search, function ($query) {
                 $query->whereHas('tanaman', function ($q) {
-                    $q->where('nama_tanaman', 'like', '%' . $this->search . '%');
+                    $q->where('nama_tanaman', 'like', '%'.$this->search.'%');
                 })
-                ->orWhereHas('kecamatan', function($q) {
-                    $q->where('nama', 'like', '%' . $this->search . '%');
-                });
+                    ->orWhereHas('kecamatan', function ($q) {
+                        $q->where('nama', 'like', '%'.$this->search.'%');
+                    });
             })
             ->where('id_kecamatan', $this->user->kecamatan->id_kecamatan)
             ->where('tahun', $this->tahun);
-
 
         return $query->latest()->paginate(10);
     }
 
     #[Computed]
-    public function kecamatanList() {
+    public function kecamatanList()
+    {
         return Kecamatan::all();
     }
 
     #[Computed]
-    public function tanamanList() {
+    public function tanamanList()
+    {
         return Tanaman::all();
     }
-
 
     public function add()
     {
@@ -124,7 +123,6 @@ class HasilPanenTable extends Component
     {
 
         $this->form->hasilPanen = HasilPanen::findOrFail($id);
-
 
         $this->dispatch('deleteConfirmation', message: 'Yakin untuk menghapus hasil panen ini?');
     }

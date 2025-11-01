@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Laporan;
 
-use Livewire\Component;
 use Livewire\Attributes\Title;
+use Livewire\Component;
 
 #[Title('Laporan Petugas')]
 class LaporanDataPetugas extends Component

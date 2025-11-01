@@ -3,7 +3,6 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Tanaman;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class TanamanForm extends Form
@@ -12,7 +11,7 @@ class TanamanForm extends Form
 
     public string $nama_tanaman = '';
 
-  public function rules(): array
+    public function rules(): array
     {
         return [
             'nama_tanaman' => ['required', 'string', 'min:3', 'max:100'],
@@ -71,5 +70,4 @@ class TanamanForm extends Form
             $this->reset();
         }
     }
-
 }

@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class HasilPanen extends Model
 {
@@ -27,16 +26,17 @@ class HasilPanen extends Model
         return $this->belongsTo(Tanaman::class, 'id_tanaman', 'id_tanaman');
     }
 
-    public function laporan() {
+    public function laporan()
+    {
         return $this->hasOne(Laporan::class, 'id_hasil_panen', 'id_hasil_panen');
     }
 
-    public static function booted() {
-        static::created(function($hasilPanen) {
+    public static function booted()
+    {
+        static::created(function ($hasilPanen) {
             $hasilPanen->laporan()->create([
-                'id_petugas' => getActiveUser()->id ?? 3
+                'id_petugas' => getActiveUser()->id ?? 3,
             ]);
         });
     }
-
 }

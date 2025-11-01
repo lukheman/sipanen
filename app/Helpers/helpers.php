@@ -32,6 +32,7 @@ if (! function_exists('activeRole')) {
     function activeRole()
     {
         $user = getActiveUser();
+
         return $user ? $user->role : null;
     }
 }

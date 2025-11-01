@@ -14,17 +14,18 @@ use Livewire\WithPagination;
 #[Title('Kecamatan')]
 class KecamatanTable extends Component
 {
-    use WithPagination;
     use WithModal;
+    use WithPagination;
 
     public string $search = '';
 
     public ?int $selectedKecamatanId = null;
 
     #[Computed]
-    public function kecamatanList() {
+    public function kecamatanList()
+    {
         return Kecamatan::query()
-            ->when($this->search, fn($q) => $q->where('nama', 'like', "%{$this->search}%"))
+            ->when($this->search, fn ($q) => $q->where('nama', 'like', "%{$this->search}%"))
             ->paginate(10);
     }
 
@@ -32,10 +33,10 @@ class KecamatanTable extends Component
     public function dataHasilPanen()
     {
         return HasilPanen::select(
-                'id_tanaman',
-                'tahun',
-                DB::raw('SUM(jumlah) as total')
-            )
+            'id_tanaman',
+            'tahun',
+            DB::raw('SUM(jumlah) as total')
+        )
             ->with(['tanaman:id_tanaman,nama_tanaman', 'kecamatan:id_kecamatan,nama'])
             ->when($this->selectedKecamatanId, function ($query) {
                 $query->where('id_kecamatan', $this->selectedKecamatanId);

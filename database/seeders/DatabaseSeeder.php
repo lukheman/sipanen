@@ -1,10 +1,10 @@
 <?php
 
 use App\Enums\Role;
-use App\Models\User;
-use App\Models\Tanaman;
 use App\Models\HasilPanen;
 use App\Models\Kecamatan;
+use App\Models\Tanaman;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -32,7 +32,6 @@ class DatabaseSeeder extends Seeder
             Kecamatan::create(['nama' => $namaKecamatan]);
         }
 
-
         // === 3. User admin ===
         User::create([
             'nama' => 'Admin',
@@ -55,7 +54,7 @@ class DatabaseSeeder extends Seeder
             $slug = strtolower(str_replace(' ', '', $kecamatan->nama));
 
             User::create([
-                'nama' => 'Petugas ' . $kecamatan->nama,
+                'nama' => 'Petugas '.$kecamatan->nama,
                 'email' => "petugas_{$slug}@gmail.com",
                 'role' => Role::PETUGAS,
                 'id_kecamatan' => $kecamatan->id_kecamatan,
@@ -63,7 +62,7 @@ class DatabaseSeeder extends Seeder
         }
 
         // === 2. Data tanaman & hasil panen ===
-        // Tanaman::factory(20)->create();
-        // HasilPanen::factory(200)->create();
+        Tanaman::factory(10)->create();
+        HasilPanen::factory(200)->create();
     }
 }

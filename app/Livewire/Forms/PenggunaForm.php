@@ -3,17 +3,21 @@
 namespace App\Livewire\Forms;
 
 use App\Models\User;
-use Livewire\Form;
 use Illuminate\Validation\Rule;
+use Livewire\Form;
 
 class PenggunaForm extends Form
 {
     public ?User $user = null;
 
     public string $nama = '';
+
     public string $email = '';
+
     public ?string $photo = null;
+
     public string $role = '';
+
     public $id_kecamatan;
 
     /**
@@ -30,7 +34,7 @@ class PenggunaForm extends Form
             ],
             'photo' => ['nullable', 'string'],
             'role' => ['required', 'string'],
-            'id_kecamatan' => ['nullable', 'exists:kecamatan,id_kecamatan']
+            'id_kecamatan' => ['nullable', 'exists:kecamatan,id_kecamatan'],
         ];
     }
 

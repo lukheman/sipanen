@@ -9,9 +9,8 @@ use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 use Livewire\WithFileUploads;
+
 use function getActiveGuard;
-use function str_replace;
-use function strtolower;
 
 class ProfileForm extends Form
 {
@@ -23,7 +22,7 @@ class ProfileForm extends Form
 
     public ?string $password = null;
 
-    public $photo = null ;
+    public $photo = null;
 
     public ?User $user = null;
 
@@ -94,12 +93,12 @@ class ProfileForm extends Form
         return false; // No changes made
     }
 
-    public function fillFromModel(User $user): void {
+    public function fillFromModel(User $user): void
+    {
         $this->user = $user;
         $this->user->load('kecamatan');
         $this->nama = $user->nama;
         $this->email = $user->email;
         $this->photo = $user->photo;
     }
-
 }
