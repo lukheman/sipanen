@@ -81,7 +81,7 @@
                         Kecamatan
                     </x-nav-link>
 
-                <li class="sidebar-title">Manajemen Data</li>
+                <li class="sidebar-title">Laporan</li>
 
                     <x-nav-link icon="bi-people-fill"
                         href="{{ route('laporan.hasil-panen')}}"
