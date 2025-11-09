@@ -77,11 +77,12 @@
                         Manajemen Tanaman
                     </x-nav-link>
 
+
+                    <li class="sidebar-title">Laporan</li>
+
                     <x-nav-link icon="bi-people-fill" href="{{ route('kecamatan-table') }}" :active="request()->routeIs('kecamatan-table')">
                         Kecamatan
                     </x-nav-link>
-
-                    <li class="sidebar-title">Laporan</li>
 
                     <x-nav-link icon="bi-people-fill" href="{{ route('laporan.hasil-panen') }}" :active="request()->routeIs('laporan.hasil-panen')">
                         Laporan Hasil Panen

@@ -21,6 +21,14 @@ class KecamatanTable extends Component
 
     public ?int $selectedKecamatanId = null;
 
+    public function downloadLaporanPanen() {
+        // Redirect ke route preview (akan tampilkan view + tombol download PDF)
+        return redirect()->route('print-laporan.hasil-panen-kecamatan', [
+            'idKecamatan' => $this->selectedKecamatanId
+        ]);
+
+    }
+
     #[Computed]
     public function kecamatanList()
     {

@@ -69,6 +69,9 @@ Route::prefix('laporan')->middleware(MultiAuth::class . ':Kepala Dinas,Petugas,A
     Route::post('/hasil-panen/pdf', [LaporanController::class, 'generateHasilPanenPDF'])
         ->name('laporan.panen.pdf');
 
+    Route::post('/hasil-panen-kecamatan/pdf', [LaporanController::class, 'generateHasilPanenKecamatanPDF'])
+        ->name('laporan.panen-kecamatan.pdf');
+
 });
 
 Route::middleware(MultiAuth::class . ':Kepala Dinas')->group(function () {
@@ -92,6 +95,11 @@ Route::prefix('cetak-laporan')->middleware(MultiAuth::class . ':Kepala Dinas,Pet
         [LaporanController::class, 'laporanHasilPanen'])
         ->name('print-laporan.hasil-panen')
         ->middleware(MultiAuth::class . ':Admin,Petugas,Kepala Dinas');
+
+    Route::get('/cetak-laporan/hasil-panen-kecamatan/{idKecamatan}', [LaporanController::class, 'laporanHasilPanenKecamatan'])
+        ->name('print-laporan.hasil-panen-kecamatan')
+        ->middleware(MultiAuth::class . ':Admin,Petugas,Kepala Dinas');
+
 });
 
 Route::middleware(MultiAuth::class . ':Kepala Dinas')->group(function () {

@@ -12,7 +12,7 @@
     <div class="modal fade" id="modal-grafik-hasil-panen" tabindex="-1" wire:ignore.self>
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
+                <div class="modal-header bg-danger text-white">
                     <h5 class="modal-title text-white">
                         Grafik Hasil Panen
                     </h5>
@@ -20,6 +20,15 @@
                 </div>
 
                 <div class="modal-body">
+
+                    <div class="col-6">
+
+                        <button wire:click="downloadLaporanPanen" class="btn btn-danger">
+                            <i class="bi bi-printer"></i> Download Sekarang
+                        </button>
+
+
+                    </div>
                     <div id="chart"></div>
                 </div>
 
@@ -46,7 +55,7 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->nama }}</td>
                             <td class="text-end">
-                                <button wire:click="detail({{ $item->id_kecamatan }})" class="btn btn-info">
+                                <button wire:click="detail({{ $item->id_kecamatan }})" class="btn btn-danger">
                                     <i class="bi bi-graph-up"></i>
                                 </button>
                             </td>
@@ -64,53 +73,66 @@
         document.addEventListener("livewire:init", () => {
             let chart = null;
             const el = document.querySelector("#chart");
-
             if (!el) return;
 
             chart = new ApexCharts(el, {
                 chart: {
                     type: 'bar',
-                    height: 400,
+                    height: 450,
                     stacked: false
                 },
                 series: [],
                 xaxis: {
-                    categories: []
+                    categories: [],
+                    labels: {
+                        rotate: -45,
+                        rotateAlways: false,
+                        trim: true,
+                        style: {
+                            fontSize: '12px'
+                        }
+                    },
+                    group: {
+                        style: {
+                            fontSize: '13px',
+                            fontWeight: 700
+                        },
+                        groups: [] // Akan diisi saat update
+                    }
                 },
                 plotOptions: {
                     bar: {
                         horizontal: false,
-                        columnWidth: '70%', // batang lebih besar
-                        endingShape: 'rounded',
+                        columnWidth: '100%', // Lebih ramping, cegah tumpang tindih
                         borderRadius: 6,
                         dataLabels: {
-                            position: 'center'
+                            position: 'top' // Label di atas batang
                         }
                     }
                 },
                 dataLabels: {
                     enabled: true,
+                    position: 'top',
+                    offsetY: -20, // Jarak dari atas batang
                     style: {
-                        colors: ['#000'], // angka di batang berwarna hitam
-                        fontWeight: 600
+                        colors: ['#304758'],
+                        fontWeight: 600,
+                        fontSize: '11px' // Ukuran teks lebih kecil
                     },
-                    formatter: function(val, opts) {
-                        // Jangan tampilkan kalau 0
-                        if (val === 0) return '';
-
-                        // Ambil nama tanaman dari series
-                        const name = opts.w.config.series[opts.seriesIndex].name;
-                        return `${name}: ${val}`;
+                    formatter: function(val) {
+                        return val > 0 ? val : ''; // Hanya tampilkan nilai
                     }
                 },
                 legend: {
-                    position: 'top'
+                    position: 'top',
+                    horizontalAlign: 'left'
                 },
                 colors: ['#0d6efd', '#198754', '#dc3545', '#ffc107', '#6610f2'],
                 tooltip: {
                     y: {
-                        formatter: function(val) {
-                            return val + " ton"; // tampilkan satuan di tooltip
+                        formatter: function(val, opts) {
+                            const name = opts.w.config.series[opts.seriesIndex].name;
+                            return `${name}: ${val} ton`;
                         }
                     }
                 }
@@ -121,19 +143,15 @@
             // Event dari Livewire
             Livewire.on('updateChart', (payload) => {
                 const data = payload.data ?? [];
-
-                // Ambil daftar tahun unik
                 const years = [...new Set(data.map(i => i.tahun))].sort();
-
-                // Kelompokkan data berdasarkan tanaman
                 const grouped = {};
+
                 data.forEach(i => {
                     const name = i.tanaman?.nama_tanaman ?? 'Tidak Diketahui';
                     if (!grouped[name]) grouped[name] = {};
                     grouped[name][i.tahun] = i.total;
                 });
 
-                // Bentuk series untuk ApexCharts
                 const series = Object.keys(grouped).map(name => ({
                     name,
                     data: years.map(y => grouped[name][y] ?? 0)
@@ -141,7 +159,12 @@
 
                 chart.updateOptions({
                     xaxis: {
-                        categories: years
+                        categories: years,
+                        labels: {
+                            rotate: -45,
+                            rotateAlways: false,
+                            trim: true
+                        }
                     }
                 });
                 chart.updateSeries(series);

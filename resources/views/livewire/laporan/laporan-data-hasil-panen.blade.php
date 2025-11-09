@@ -23,9 +23,9 @@
 
                         <div class="col-6">
 
-<button wire:click="downloadLaporanPanen" class="btn btn-danger">
-    <i class="bi bi-printer"></i> Download Sekarang
-</button>
+                            <button wire:click="downloadLaporanPanen" class="btn btn-danger">
+                                <i class="bi bi-printer"></i> Download Sekarang
+                            </button>
 
 
                         </div>

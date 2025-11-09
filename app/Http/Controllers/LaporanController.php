@@ -25,6 +25,72 @@ class LaporanController extends Controller
 
     }
 
+    public function laporanHasilPanenKecamatan($idKecamatan)
+    {
+        $kecamatan = \App\Models\Kecamatan::findOrFail($idKecamatan);
+        
+        $hasilPanen = HasilPanen::select(
+                'id_tanaman',
+                'tahun', // ← PASTIKAN TAHUN DI-SELECT!
+                DB::raw('SUM(jumlah) as total')
+            )
+            ->with('tanaman:id_tanaman,nama_tanaman')
+            ->where('id_kecamatan', $idKecamatan)
+            ->groupBy('id_tanaman', 'tahun') // ← HARUS GROUP BY TAHUN JUGA!
+            ->orderBy('tahun')
+            ->get();
+
+        return view('invoices.laporan-hasil-panen-kecamatan', [
+            'kecamatan' => $kecamatan,
+            'hasilPanen' => $hasilPanen, // ← PAKAI NAMA INI, SESUAI VIEW
+            'label' => "Laporan Hasil Panen Kecamatan {$kecamatan->nama}",
+            'pdf' => false,
+        ]);
+    }
+
+    public function generateHasilPanenKecamatanPDF(Request $request)
+    {
+        $request->validate([
+            'id_kecamatan' => 'required|exists:kecamatan,id_kecamatan',
+            'chart_image' => 'nullable|string'
+        ]);
+
+        $idKecamatan = $request->id_kecamatan;
+        $kecamatan = \App\Models\Kecamatan::findOrFail($idKecamatan);
+
+        $hasilPanen = HasilPanen::select(
+                'id_tanaman',
+                'tahun',
+                DB::raw('SUM(jumlah) as total')
+            )
+            ->with('tanaman:id_tanaman,nama_tanaman')
+            ->where('id_kecamatan', $idKecamatan)
+            ->groupBy('id_tanaman', 'tahun')
+            ->orderBy('tahun', 'asc')
+            ->get();
+
+        // Proses chart image (jika dikirim dari frontend)
+        $chartPath = null;
+        if ($request->filled('chart_image')) {
+            $image = $request->chart_image;
+            $image = str_replace('data:image/png;base64,', '', $image);
+            $image = str_replace(' ', '+', $image);
+            $imageName = 'chart_kecamatan_' . time() . '.png';
+            $chartPath = 'charts/' . $imageName;
+            \Storage::disk('public')->put($chartPath, base64_decode($image));
+        }
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('invoices.laporan-hasil-panen-kecamatan', [
+            'hasilPanen' => $hasilPanen,
+            'kecamatan' => $kecamatan,
+            'label' => "Laporan Hasil Panen Kecamatan {$kecamatan->nama}",
+            'chartPath' => $chartPath,
+            'pdf' => true,
+        ]);
+
+        return $pdf->download('laporan_hasil_panen_kecamatan_' . $kecamatan->nama . '_' . date('d_m_Y') . '.pdf');
+    }
+
     public function laporanHasilPanenByKecamatan(Request $request)
     {
 
@@ -77,8 +143,8 @@ class LaporanController extends Controller
 
         // Ambil nama kecamatan jika ada
         $namaKecamatan = $idKecamatan !== 'all'
-            ? Kecamatan::find($idKecamatan)?->nama
-            : 'Semua Kecamatan';
+        ? Kecamatan::find($idKecamatan)?->nama
+        : 'Semua Kecamatan';
 
         // Ambil data hasil panen sesuai tanaman dan kecamatan (jika bukan 'all')
         $hasilPanenRaw = HasilPanen::with('kecamatan')
@@ -118,69 +184,68 @@ class LaporanController extends Controller
         ]);
     }
 
+    public function generateHasilPanenPDF(Request $request)
+    {
+        // Ambil data tanaman
+        $tanaman = Tanaman::findOrFail($request->id_tanaman);
 
-public function generateHasilPanenPDF(Request $request)
-{
-    // Ambil data tanaman
-    $tanaman = Tanaman::findOrFail($request->id_tanaman);
-
-    // Ambil nama kecamatan jika ada
-    $namaKecamatan = $request->id_kecamatan !== 'all'
+        // Ambil nama kecamatan jika ada
+        $namaKecamatan = $request->id_kecamatan !== 'all'
         ? Kecamatan::find($request->id_kecamatan)?->nama
         : 'Semua Kecamatan';
 
-    // Ambil hasil panen sesuai tanaman dan kecamatan
-    $hasilPanenRaw = HasilPanen::with('kecamatan')
-        ->selectRaw('tahun, SUM(jumlah) as total, id_kecamatan')
-        ->where('id_tanaman', $request->id_tanaman)
-        ->when($request->id_kecamatan !== 'all', function ($query) use ($request) {
-            $query->where('id_kecamatan', $request->id_kecamatan);
-        })
-        ->groupBy('tahun', 'id_kecamatan')
-        ->orderBy('tahun')
-        ->get();
+        // Ambil hasil panen sesuai tanaman dan kecamatan
+        $hasilPanenRaw = HasilPanen::with('kecamatan')
+            ->selectRaw('tahun, SUM(jumlah) as total, id_kecamatan')
+            ->where('id_tanaman', $request->id_tanaman)
+            ->when($request->id_kecamatan !== 'all', function ($query) use ($request) {
+                $query->where('id_kecamatan', $request->id_kecamatan);
+            })
+            ->groupBy('tahun', 'id_kecamatan')
+            ->orderBy('tahun')
+            ->get();
 
-    // Ambil semua tahun unik
-    $semuaTahun = HasilPanen::where('id_tanaman', $request->id_tanaman)
-        ->distinct()
-        ->orderBy('tahun')
-        ->pluck('tahun')
-        ->toArray();
+        // Ambil semua tahun unik
+        $semuaTahun = HasilPanen::where('id_tanaman', $request->id_tanaman)
+            ->distinct()
+            ->orderBy('tahun')
+            ->pluck('tahun')
+            ->toArray();
 
-    // Format data lengkap untuk chart dan tabel
-    $dataLengkap = collect($semuaTahun)->map(function ($tahun) use ($hasilPanenRaw) {
-        $item = $hasilPanenRaw->firstWhere('tahun', $tahun);
-        return [
-            'tahun' => (int) $tahun,
-            'total' => $item ? (float) $item->total : 0,
-        ];
-    })->values()->toArray();
+        // Format data lengkap untuk chart dan tabel
+        $dataLengkap = collect($semuaTahun)->map(function ($tahun) use ($hasilPanenRaw) {
+            $item = $hasilPanenRaw->firstWhere('tahun', $tahun);
+            return [
+                'tahun' => (int) $tahun,
+                'total' => $item ? (float) $item->total : 0,
+            ];
+        })->values()->toArray();
 
-    // Ambil chart base64 jika ada
-    $chartPath = null;
-    $chartImage = $request->input('chart_image');
-    if ($chartImage) {
-        $chartImage = str_replace('data:image/png;base64,', '', $chartImage);
-        $chartImage = str_replace(' ', '+', $chartImage);
+        // Ambil chart base64 jika ada
+        $chartPath = null;
+        $chartImage = $request->input('chart_image');
+        if ($chartImage) {
+            $chartImage = str_replace('data:image/png;base64,', '', $chartImage);
+            $chartImage = str_replace(' ', '+', $chartImage);
 
-        $imageName = 'chart_'.time().'.png';
-        $chartPath = 'charts/'.$imageName;
-        Storage::disk('public')->put($chartPath, base64_decode($chartImage));
+            $imageName = 'chart_'.time().'.png';
+            $chartPath = 'charts/'.$imageName;
+            Storage::disk('public')->put($chartPath, base64_decode($chartImage));
+        }
+
+        // Generate PDF
+        $pdf = Pdf::loadView('invoices.laporan-hasil-panen', [
+            'hasilPanen' => $dataLengkap,
+            'hasilPanenRaw' => $hasilPanenRaw,
+            'label' => 'Laporan Hasil Panen '.ucfirst($tanaman->nama_tanaman),
+            'tanaman' => $tanaman,
+            'namaKecamatan' => $namaKecamatan,
+            'chartPath' => $chartPath,
+            'pdf' => true,
+        ]);
+
+        return $pdf->download('laporan_hasil_panen_'.date('d_m_Y').'.pdf');
     }
-
-    // Generate PDF
-    $pdf = Pdf::loadView('invoices.laporan-hasil-panen', [
-        'hasilPanen' => $dataLengkap,
-        'hasilPanenRaw' => $hasilPanenRaw,
-        'label' => 'Laporan Hasil Panen '.ucfirst($tanaman->nama_tanaman),
-        'tanaman' => $tanaman,
-        'namaKecamatan' => $namaKecamatan,
-        'chartPath' => $chartPath,
-        'pdf' => true,
-    ]);
-
-    return $pdf->download('laporan_hasil_panen_'.date('d_m_Y').'.pdf');
-}
 
     public function generatePDF(Request $request)
     {
@@ -221,4 +286,5 @@ public function generateHasilPanenPDF(Request $request)
 
         return $pdf->download('laporan_hasil_panen_'.date('d_m_Y').'.pdf');
     }
+
 }
