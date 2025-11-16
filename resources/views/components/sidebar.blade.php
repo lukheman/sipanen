@@ -1,7 +1,7 @@
 @php
     use App\Enums\Role;
 
-    $role = activeRole();
+    $guard = getActiveGuard();
 @endphp
 <div id="sidebar">
     <div class="sidebar-wrapper active">
@@ -54,7 +54,7 @@
                     </div>
 
                     {{-- tampilkan nama user sesuai guard --}}
-                    <p class="font-bold ms-3 mb-0"> {{ $role }} - {{ getActiveUser()->nama }}</p>
+                    <p class="font-bold ms-3 mb-0"> {{ Str::title($guard) }} - {{ getActiveUser() }}</p>
 
 
                 </div>
@@ -67,7 +67,7 @@
                 </x-nav-link>
 
                 {{-- ADMIN --}}
-                @if ($role === Role::ADMIN)
+                @if ($guard === 'admin')
                     <li class="sidebar-title">Manajemen Data</li>
                     <x-nav-link icon="bi-people-fill" href="{{ route('pengguna-table') }}" :active="request()->routeIs('pengguna-table')">
                         Manajemen Pengguna
@@ -91,7 +91,7 @@
 
 
                 {{-- PETUGAS --}}
-                @if ($role === Role::PETUGAS)
+                @if ($guard === 'petugas')
                     <li class="sidebar-title">Manajemen Data</li>
 
 
@@ -101,7 +101,7 @@
                 @endif
 
                 {{-- KEPALA DINAS --}}
-                @if ($role === Role::KEPALADINAS)
+                @if ($guard === 'kepala_dinas')
                     <li class="sidebar-title">Laporan</li>
 
                     <x-nav-link icon="bi-people-fill" href="{{ route('laporan.petugas') }}" :active="request()->routeIs('laporan.petugas')">

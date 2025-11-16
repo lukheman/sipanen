@@ -19,20 +19,31 @@ if (! function_exists('getActiveUser')) {
     function getActiveUser()
     {
 
-        $user = Auth::user();
+        $guard = getActiveGuard();
 
-        return $user;
+        $user = auth($guard)->user();
+
+        if($guard === 'admin') {
+            return $user->nama_admin;
+        } else if( $guard === 'petugas') {
+            return $user->nama_petugas;
+        }else if( $guard === 'kepala_dinas') {
+            return $user->nama_kepala_dinas;
+        } else {
+            return null;
+        }
+
 
     }
 }
 
 // active role
 
-if (! function_exists('activeRole')) {
-    function activeRole()
-    {
-        $user = getActiveUser();
-
-        return $user ? $user->role : null;
-    }
-}
+// if (! function_exists('activeRole')) {
+//     function activeRole()
+//     {
+//         $user = getActiveUser();
+//
+//         return $user ? $user->role : null;
+//     }
+// }

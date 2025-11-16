@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kepala_dinas', function (Blueprint $table) {
-            $table->id('id_kepala_dinas');
-            $table->string('nama_kepala_dinas');
+        Schema::create('admin', function (Blueprint $table) {
+            $table->id('id_admin');
+            $table->string('nama_admin');
             $table->string('email')->unique();
             $table->string('password')->default(bcrypt('password123'));
-            $table->date('tanggal_lahir');
             $table->string('photo')->nullable();
             $table->rememberToken();
             $table->timestamps();
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kepala_dinas');
+        Schema::dropIfExists('admin');
     }
 };

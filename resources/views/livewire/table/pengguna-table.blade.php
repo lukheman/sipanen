@@ -1,5 +1,6 @@
 @php
     use App\Enums\State;
+    use App\Enums\Role;
 @endphp
 
 <div class="card my-4">
@@ -57,31 +58,11 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
-
-                                    <div class="mb-3">
-                                        <label for="kecamatan" class="form-label">Jenis Komoditi</label>
-
-                                        <select wire:model="form.id_kecamatan" class="form-control"
-                                            @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
-                                            <option value="">Pilih Kecamatan</option>
-                                            @foreach ($this->kecamatanList as $kecamatan)
-                                                <option value="{{ $kecamatan->id_kecamatan }}">{{ $kecamatan->nama }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-
-                                        @error('form.id_kecamatan')
-                                            <small class="d-block mt-1 text-danger">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                @if ($currentState === \App\Enums\State::CREATE || $currentState === \App\Enums\State::UPDATE)
+                                @if ($currentState === State::CREATE)
 
                                     <div class="mb-3">
                                         <label for="role" class="form-label fw-semibold">Role</label>
-                                        <select wire:model.live="form.role" class="form-select" id="role"
+                                        <select wire:model.live="currentUserRole" class="form-select" id="role"
                                             name="role" @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
                                             <option value="">Pilih Role</option>
                                             @foreach (\App\Enums\Role::values() as $role)
@@ -92,14 +73,42 @@
                                             <small class="d-block mt-1 text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
-                                @elseif($currentState === \App\Enums\State::SHOW)
-                                    <div class="mb-3">
-                                        <label for="role" class="form-label fw-semibold">Role</label>
-                                        <input type="text" class="form-control" id="role"
-                                            value="{{ $form->role }}" disabled>
+
+                                @endif
+
+                                @if ($currentUserRole == Role::PETUGAS->value)
+
+                                    <div class="col-md-12">
+
+                                        <div class="mb-3">
+                                            <label for="kecamatan" class="form-label">Tempat Tugas</label>
+
+                                            <select wire:model="form.id_kecamatan" class="form-control"
+                                                @if ($currentState === \App\Enums\State::SHOW) disabled @endif>
+                                                <option value="">Pilih Kecamatan</option>
+                                                @foreach ($this->kecamatanList as $kecamatan)
+                                                    <option value="{{ $kecamatan->id_kecamatan }}">
+                                                        {{ $kecamatan->nama }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+
+                                            @error('form.id_kecamatan')
+                                                <small class="d-block mt-1 text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
                                     </div>
-
-
+                                @elseif ($currentUserRole == Role::KEPALADINAS->value)
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">Tanggal Lahir</label>
+                                            <input wire:model="form.tanggal_lahir" type="date" class="form-control"
+                                                @if ($currentState === State::SHOW) disabled @endif>
+                                            @error('form.tanggal_lahir')
+                                                <small class="d-block mt-1 text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 @endif
 
                             </div>
@@ -127,8 +136,7 @@
                         <th>No</th>
                         <th>Nama</th>
                         <th>Email</th>
-                        <th>Unit Pengguna</th>
-                        <th>Role</th>
+                        <th>Kecamatan</th>
                         @if ($currentState !== State::LAPORAN)
                             <th class="text-end">Aksi</th>
                         @endif
@@ -141,11 +149,25 @@
                             <td>{{ $item->nama }}</td>
                             <td>{{ $item->email }}</td>
                             <td>{{ $item->kecamatan->nama ?? '-' }}</td>
-                            <td><span class="badge bg-{{ $item->role->getColor() }}">{{ $item->role->value }}</span>
-                            </td>
                             @if ($currentState !== State::LAPORAN)
                                 <td class="text-end">
-                                    <x-datatable.actions :id="$item->id" />
+                                    <div class="btn-group">
+
+                                        <button wire:click="detail({{ $item->id }}, '{{ $item->role }}')"
+                                            class="btn  btn-info text-white">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+
+                                        <button wire:click="edit({{ $item->id }}, '{{ $item->role }}')"
+                                            class="btn  btn-warning text-white">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+
+                                        <button wire:click="delete({{ $item->id }}, '{{ $item->role }}')"
+                                            class="btn  btn-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
                                 </td>
                             @endif
                         </tr>

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id('id_laporan');
             $table->foreignId('id_hasil_panen')->constrained('hasil_panen', 'id_hasil_panen')->cascadeOnDelete();
             $table->enum('status_validasi', StatusValidasi::values())->default(StatusValidasi::BELUM->value);
-            $table->foreignId('id_petugas')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('id_petugas')->constrained('petugas', 'id_petugas')->cascadeOnDelete();
             $table->timestamps();
         });
     }

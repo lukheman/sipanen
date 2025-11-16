@@ -31,11 +31,11 @@ Route::get('/logout', LogoutController::class)->name('logout');
 | Dashboard & Profile (semua role)
 |--------------------------------------------------------------------------
 */
-Route::middleware(MultiAuth::class . ':Admin,Petugas,Kepala Dinas')->group(function () {
+Route::middleware(MultiAuth::class . ':admin,petugas,kepala_dinas')->group(function () {
     Route::get('/dashboard', \App\Livewire\Dashboard\Index::class)->name('dashboard');
 });
 
-Route::middleware(MultiAuth::class . ':Admin,Kepala Dinas,Petugas')->group(function () {
+Route::middleware(MultiAuth::class . ':admin,petugas,kepala_dinas')->group(function () {
     Route::get('/profile', \App\Livewire\Profile\PenggunaProfile::class)->name('profile');
 });
 
@@ -44,16 +44,16 @@ Route::middleware(MultiAuth::class . ':Admin,Kepala Dinas,Petugas')->group(funct
 | Master Data
 |--------------------------------------------------------------------------
 */
-Route::middleware(MultiAuth::class . ':Admin')->group(function () {
+Route::middleware(MultiAuth::class . ':admin')->group(function () {
     Route::get('/tanaman', \App\Livewire\Table\TanamanTable::class)->name('tanaman-table');
     Route::get('/pengguna', \App\Livewire\Table\PenggunaTable::class)->name('pengguna-table');
 });
 
-Route::middleware(MultiAuth::class . ':Admin,Petugas')->group(function () {
+Route::middleware(MultiAuth::class . ':admin,petugas')->group(function () {
     Route::get('/kecamatan', \App\Livewire\Table\KecamatanTable::class)->name('kecamatan-table');
 });
 
-Route::middleware(MultiAuth::class . ':Admin,Petugas,Kepala Dinas')->group(function () {
+Route::middleware(MultiAuth::class . ':admin,petugas,kepala_dinas')->group(function () {
     Route::get('/hasil-panen', \App\Livewire\Table\HasilPanenTable::class)->name('hasil-panen-table');
 });
 
@@ -62,7 +62,7 @@ Route::middleware(MultiAuth::class . ':Admin,Petugas,Kepala Dinas')->group(funct
 | Laporan
 |--------------------------------------------------------------------------
 */
-Route::prefix('laporan')->middleware(MultiAuth::class . ':Kepala Dinas,Petugas,Admin')->group(function () {
+Route::prefix('laporan')->middleware(MultiAuth::class . ':admin,petugas,kepala_dinas')->group(function () {
     Route::get('/hasil-panen', \App\Livewire\Laporan\LaporanDataHasilPanen::class)
         ->name('laporan.hasil-panen');
 
@@ -84,7 +84,7 @@ Route::middleware(MultiAuth::class . ':Kepala Dinas')->group(function () {
 | Cetak Laporan
 |--------------------------------------------------------------------------
 */
-Route::prefix('cetak-laporan')->middleware(MultiAuth::class . ':Kepala Dinas,Petugas,Admin')->group(function () {
+Route::prefix('cetak-laporan')->middleware(MultiAuth::class . ':admin,petugas,kepala_dinas')->group(function () {
     Route::get('/hasil-panen/{idTanaman}', [LaporanController::class, 'laporanHasilPanenByTanaman'])
         ->name('print-laporan.hasil-panen');
 
@@ -102,7 +102,7 @@ Route::prefix('cetak-laporan')->middleware(MultiAuth::class . ':Kepala Dinas,Pet
 
 });
 
-Route::middleware(MultiAuth::class . ':Kepala Dinas')->group(function () {
+Route::middleware(MultiAuth::class . ':kepala_dimas')->group(function () {
     Route::get('/cetak-laporan/petugas', [LaporanController::class, 'laporanPetugas'])
         ->name('print-laporan.petugas');
 });

@@ -14,7 +14,7 @@ class Laporan extends Model
     public function petugas(): BelongsTo
     {
 
-        return $this->belongsTo(User::class, 'id_petugas');
+        return $this->belongsTo(Petugas::class, 'id_petugas');
 
     }
 

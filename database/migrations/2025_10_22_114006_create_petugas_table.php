@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kepala_dinas', function (Blueprint $table) {
-            $table->id('id_kepala_dinas');
-            $table->string('nama_kepala_dinas');
+        Schema::create('petugas', function (Blueprint $table) {
+            $table->id('id_petugas');
+            $table->string('nama_petugas');
             $table->string('email')->unique();
             $table->string('password')->default(bcrypt('password123'));
-            $table->date('tanggal_lahir');
             $table->string('photo')->nullable();
+            $table->foreignId('id_kecamatan')->constrained('kecamatan', 'id_kecamatan')->cascadeOnDelete();
             $table->rememberToken();
             $table->timestamps();
         });
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kepala_dinas');
+        Schema::dropIfExists('petugas');
     }
 };

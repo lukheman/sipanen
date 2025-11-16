@@ -39,28 +39,27 @@ class LoginPage extends Component
         // Validasi input sesuai rule
         $credentials = $this->validate();
 
-        // Coba login
-        if (Auth::attempt([
-            'email' => $this->email,
-            'password' => $this->password,
-        ])) {
-            // Regenerate session ID untuk keamanan
-            request()->session()->regenerate();
 
-            // Ambil user aktif
-            $user = Auth::user();
+        foreach (['admin', 'petugas', 'kepala_dinas'] as $guard) {
+            if (Auth::guard($guard)->attempt($credentials)) {
 
-            // Flash message sukses
-            flash('Berhasil login sebagai '.$user->nama);
+                // regenerate session agar tidak session fixation
+                Auth::guard($guard)->login(Auth::guard($guard)->user(), true);
 
-            // Redirect ke halaman tujuan atau dashboard
-            return redirect()->intended($this->redirect ?? route('dashboard'));
+                if($this->redirect) {
+
+                    flash('Berhasil login sebagai petani');
+                    return redirect()->to($this->redirect);
+
+                }
+
+                flash('Berhasil login sebagai '.$guard);
+
+                return redirect()->intended($this->redirect ?? route('dashboard'));
+            }
         }
 
-        // Jika gagal
-        flash('Email atau password tidak valid.', 'danger');
-
-        return null;
+        return flash('Email atau password tidak valid.', 'danger');
     }
 
     public function render()

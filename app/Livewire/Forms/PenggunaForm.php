@@ -2,21 +2,27 @@
 
 namespace App\Livewire\Forms;
 
+use App\Enums\Role;
+use App\Models\Admin;
+use App\Models\KepalaDinas;
+use App\Models\Petugas;
 use App\Models\User;
 use Illuminate\Validation\Rule;
 use Livewire\Form;
 
 class PenggunaForm extends Form
 {
-    public ?User $user = null;
+    public $user = null;
 
     public string $nama = '';
 
     public string $email = '';
 
-    public ?string $photo = null;
+    public $tanggal_lahir;
 
-    public string $role = '';
+    public $role;
+
+
 
     public $id_kecamatan;
 
@@ -25,52 +31,175 @@ class PenggunaForm extends Form
      */
     public function rules(): array
     {
-        return [
-            'nama' => ['required', 'string', 'min:3', 'max:100'],
-            'email' => [
-                'required',
-                'email', 'max:100',
-                Rule::unique('users', 'email')->ignore($this->user),
-            ],
-            'photo' => ['nullable', 'string'],
-            'role' => ['required', 'string'],
-            'id_kecamatan' => ['nullable', 'exists:kecamatan,id_kecamatan'],
-        ];
+
+        // ================================
+        // ADMIN
+        // ================================
+        if ($this->role === Role::ADMIN) {
+            return [
+                'nama' => ['required', 'string', 'min:3', 'max:100'],
+                'email' => [
+                    'required',
+                    'email',
+                    'max:100',
+                    Rule::unique('admin', 'email')->ignore($this->user),
+                ],
+            ];
+        }
+
+        // ================================
+        // PETUGAS
+        // ================================
+        if ($this->role === Role::PETUGAS) {
+            return [
+                'nama' => ['required', 'string', 'min:3', 'max:100'],
+                'email' => [
+                    'required',
+                    'email',
+                    'max:100',
+                    Rule::unique('petugas', 'email')->ignore($this->user),
+                ],
+                'id_kecamatan' => ['required', 'exists:kecamatan,id_kecamatan'],
+            ];
+        }
+
+        // ================================
+        // KEPALA DINAS
+        // ================================
+        if ($this->role === Role::KEPALADINAS) {
+            return [
+                'nama' => ['required', 'string', 'min:3', 'max:100'],
+                'email' => [
+                    'required',
+                    'email',
+                    'max:100',
+                    Rule::unique('kepala_dinas', 'email')->ignore($this->user),
+                ],
+                'tanggal_lahir' => ['required', 'date'],
+            ];
+        }
+
     }
 
     public function messages(): array
     {
         return [
-            'nama.required' => 'Nama wajib diisi.',
-            'nama.min' => 'Nama minimal 3 karakter.',
+
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Format email tidak valid.',
+            'email.max' => 'Email maksimal 100 karakter.',
             'email.unique' => 'Email sudah digunakan.',
-            'role.required' => 'Role wajib diisi.',
+
+
+            'telepon.required' => 'Nomor telepon wajib diisi.',
+            'telepon.max' => 'Nomor telepon terlalu panjang.',
+
+            'tanggal_lahir.required' => 'Tanggal lahir wajib diisi.',
+            'tanggal_lahir.date' => 'Format tanggal lahir tidak valid.',
+
+
+
+            // ============================
+            // ADMIN
+            // ============================
+            'nama.required' => 'Nama admin wajib diisi.',
+            'nama.min' => 'Nama admin minimal 3 karakter.',
+            'nama.max' => 'Nama admin maksimal 100 karakter.',
+
+
+            // ============================
+            // PETUGAS
+            // ============================
+            'nama.required' => 'Nama petugas wajib diisi.',
+            'nama.min' => 'Nama petugas minimal 3 karakter.',
+            'nama.max' => 'Nama petugas maksimal 100 karakter.',
+
+            'id_kecamatan.required' => 'Kecamatan wajib dipilih.',
+            'id_kecamatan.exists' => 'Kecamatan tidak valid.',
+
+
+            // ============================
+            // KEPALA DINAS
+            // ============================
+            'nama.required' => 'Nama kepala dinas wajib diisi.',
+            'nama.min' => 'Nama kepala dinas minimal 3 karakter.',
+            'nama.max' => 'Nama kepala dinas maksimal 100 karakter.',
+
+            'alamat.string' => 'Alamat harus berupa teks.',
+            'alamat.max' => 'Alamat maksimal 255 karakter.',
+
         ];
     }
 
+
     /**
-     * Load data ke form saat edit
-     */
-    public function fillFromModel(User $user): void
+    * Load data ke form saat edit
+    */
+    public function fillUser($id, $role): void
     {
-        $user->load('kecamatan');
-        $this->id_kecamatan = $user->kecamatan->id_kecamatan ?? null;
+
+        $role = Role::from($role);
+
+        if ($role === Role::ADMIN) {
+            $user = Admin::query()->find($id);
+            $user->role = Role::ADMIN;
+        } elseif ($role === Role::PETUGAS) {
+            $user = Petugas::with('kecamatan')->find($id);
+            $user->role = Role::PETUGAS;
+        } elseif ($role === Role::KEPALADINAS) {
+            $user = KepalaDinas::query()->find($id);
+            $user->role = Role::KEPALADINAS;
+        }
+
         $this->user = $user;
-        $this->nama = $user->nama;
+
+        $this->role = $role;
+
+        // isi field umum
         $this->email = $user->email;
-        $this->photo = $user->photo;
-        $this->role = $user->role->value;
+
+        // isi field berdasarkan role
+        if ($user->role === Role::ADMIN) {
+            $this->nama = $user->nama_admin;
+        }
+
+        if ($user->role === Role::PETUGAS) {
+            $this->nama = $user->nama_petugas;
+            $this->id_kecamatan = $user->id_kecamatan;
+        }
+
+        if ($user->role === Role::KEPALADINAS) {
+            $this->nama = $user->nama_kepala_dinas;
+            $this->tanggal_lahir = $user->tanggal_lahir;
+        }
     }
 
     /**
      * Store data baru
      */
-    public function store(): void
+    public function store()
     {
-        $data = $this->validate();
-        User::create($data);
+        $validated = $this->validate();
+
+        if ($this->role === Role::ADMIN) {
+            Admin::query()->create([
+                'nama_admin' => $this->nama,
+                'email' => $this->email
+            ]);
+        } elseif ($this->role === Role::PETUGAS) {
+            Petugas::query()->create([
+                'nama_petugas' => $this->nama,
+                'email' => $this->email,
+                'id_kecamatan' => $this->id_kecamatan
+            ]);
+        } elseif ($this->role === Role::KEPALADINAS) {
+            KepalaDinas::query()->create([
+                'nama_kepala_dinas' => $this->nama,
+                'email' => $this->email,
+                'tanggal_lahir' => $this->tanggal_lahir
+            ]);
+        }
+
         $this->reset();
     }
 
@@ -79,10 +208,30 @@ class PenggunaForm extends Form
      */
     public function update(): void
     {
-        $data = $this->validate();
-        if ($this->user) {
-            $this->user->update($data);
+        $validated = $this->validate();
+
+        if ($this->role === Role::ADMIN) {
+            $this->user->update([
+                'nama_admin' => $this->nama,
+                'email' => $this->email
+            ]);
+        } elseif ($this->role === Role::PETUGAS) {
+            $this->user->update([
+                'nama_petugas' => $this->nama,
+                'email' => $this->email,
+                'id_kecamatan' => $this->id_kecamatan
+            ]);
+
+        } elseif ($this->role === Role::KEPALADINAS) {
+            $this->user->update([
+                'nama_kepala_dinas' => $this->nama,
+                'email' => $this->email,
+                'tanggal_lahir' => $this->tanggal_lahir
+            ]);
         }
+
+
+        $this->reset();
     }
 
     /**
@@ -90,9 +239,7 @@ class PenggunaForm extends Form
      */
     public function delete(): void
     {
-        if ($this->user) {
-            $this->user->delete();
-            $this->reset();
-        }
+        $this->user->delete();
+        $this->reset();
     }
 }

@@ -16,18 +16,15 @@ class MultiAuth
      */
     public function handle($request, Closure $next, ...$roles)
     {
-        // Pastikan user sudah login
-        if (! Auth::check()) {
-            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
+        foreach ($roles as $guard) {
+            if (Auth::guard($guard)->check()) {
+                Auth::shouldUse($guard); // pakai guard yg sedang login
+
+                return $next($request);
+            }
         }
 
-        $user = Auth::user();
-
-        // Jika user memiliki role (asumsi kolom 'role' ada di tabel users)
-        // dan termasuk dalam daftar role yang diizinkan
-        if (in_array($user->role->value, $roles)) {
-            return $next($request);
-        }
+        return redirect()->route('login'); // jika semua gagal
 
         // Jika role tidak sesuai, arahkan ke halaman tidak diizinkan
         return abort(403, 'Anda tidak memiliki akses ke halaman ini.');

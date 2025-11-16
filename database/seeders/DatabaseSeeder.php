@@ -1,8 +1,11 @@
 <?php
 
 use App\Enums\Role;
+use App\Models\Admin;
 use App\Models\HasilPanen;
 use App\Models\Kecamatan;
+use App\Models\KepalaDinas;
+use App\Models\Petugas;
 use App\Models\Tanaman;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -33,17 +36,18 @@ class DatabaseSeeder extends Seeder
         }
 
         // === 3. User admin ===
-        User::create([
-            'nama' => 'Admin',
+        Admin::create([
+            'nama_admin' => 'Admin',
             'email' => 'admin@gmail.com',
-            'role' => Role::ADMIN,
+            'password' => bcrypt('password123'),
         ]);
 
         // === 4. User kepala dinas ===
-        User::create([
-            'nama' => 'Kepala Dinas Kolaka',
+        KepalaDinas::create([
+            'nama_kepala_dinas' => 'Kepala Dinas Kolaka',
             'email' => 'kepaladinas@gmail.com',
-            'role' => Role::KEPALADINAS,
+            'password' => bcrypt('password123'),
+            'tanggal_lahir' => date('Y-m-h')
         ]);
 
         // === 5. Buat petugas untuk setiap kecamatan ===
@@ -53,11 +57,11 @@ class DatabaseSeeder extends Seeder
             // ubah nama kecamatan jadi format email-friendly
             $slug = strtolower(str_replace(' ', '', $kecamatan->nama));
 
-            User::create([
-                'nama' => 'Petugas '.$kecamatan->nama,
+            Petugas::create([
+                'nama_petugas' => 'Petugas '.$kecamatan->nama,
                 'email' => "petugas_{$slug}@gmail.com",
-                'role' => Role::PETUGAS,
                 'id_kecamatan' => $kecamatan->id_kecamatan,
+                'password' => bcrypt('password123'),
             ]);
         }
 

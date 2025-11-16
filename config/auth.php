@@ -40,6 +40,22 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admin'
+        ],
+
+        'petugas' => [
+            'driver' => 'session',
+            'provider' => 'petugas'
+        ],
+
+        'kepala_dinas' => [
+            'driver' => 'session',
+            'provider' => 'kepala_dinas'
+        ]
+
     ],
 
     /*
@@ -64,6 +80,21 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+
+        'admin' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
+
+        'petugas' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Petugas::class,
+        ],
+
+        'kepala_dinas' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\KepalaDinas::class,
         ],
 
     ],
