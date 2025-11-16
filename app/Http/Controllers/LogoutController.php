@@ -12,19 +12,21 @@ class LogoutController extends Controller
      */
     public function __invoke(Request $request)
     {
-        // Logout user
-        Auth::logout();
+        // Daftar guard yang ingin dilogout
+        $guards = ['web', 'admin', 'petugas', 'kepala_dinas'];
 
-        // Hapus semua data session
+        foreach ($guards as $guard) {
+            Auth::guard($guard)->logout();
+        }
+
+        // Hapus semua session
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        // Tambahkan notifikasi jika kamu punya helper flash()
         if (function_exists('flash')) {
-            flash('Berhasil logout dari aplikasi');
+            flash('Berhasil logout dari semua akun');
         }
 
-        // Redirect ke halaman login
         return redirect()->route('login');
     }
 }

@@ -54,48 +54,44 @@
                     </div>
 
                     {{-- tampilkan nama user sesuai guard --}}
-                    <p class="font-bold ms-3 mb-0"> {{ Str::title($guard) }} - {{ getActiveUser() }}</p>
-
-
+                    <p class="font-bold ms-3 mb-0"> {{ Str::title($guard) }} - {{ getActiveUserName() }}</p>
                 </div>
                 <hr>
 
                 <li class="sidebar-title">Navigasi Utama</li>
 
-                <x-nav-link icon="bi-speedometer2" href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                <x-nav-link icon="bi-house-door" href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                     Beranda
                 </x-nav-link>
 
                 {{-- ADMIN --}}
                 @if ($guard === 'admin')
                     <li class="sidebar-title">Manajemen Data</li>
-                    <x-nav-link icon="bi-people-fill" href="{{ route('pengguna-table') }}" :active="request()->routeIs('pengguna-table')">
+
+                    <x-nav-link icon="bi-people" href="{{ route('pengguna-table') }}" :active="request()->routeIs('pengguna-table')">
                         Manajemen Pengguna
                     </x-nav-link>
 
-                    <x-nav-link icon="bi-people-fill" href="{{ route('tanaman-table') }}" :active="request()->routeIs('tanaman-table')">
+                    <x-nav-link icon="bi-flower3" href="{{ route('tanaman-table') }}" :active="request()->routeIs('tanaman-table')">
                         Manajemen Tanaman
                     </x-nav-link>
 
-
                     <li class="sidebar-title">Laporan</li>
 
-                    <x-nav-link icon="bi-people-fill" href="{{ route('kecamatan-table') }}" :active="request()->routeIs('kecamatan-table')">
+                    <x-nav-link icon="bi-map" href="{{ route('kecamatan-table') }}" :active="request()->routeIs('kecamatan-table')">
                         Kecamatan
                     </x-nav-link>
 
-                    <x-nav-link icon="bi-people-fill" href="{{ route('laporan.hasil-panen') }}" :active="request()->routeIs('laporan.hasil-panen')">
+                    <x-nav-link icon="bi-clipboard-data" href="{{ route('laporan.hasil-panen') }}" :active="request()->routeIs('laporan.hasil-panen')">
                         Laporan Hasil Panen
                     </x-nav-link>
                 @endif
-
 
                 {{-- PETUGAS --}}
                 @if ($guard === 'petugas')
                     <li class="sidebar-title">Manajemen Data</li>
 
-
-                    <x-nav-link icon="bi-people-fill" href="{{ route('hasil-panen-table') }}" :active="request()->routeIs('hasil-panen-table')">
+                    <x-nav-link icon="bi-basket" href="{{ route('hasil-panen-table') }}" :active="request()->routeIs('hasil-panen-table')">
                         Hasil Panen
                     </x-nav-link>
                 @endif
@@ -104,18 +100,18 @@
                 @if ($guard === 'kepala_dinas')
                     <li class="sidebar-title">Laporan</li>
 
-                    <x-nav-link icon="bi-people-fill" href="{{ route('laporan.petugas') }}" :active="request()->routeIs('laporan.petugas')">
+                    <x-nav-link icon="bi-file-earmark-person" href="{{ route('laporan.petugas') }}" :active="request()->routeIs('laporan.petugas')">
                         Laporan Petugas
                     </x-nav-link>
 
-                    <x-nav-link icon="bi-people-fill" href="{{ route('laporan.hasil-panen') }}" :active="request()->routeIs('laporan.hasil-panen')">
+                    <x-nav-link icon="bi-graph-up-arrow" href="{{ route('laporan.hasil-panen') }}" :active="request()->routeIs('laporan.hasil-panen')">
                         Laporan Hasil Panen
                     </x-nav-link>
                 @endif
 
                 <li class="sidebar-title">Akun</li>
 
-                <x-nav-link icon="bi-person-circle" href="{{ route('profile') }}" :active="request()->routeIs('profile')">
+                <x-nav-link icon="bi-person-badge" href="{{ route('profile') }}" :active="request()->routeIs('profile')">
                     Profil
                 </x-nav-link>
 

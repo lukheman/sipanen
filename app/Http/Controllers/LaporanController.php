@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\Role;
 use App\Models\HasilPanen;
 use App\Models\Kecamatan;
+use App\Models\Petugas;
 use App\Models\Tanaman;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -17,7 +18,7 @@ class LaporanController extends Controller
     public function laporanPetugas()
     {
 
-        $users = User::query()->with('kecamatan')->where('role', Role::PETUGAS)->get();
+        $users = Petugas::query()->with('kecamatan')->get();
 
         $pdf = Pdf::loadView('invoices.laporan-petugas', ['users' => $users, 'label' => 'Petugas Lapangan', 'pdf' => true]);
 
@@ -28,7 +29,7 @@ class LaporanController extends Controller
     public function laporanHasilPanenKecamatan($idKecamatan)
     {
         $kecamatan = \App\Models\Kecamatan::findOrFail($idKecamatan);
-        
+
         $hasilPanen = HasilPanen::select(
                 'id_tanaman',
                 'tahun', // ← PASTIKAN TAHUN DI-SELECT!

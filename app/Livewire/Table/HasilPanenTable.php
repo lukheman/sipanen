@@ -35,7 +35,7 @@ class HasilPanenTable extends Component
 
     public string $idModal = 'modal-form-hasil-panen';
 
-    public ?User $user;
+    public $user;
 
     public function mount()
     {

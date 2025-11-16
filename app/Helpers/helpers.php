@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Role;
 use Illuminate\Support\Facades\Auth;
 
 if (! function_exists('getActiveGuard')) {
@@ -22,28 +23,61 @@ if (! function_exists('getActiveUser')) {
         $guard = getActiveGuard();
 
         $user = auth($guard)->user();
-
         if($guard === 'admin') {
-            return $user->nama_admin;
-        } else if( $guard === 'petugas') {
-            return $user->nama_petugas;
-        }else if( $guard === 'kepala_dinas') {
-            return $user->nama_kepala_dinas;
-        } else {
-            return null;
+            $user->role = Role::ADMIN;
+        } else if($guard === 'petugas') {
+            $user->role = Role::PETUGAS;
+        } else if ($guard === 'kepala_dinas') {
+            $user->role = Role::KEPALADINAS;
         }
 
+        return $user;
+    }
+}
+
+if (! function_exists('getActiveUserId')) {
+    function getActiveUserId()
+    {
+
+        $user = getActiveUser();
+
+        if($user->role === Role::ADMIN) {
+            return $user->id_admin;
+        } else if($user->role === Role::PETUGAS) {
+            return $user->id_petugas;
+        } else if($user->role === Role::KEPALADINAS) {
+            return $user->id_kepala_dinas;
+        }
 
     }
 }
 
-// active role
+if (! function_exists('getActiveUserName')) {
+    function getActiveUserName()
+    {
 
-// if (! function_exists('activeRole')) {
-//     function activeRole()
-//     {
-//         $user = getActiveUser();
-//
-//         return $user ? $user->role : null;
-//     }
-// }
+        $user = getActiveUser();
+
+        if($user->role === Role::ADMIN) {
+            return $user->nama_admin;
+        } else if($user->role === Role::PETUGAS) {
+            return $user->nama_petugas;
+        } else if($user->role === Role::KEPALADINAS) {
+            return $user->nama_kepala_dinas;
+        }
+
+    }
+}
+
+
+if (! function_exists('activeRole')) {
+    function activeRole()
+    {
+        return match (getActiveGuard()) {
+            'admin'        => 'Admin',
+            'petugas'      => 'Petugas',
+            'kepala_dinas' => 'Kepala Dinas',
+            default        => null,
+        };
+    }
+}

@@ -74,7 +74,7 @@ Route::prefix('laporan')->middleware(MultiAuth::class . ':admin,petugas,kepala_d
 
 });
 
-Route::middleware(MultiAuth::class . ':Kepala Dinas')->group(function () {
+Route::middleware(MultiAuth::class . ':kepala_dinas')->group(function () {
     Route::get('/laporan/petugas', \App\Livewire\Laporan\LaporanDataPetugas::class)
         ->name('laporan.petugas');
 });
@@ -94,15 +94,15 @@ Route::prefix('cetak-laporan')->middleware(MultiAuth::class . ':admin,petugas,ke
     Route::get('/cetak-laporan/hasil-panen/{idTanaman}/{idKecamatan?}',
         [LaporanController::class, 'laporanHasilPanen'])
         ->name('print-laporan.hasil-panen')
-        ->middleware(MultiAuth::class . ':Admin,Petugas,Kepala Dinas');
+        ->middleware(MultiAuth::class . ':admin,petugas,kepala_dinas');
 
     Route::get('/cetak-laporan/hasil-panen-kecamatan/{idKecamatan}', [LaporanController::class, 'laporanHasilPanenKecamatan'])
-        ->name('print-laporan.hasil-panen-kecamatan')
-        ->middleware(MultiAuth::class . ':Admin,Petugas,Kepala Dinas');
+        ->name('print-laporan.hasil-panen-kecamatan-2')
+        ->middleware(MultiAuth::class . ':admin,petugas,kepala_dinas');
 
 });
 
-Route::middleware(MultiAuth::class . ':kepala_dimas')->group(function () {
+Route::middleware(MultiAuth::class . ':kepala_dinas')->group(function () {
     Route::get('/cetak-laporan/petugas', [LaporanController::class, 'laporanPetugas'])
         ->name('print-laporan.petugas');
 });

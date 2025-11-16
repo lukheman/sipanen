@@ -35,7 +35,7 @@ class HasilPanen extends Model
     {
         static::created(function ($hasilPanen) {
             $hasilPanen->laporan()->create([
-                'id_petugas' => getActiveUser()->id ?? 3,
+                'id_petugas' => 1,
             ]);
         });
     }

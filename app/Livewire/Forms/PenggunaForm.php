@@ -22,6 +22,9 @@ class PenggunaForm extends Form
 
     public $role;
 
+    public $photo;
+
+    public $password;
 
 
     public $id_kecamatan;
@@ -158,6 +161,8 @@ class PenggunaForm extends Form
         // isi field umum
         $this->email = $user->email;
 
+        $this->photo = $user->photo;
+
         // isi field berdasarkan role
         if ($user->role === Role::ADMIN) {
             $this->nama = $user->nama_admin;
@@ -203,6 +208,25 @@ class PenggunaForm extends Form
         $this->reset();
     }
 
+    private function handlePhotoUpload($model)
+
+    {
+        // Jika tidak ada file baru, jangan lakukan apa-apa
+        if (!is_object($this->photo)) {
+            return $model->photo; // tetap pakai foto lama
+        }
+
+        // Hapus foto lama jika ada
+        if ($model->photo && file_exists(storage_path('app/public/' . $model->photo))) {
+            unlink(storage_path('app/public/' . $model->photo));
+        }
+
+        // Simpan foto baru
+        $path = $this->photo->store('photos', 'public');
+
+        return $path;
+    }
+
     /**
      * Update data pengguna
      */
@@ -210,28 +234,37 @@ class PenggunaForm extends Form
     {
         $validated = $this->validate();
 
+        // handle upload foto baru
+        $photoPath = $this->handlePhotoUpload($this->user);
+
         if ($this->role === Role::ADMIN) {
             $this->user->update([
                 'nama_admin' => $this->nama,
-                'email' => $this->email
+                'email' => $this->email,
+                'photo' => $photoPath,
+                'password' => bcrypt($this->password)
             ]);
         } elseif ($this->role === Role::PETUGAS) {
             $this->user->update([
                 'nama_petugas' => $this->nama,
                 'email' => $this->email,
-                'id_kecamatan' => $this->id_kecamatan
+                'id_kecamatan' => $this->id_kecamatan,
+                'photo' => $photoPath,
+                'password' => bcrypt($this->password),
             ]);
 
         } elseif ($this->role === Role::KEPALADINAS) {
             $this->user->update([
                 'nama_kepala_dinas' => $this->nama,
                 'email' => $this->email,
-                'tanggal_lahir' => $this->tanggal_lahir
+                'tanggal_lahir' => $this->tanggal_lahir,
+                'photo' => $photoPath,
+                'password' => bcrypt($this->password),
             ]);
         }
 
 
-        $this->reset();
+        // $this->reset();
     }
 
     /**

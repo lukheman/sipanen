@@ -13,7 +13,7 @@ class LoginPage extends Component
     #[Rule(['required', 'email'])]
     public string $email = '';
 
-    #[Rule(['required', 'min:6'])]
+    #[Rule(['required'])]
     public string $password = '';
 
     public ?string $redirect = null;

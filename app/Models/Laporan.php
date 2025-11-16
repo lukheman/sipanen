@@ -18,8 +18,19 @@ class Laporan extends Model
 
     }
 
+    public function validasi()
+    {
+        return $this->hasOne(Validasi::class, 'id_laporan', 'id_laporan');
+    }
+
     public function hasilPanen()
     {
         return $this->belongsTo(HasilPanen::class, 'id_hasil_panen', 'id_hasil_panen');
+    }
+
+    public function getStatusValidasiAttribute() {
+
+        return $this->validasi->status_validasi;
+
     }
 }

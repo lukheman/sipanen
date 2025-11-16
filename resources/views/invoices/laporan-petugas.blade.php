@@ -44,7 +44,7 @@
             @forelse ($users as $item)
                 <tr>
                     <td class="center">{{ $loop->index + 1 }}</td>
-                    <td>{{ $item->nama }}</td>
+                    <td>{{ $item->nama_petugas }}</td>
                     <td>{{ $item->email }}</td>
                     <td>{{ $item->kecamatan->nama }}</td>
                 </tr>
