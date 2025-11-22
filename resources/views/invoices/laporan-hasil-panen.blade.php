@@ -1,20 +1,24 @@
 <x-laporan.index>
 
     @if (!$pdf)
+        <div class="navbar d-flex justify-content-between align-items-center" style="margin-bottom:16px;">
 
-    <!-- Navbar dengan tombol download PDF -->
-    <div class="navbar" style="margin-bottom:16px;">
-        <form action="{{ route('laporan.panen.pdf') }}" method="POST" id="form-pdf">
-            @csrf
-            <input type="hidden" name="id_tanaman" value="{{ $tanaman->id_tanaman }}">
-            <input type="hidden" name="id_kecamatan" value="{{ $id_kecamatan ?? 'all' }}">
-            <input type="hidden" name="chart_image" id="chart_image">
-            <button type="submit" class="btn btn-danger">
-                <i class="bi bi-printer"></i> Download PDF
-            </button>
-        </form>
-    </div>
+            <a href="{{ url()->previous() }}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Kembali
+            </a>
 
+            <form action="{{ route('laporan.panen.pdf') }}" method="POST" id="form-pdf" class="ml-auto">
+                @csrf
+                <input type="hidden" name="id_tanaman" value="{{ $tanaman->id_tanaman }}">
+                <input type="hidden" name="id_kecamatan" value="{{ $id_kecamatan ?? 'all' }}">
+                <input type="hidden" name="chart_image" id="chart_image">
+
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-printer"></i> Download PDF
+                </button>
+            </form>
+
+        </div>
     @endif
 
     <!-- KOP SURAT -->
@@ -48,14 +52,14 @@
 
         @if (!$pdf)
             <div class="d-grid" style="grid-template-columns: auto 2fr; column-gap: 8px; font-weight: bold;">
-                <span>KOMODIDIT</span><span>: {{ $tanaman->nama_tanaman ?? '-' }}</span>
+                <span>KOMODITI</span><span>: {{ $tanaman->nama_tanaman ?? '-' }}</span>
                 <span>KECAMATAN</span><span>:{{ $namaKecamatan ?? '-' }}</span>
                 <span>TANGGAL</span><span>:{{ date('d F Y') }}</span>
             </div>
         @else
-<p><strong>KOMODITI:</strong> {{ $tanaman->nama_tanaman ?? '-' }}</p>
-<p><strong>KECAMATAN:</strong> {{ $namaKecamatan ?? '-' }}</p>
-<p><strong>TANGGAL:</strong> {{ date('d F Y') }}</p>
+            <p><strong>KOMODITI:</strong> {{ $tanaman->nama_tanaman ?? '-' }}</p>
+            <p><strong>KECAMATAN:</strong> {{ $namaKecamatan ?? '-' }}</p>
+            <p><strong>TANGGAL:</strong> {{ date('d F Y') }}</p>
         @endif
 
 

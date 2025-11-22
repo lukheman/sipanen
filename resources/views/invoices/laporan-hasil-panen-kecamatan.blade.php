@@ -1,16 +1,22 @@
 <x-laporan.index>
 
     @if (!$pdf)
-        <!-- Navbar dengan tombol download PDF -->
-        <div class="navbar" style="margin-bottom:16px;">
-            <form action="{{ route('laporan.panen-kecamatan.pdf') }}" method="POST" id="form-pdf">
+        <div class=" navbar d-flex justify-content-between align-items-center mb-3">
+
+            <a href="{{ url()->previous() }}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Kembali
+            </a>
+
+            <form action="{{ route('laporan.panen-kecamatan.pdf') }}" method="POST" id="form-pdf" class="m-0">
                 @csrf
                 <input type="hidden" name="id_kecamatan" value="{{ $kecamatan->id_kecamatan }}">
                 <input type="hidden" name="chart_image" id="chart_image">
+
                 <button type="submit" class="btn btn-danger">
                     <i class="bi bi-printer"></i> Download PDF
                 </button>
             </form>
+
         </div>
     @endif
     <!-- KOP SURAT -->
