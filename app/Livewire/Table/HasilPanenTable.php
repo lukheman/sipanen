@@ -41,6 +41,8 @@ class HasilPanenTable extends Component
 
     public $statusValidasi = [];
 
+    public bool $is_petugas = false;
+
     public function updatedStatusValidasi($value, $key) // $key = id_hasil_panen
     {
         $hasilPanen = HasilPanen::query()->with('laporan', 'laporan.validasi')->find($key);
@@ -57,6 +59,7 @@ class HasilPanenTable extends Component
 
         if ($this->user->role === Role::PETUGAS) {
             $this->user->load('kecamatan');
+            $this->is_petugas = true;
         }
 
         $this->tahun = date('Y');
@@ -79,7 +82,7 @@ class HasilPanenTable extends Component
             })
             ->where('tahun', $this->tahun);
 
-        if ($this->user->role === Role::PETUGAS) {
+        if ($this->is_petugas) {
             $query->where('id_kecamatan', $this->user->kecamatan->id_kecamatan);
         }
 
@@ -114,6 +117,7 @@ class HasilPanenTable extends Component
 
         $this->form->fillFromModel($hasil_panen);
         $this->openModal($this->idModal);
+
 
     }
 
