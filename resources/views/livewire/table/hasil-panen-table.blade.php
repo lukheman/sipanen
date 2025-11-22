@@ -9,7 +9,9 @@
 
     <div class="alert alert-secondary">
         <div class="d-grid" style="grid-template-columns: auto 1fr; column-gap: 8px;">
-            <span>Kecamatan</span><span>: {{ $user->kecamatan->nama }}</span>
+            @if ($user->role === Role::PETUGAS)
+                <span>Kecamatan</span><span>: {{ $user->kecamatan->nama }}</span>
+            @endif
             <span>Kabupaten</span><span>: Kolaka</span>
             <span>Provinsi</span><span>: Sulawesi Tenggara</span>
             <span>Tahun</span><span>: {{ $tahun }}</span>
@@ -30,7 +32,7 @@
             @else
                 <div class="row gy-3">
                     <div class="col-12 col-md-6">
-                        @if ($is_add)
+                        @if ($is_add && $user->role === Role::PETUGAS)
                             <!-- Tombol Modal Form Petani -->
                             <button wire:click="add" class="btn btn-primary w-md-auto">
                                 <i class="bi bi-fill-leaf"></i>
@@ -156,7 +158,8 @@
                             <th>Tanggal input data</th>
                             <th>Jenis Komoditi</th>
                             <th>Jumlah Produksi</th>
-                            @if ($currentState !== State::LAPORAN)
+                            <th>Status Validasi</th>
+                            @if ($currentState !== State::LAPORAN && $user->role === Role::PETUGAS)
                                 <th class="text-end">Aksi</th>
                             @endif
                         </tr>
@@ -173,7 +176,18 @@
                                     <td>{{ $item->created_at }}</td>
                                     <td>{{ $item->tanaman->nama_tanaman }}</td>
                                     <td>{{ $item->jumlah }} Kg</td>
-                                    @if ($currentState !== State::LAPORAN)
+                                    <td>
+
+                                        <select wire:model.live="statusValidasi.{{ $item->id_hasil_panen }}"
+                                            class="form-select form-select-sm"
+                                            @if ($user->role === Role::PETUGAS) disabled @endif>
+                                            @foreach (\App\Enums\StatusValidasi::cases() as $case)
+                                                <option value="{{ $case->value }}">{{ $case->value }}</option>
+                                            @endforeach
+                                        </select>
+
+                                    </td>
+                                    @if ($currentState !== State::LAPORAN && $user->role === Role::PETUGAS)
                                         <td class="text-end">
                                             @if ($role === Role::PETUGAS)
                                                 <button wire:click="delete({{ $item->id_hasil_panen }})"

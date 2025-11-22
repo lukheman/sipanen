@@ -76,6 +76,10 @@
                         Manajemen Tanaman
                     </x-nav-link>
 
+                    <x-nav-link icon="bi-basket" href="{{ route('hasil-panen-table') }}" :active="request()->routeIs('hasil-panen-table')">
+                        Hasil Panen
+                    </x-nav-link>
+
                     <li class="sidebar-title">Laporan</li>
 
                     <x-nav-link icon="bi-map" href="{{ route('kecamatan-table') }}" :active="request()->routeIs('kecamatan-table')">

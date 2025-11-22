@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\StatusValidasi;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -34,8 +35,16 @@ class HasilPanen extends Model
     public static function booted()
     {
         static::created(function ($hasilPanen) {
-            $hasilPanen->laporan()->create([
-                'id_petugas' => 1,
+
+            // Buat Laporan
+            $hasilPanen = $hasilPanen->laporan()->create([
+                'id_petugas' => getActiveUserId() ?? 1,
+            ]);
+
+            $laporan = Laporan::query()->with('validasi')->find($hasilPanen->id_hasil_panen);
+
+            $laporan->validasi()->create([
+                'status_validasi' => StatusValidasi::BELUM
             ]);
         });
     }

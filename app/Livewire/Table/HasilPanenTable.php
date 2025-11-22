@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Table;
 
+use App\Enums\Role;
 use App\Enums\State;
+use App\Enums\StatusValidasi;
 use App\Livewire\Forms\HasilPanenForm;
 use App\Models\HasilPanen;
 use App\Models\Kecamatan;
@@ -37,11 +39,30 @@ class HasilPanenTable extends Component
 
     public $user;
 
+    public $statusValidasi = [];
+
+    public function updatedStatusValidasi($value, $key) // $key = id_hasil_panen
+    {
+        $hasilPanen = HasilPanen::query()->with('laporan', 'laporan.validasi')->find($key);
+        $hasilPanen->laporan->validasi()->update([
+            'status_validasi' => StatusValidasi::from($value)
+        ]);
+
+        $this->notifySuccess('Status diperbarui!');
+    }
+
     public function mount()
     {
-        $this->user = getActiveUser()->load('kecamatan');
+        $this->user = getActiveUser();
+
+        if ($this->user->role === Role::PETUGAS) {
+            $this->user->load('kecamatan');
+        }
 
         $this->tahun = date('Y');
+        foreach ($this->hasilPanen as $item) {
+            $this->statusValidasi[$item->id_hasil_panen] = $item->laporan->validasi->status_validasi->value;
+        }
     }
 
     #[Computed]
@@ -56,8 +77,11 @@ class HasilPanenTable extends Component
                         $q->where('nama', 'like', '%'.$this->search.'%');
                     });
             })
-            ->where('id_kecamatan', $this->user->kecamatan->id_kecamatan)
             ->where('tahun', $this->tahun);
+
+        if ($this->user->role === Role::PETUGAS) {
+            $query->where('id_kecamatan', $this->user->kecamatan->id_kecamatan);
+        }
 
         return $query->latest()->paginate(10);
     }
