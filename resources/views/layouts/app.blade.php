@@ -58,7 +58,21 @@
 
             <div class="page-heading">
             </div>
-            <h3>{{ $title ?? '' }}</h3>
+            <div class="row">
+<div class="col-6">
+@if (Route::currentRouteName() !== 'dashboard')
+
+    <a href="{{ route('dashboard')}}" class="btn btn-primary">Kembali</a>
+
+
+@endif
+</div>
+
+    <div class="col-6">
+            <h3 class="float-end">{{ $title ?? '' }}</h3>
+    </div>
+
+            </div>
             <div class="page-content">
                 <section class="row">
                     <div class="col-12">
