@@ -1,6 +1,7 @@
 @php
     use App\Enums\State;
-    $role = activeRole();
+    use App\Enums\Role;
+    $role = Role::from(activeRole());
 @endphp
 <div class="card my-4">
 
