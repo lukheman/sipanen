@@ -43,7 +43,7 @@ class HasilPanen extends Model
 
             $laporan = Laporan::query()->with('validasi')->find($hasilPanen->id_hasil_panen);
 
-            $laporan->validasi()->create([
+            $laporan->query()->create([
                 'status_validasi' => StatusValidasi::BELUM
             ]);
         });
