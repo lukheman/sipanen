@@ -71,7 +71,7 @@ class HasilPanenTable extends Component
     #[Computed]
     public function hasilPanen()
     {
-        $query = HasilPanen::with('tanaman')
+        $query = HasilPanen::with('tanaman', 'laporan')
             ->when($this->search, function ($query) {
                 $query->whereHas('tanaman', function ($q) {
                     $q->where('nama_tanaman', 'like', '%'.$this->search.'%');

@@ -177,6 +177,11 @@
                                     <td>{{ $item->tanaman->nama_tanaman }}</td>
                                     <td>{{ $item->jumlah }} Kg</td>
                                     <td>
+    @if ($role === Role::PETUGAS->value)
+
+    <span class="badge bg-{{ $item->laporan->status_validasi->getColor()}}">{{ $item->laporan->status_validasi}}</span>
+
+    @elseif($role === Role::ADMIN->value)
 
                                         <select wire:model.live="statusValidasi.{{ $item->id_hasil_panen }}"
                                             class="form-select form-select-sm">
@@ -184,6 +189,10 @@
                                                 <option value="{{ $case->value }}">{{ $case->value }}</option>
                                             @endforeach
                                         </select>
+
+
+    @endif
+
 
                                     </td>
                                     @if ($currentState !== State::LAPORAN && $role === Role::PETUGAS->value)
