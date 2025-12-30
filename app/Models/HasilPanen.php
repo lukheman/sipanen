@@ -12,9 +12,7 @@ class HasilPanen extends Model
     use HasFactory;
 
     protected $table = 'hasil_panen';
-
     protected $primaryKey = 'id_hasil_panen';
-
     protected $guarded = [];
 
     public function kecamatan(): BelongsTo
@@ -32,18 +30,17 @@ class HasilPanen extends Model
         return $this->hasOne(Laporan::class, 'id_hasil_panen', 'id_hasil_panen');
     }
 
-    public static function booted()
+    protected static function booted()
     {
-        static::created(function ($hasilPanen) {
+        static::created(function (HasilPanen $hasilPanen) {
 
-            // Buat Laporan
-            $hasilPanen = $hasilPanen->laporan()->create([
+            // 1️⃣ Buat laporan
+            $laporan = $hasilPanen->laporan()->create([
                 'id_petugas' => getActiveUserId() ?? 1,
             ]);
 
-            $laporan = Laporan::query()->with('validasi')->find($hasilPanen->id_hasil_panen);
-
-            $laporan->query()->create([
+            // 2️⃣ Buat validasi untuk laporan
+            $laporan->validasi()->create([
                 'status_validasi' => StatusValidasi::BELUM
             ]);
         });
