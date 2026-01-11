@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('validasi', function (Blueprint $table) {
             $table->id('id_validasi');
             $table->enum('status_validasi', StatusValidasi::values())->default(StatusValidasi::BELUM->value);
-            $table->foreignId('id_laporan')->constrained('hasil_panen', 'id_hasil_panen')->cascadeOnDelete();
+            $table->foreignId('id_hasil_panen')->constrained('hasil_panen', 'id_hasil_panen')->cascadeOnDelete();
             $table->timestamps();
         });
     }

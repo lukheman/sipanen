@@ -179,7 +179,7 @@
                                     <td>
     @if ($role === Role::PETUGAS->value)
 
-    <span class="badge bg-{{ $item->laporan->status_validasi->getColor()}}">{{ $item->laporan->status_validasi}}</span>
+    <span class="badge bg-{{ $item->validasi->status_validasi->getColor()}}">{{ $item->validasi->status_validasi}}</span>
 
     @elseif($role === Role::ADMIN->value)
 

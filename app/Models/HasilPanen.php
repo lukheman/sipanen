@@ -6,6 +6,7 @@ use App\Enums\StatusValidasi;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class HasilPanen extends Model
 {
@@ -25,22 +26,15 @@ class HasilPanen extends Model
         return $this->belongsTo(Tanaman::class, 'id_tanaman', 'id_tanaman');
     }
 
-    public function laporan()
-    {
-        return $this->hasOne(Laporan::class, 'id_hasil_panen', 'id_hasil_panen');
+    public function validasi(): HasOne {
+        return $this->hasOne(Validasi::class, 'id_hasil_panen', 'id_hasil_panen');
     }
 
     protected static function booted()
     {
         static::created(function (HasilPanen $hasilPanen) {
-
-            // 1️⃣ Buat laporan
-            $laporan = $hasilPanen->laporan()->create([
-                'id_petugas' => getActiveUserId() ?? 1,
-            ]);
-
-            // 2️⃣ Buat validasi untuk laporan
-            $laporan->validasi()->create([
+            //  Buat validasi
+            $hasilPanen->validasi()->create([
                 'status_validasi' => StatusValidasi::BELUM
             ]);
         });

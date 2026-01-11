@@ -20,9 +20,9 @@ class Laporan extends Model
 
     }
 
-    public function validasi()
+    public function validasi(): BelongsTo
     {
-        return $this->hasOne(Validasi::class, 'id_laporan', 'id_laporan');
+        return $this->belongsTo(Validasi::class, 'id_validasi', 'id_validasi');
     }
 
     public function hasilPanen()

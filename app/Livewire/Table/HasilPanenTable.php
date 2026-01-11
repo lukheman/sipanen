@@ -45,8 +45,8 @@ class HasilPanenTable extends Component
 
     public function updatedStatusValidasi($value, $key) // $key = id_hasil_panen
     {
-        $hasilPanen = HasilPanen::query()->with('laporan', 'laporan.validasi')->find($key);
-        $hasilPanen->laporan->validasi()->update([
+        $hasilPanen = HasilPanen::query()->with('validasi')->find($key);
+        $hasilPanen->validasi()->update([
             'status_validasi' => StatusValidasi::from($value)
         ]);
 
@@ -64,14 +64,14 @@ class HasilPanenTable extends Component
 
         $this->tahun = date('Y');
         foreach ($this->hasilPanen as $item) {
-            $this->statusValidasi[$item->id_hasil_panen] = $item->laporan->validasi->status_validasi->value;
+            $this->statusValidasi[$item->id_hasil_panen] = $item->validasi->status_validasi->value;
         }
     }
 
     #[Computed]
     public function hasilPanen()
     {
-        $query = HasilPanen::with('tanaman', 'laporan')
+        $query = HasilPanen::with('tanaman')
             ->when($this->search, function ($query) {
                 $query->whereHas('tanaman', function ($q) {
                     $q->where('nama_tanaman', 'like', '%'.$this->search.'%');
