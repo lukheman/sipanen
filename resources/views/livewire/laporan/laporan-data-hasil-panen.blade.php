@@ -9,44 +9,27 @@
 
     <!-- modal chart -->
     <div class="modal fade" id="modal-chart" tabindex="-1" wire:ignore>
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable  modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
             <div class="modal-content">
                 <div class="modal-header bg-danger text-white">
                     <h5 class="modal-title text-white">
-                        Grafik Hasil Panen Tanaman {{ $grafikTanaman->nama_tanaman ?? '' }}
+                        Grafik Hasil Panen Tanaman {{ $grafikTanaman->nama_tanaman ?? '' }} per Kecamatan
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" wire.ignore.self>
 
-                    <div class="row">
-
-                        <div class="col-6">
-
-                            <button wire:click="downloadLaporanPanen" class="btn btn-danger">
-                                <i class="bi bi-printer"></i> Download Sekarang
-                            </button>
-
-
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <p class="text-muted mb-0">
+                                <i class="bi bi-info-circle"></i> 
+                                Grafik menampilkan perbandingan hasil panen antar kecamatan dari tahun ke tahun
+                            </p>
                         </div>
-
-                        <div class="col-6">
-
-                            <div class="input-group flex-nowrap">
-                                <span class="input-group-text text-truncate">
-                                    Kecamatan
-                                </span>
-                                <select class="form-control" wire:model.live="grafikKecamatan">
-                                    <option value="all">Semua</option>
-                                    @foreach ($this->kecamatanList as $kecamatan)
-                                        <option value="{{ $kecamatan->id_kecamatan }}">{{ $kecamatan->nama }}</option>
-                                    @endforeach
-                                </select>
-
-                            </div>
-                        </div>
+                        <button wire:click="downloadLaporanPanen" class="btn btn-danger">
+                            <i class="bi bi-printer"></i> Download PDF
+                        </button>
                     </div>
-
 
                     <div id="chart"></div>
                 </div>
@@ -300,10 +283,23 @@
             const el = document.querySelector("#chart");
             if (!el) return;
 
+            // Warna untuk setiap kecamatan
+            const chartColors = [
+                '#0d6efd', '#198754', '#dc3545', '#ffc107', '#6f42c1',
+                '#20c997', '#fd7e14', '#6c757d', '#0dcaf0', '#d63384',
+                '#4caf50', '#ff5722', '#9c27b0', '#00bcd4', '#8bc34a'
+            ];
+
             chart = new ApexCharts(el, {
                 chart: {
                     type: 'bar',
-                    height: 400
+                    height: 450,
+                    toolbar: {
+                        show: true
+                    },
+                    zoom: {
+                        enabled: true
+                    }
                 },
                 series: [],
                 xaxis: {
@@ -323,39 +319,63 @@
                             fontSize: '14px',
                             fontWeight: 600
                         }
+                    },
+                    labels: {
+                        formatter: function(val) {
+                            return val.toLocaleString('id-ID');
+                        }
                     }
                 },
                 plotOptions: {
                     bar: {
                         horizontal: false,
-                        columnWidth: '60%',
-                        borderRadius: 6
+                        columnWidth: '75%',
+                        borderRadius: 4,
+                        dataLabels: {
+                            position: 'top'
+                        }
                     }
                 },
                 dataLabels: {
                     enabled: true,
-                    formatter: val => val + " Kg",
+                    formatter: function(val) {
+                        if (val === 0) return '';
+                        return val.toLocaleString('id-ID');
+                    },
+                    offsetY: -20,
                     style: {
-                        fontSize: '12px',
-                        colors: ['#000']
+                        fontSize: '10px',
+                        colors: ['#333']
                     }
                 },
-                colors: ['#0d6efd']
+                legend: {
+                    show: true,
+                    position: 'bottom',
+                    horizontalAlign: 'center',
+                    fontSize: '12px'
+                },
+                tooltip: {
+                    shared: true,
+                    intersect: false,
+                    y: {
+                        formatter: function(val) {
+                            return val.toLocaleString('id-ID') + ' Kg';
+                        }
+                    }
+                },
+                colors: chartColors
             });
 
             chart.render();
 
             Livewire.on('updateChart', (payload) => {
-
-                const data = payload.data ?? [];
-
-                // Ambil tahun dan total panen
-                const years = data.map(i => i.tahun);
-                const values = data.map(i => i.total_panen ?? i.total);
+                const series = payload.series ?? [];
+                const categories = payload.categories ?? [];
+                const namaTanaman = payload.namaTanaman ?? '';
 
                 chart.updateOptions({
                     title: {
-                        text: `Grafik Hasil Panen: ${payload.namaTanaman}`,
+                        text: `Perbandingan Hasil Panen ${namaTanaman} per Kecamatan`,
                         align: 'center',
                         style: {
                             fontSize: '16px',
@@ -363,17 +383,9 @@
                         }
                     },
                     xaxis: {
-                        categories: years,
+                        categories: categories,
                         title: {
                             text: 'Tahun',
-                            style: {
-                                fontWeight: 600
-                            }
-                        }
-                    },
-                    yaxis: {
-                        title: {
-                            text: 'Total Panen (Kg)',
                             style: {
                                 fontWeight: 600
                             }
@@ -381,10 +393,7 @@
                     }
                 });
 
-                chart.updateSeries([{
-                    name: 'Total Panen (Kg)',
-                    data: values
-                }]);
+                chart.updateSeries(series);
             });
         });
     </script>

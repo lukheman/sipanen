@@ -85,33 +85,51 @@ class LaporanDataHasilPanen extends Component
     {
         $idTanaman = $this->grafikTanaman->id_tanaman;
 
-        // Ambil data hasil panen sesuai tanaman dan kecamatan (jika bukan 'all')
-        $hasilPanen = HasilPanen::selectRaw('tahun, SUM(jumlah) as total')
-            ->where('id_tanaman', $idTanaman)
-            ->when($this->grafikKecamatan !== 'all', function ($query) {
-                $query->where('id_kecamatan', $this->grafikKecamatan);
-            })
-            ->groupBy('tahun')
-            ->orderBy('tahun')
-            ->pluck('total', 'tahun'); // hasil: [2022 => 150, 2023 => 200]
-
-        // Ambil semua tahun unik untuk tanaman ini (agar tahun tanpa data tetap muncul)
+        // Ambil semua tahun unik untuk tanaman ini
         $semuaTahun = HasilPanen::where('id_tanaman', $idTanaman)
             ->distinct()
             ->orderBy('tahun')
             ->pluck('tahun')
             ->toArray();
 
-        // Pastikan setiap tahun ada, isi 0 jika tidak ada totalnya
-        $dataLengkap = collect($semuaTahun)->map(function ($tahun) use ($hasilPanen) {
-            return [
-                'tahun' => (int) $tahun,
-                'total' => (float) ($hasilPanen[$tahun] ?? 0),
-            ];
-        })->values()->toArray();
+        // Ambil semua kecamatan yang memiliki data untuk tanaman ini
+        $kecamatanIds = HasilPanen::where('id_tanaman', $idTanaman)
+            ->distinct()
+            ->pluck('id_kecamatan');
 
-        // kirim event JS
-        $this->dispatch('updateChart', data: $dataLengkap, namaTanaman: $this->grafikTanaman->nama_tanaman);
+        $kecamatanList = Kecamatan::whereIn('id_kecamatan', $kecamatanIds)->get();
+
+        // Ambil data hasil panen per kecamatan per tahun
+        $hasilPanen = HasilPanen::selectRaw('id_kecamatan, tahun, SUM(jumlah) as total')
+            ->where('id_tanaman', $idTanaman)
+            ->groupBy('id_kecamatan', 'tahun')
+            ->get()
+            ->groupBy('id_kecamatan');
+
+        // Bangun series untuk setiap kecamatan
+        $series = [];
+        foreach ($kecamatanList as $kecamatan) {
+            $dataKecamatan = $hasilPanen->get($kecamatan->id_kecamatan, collect());
+
+            // Map data ke setiap tahun (isi 0 jika tidak ada)
+            $values = collect($semuaTahun)->map(function ($tahun) use ($dataKecamatan) {
+                $item = $dataKecamatan->firstWhere('tahun', $tahun);
+                return (float) ($item->total ?? 0);
+            })->toArray();
+
+            $series[] = [
+                'name' => $kecamatan->nama,
+                'data' => $values,
+            ];
+        }
+
+        // Kirim event JS dengan data multi-series
+        $this->dispatch(
+            'updateChart',
+            series: $series,
+            categories: $semuaTahun,
+            namaTanaman: $this->grafikTanaman->nama_tanaman
+        );
     }
 
     public function detail($id)
@@ -164,7 +182,7 @@ class LaporanDataHasilPanen extends Component
             $this->form->delete();
             $this->notifySuccess('Hasil panen berhasil dihapus!');
         } catch (\Exception $e) {
-            $this->notifyError('Gagal menghapus hasil panen: '.$e->getMessage());
+            $this->notifyError('Gagal menghapus hasil panen: ' . $e->getMessage());
         }
     }
 

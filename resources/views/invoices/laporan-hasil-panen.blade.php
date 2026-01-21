@@ -57,10 +57,10 @@
                 <span>TANGGAL</span><span>:{{ date('d F Y') }}</span>
             </div>
         @else
-            <p><strong>KOMODITI:</strong> {{ $tanaman->nama_tanaman ?? '-' }}</p>
-            <p><strong>KECAMATAN:</strong> {{ $namaKecamatan ?? '-' }}</p>
-            <p><strong>TANGGAL:</strong> {{ date('d F Y') }}</p>
-        @endif
+        <p><strong>KOMODITI:</strong> {{ $tanaman->nama_tanaman ?? '-' }}</p>
+        <p><strong>KECAMATAN:</strong> {{ $namaKecamatan ?? '-' }}</p>
+        <p><strong>TANGGAL:</strong> {{ date('d F Y') }}</p>
+    @endif
 
 
     </p>
@@ -80,12 +80,12 @@
     </div>
 
     <!-- Table Hasil Panen per Kecamatan -->
-    <table class="table table-bordered">
+    <table class="table table-bordered" style="border: 2px solid #333; border-collapse: collapse;">
         <thead>
             <tr>
-                <th style="text-align:center;">No</th>
-                <th>Kecamatan</th>
-                <th>Total Panen (Kg)</th>
+                <th style="text-align:center; border: 2px solid #333;">No</th>
+                <th style="border: 2px solid #333;">Kecamatan</th>
+                <th style="border: 2px solid #333;">Total Panen (Kg)</th>
             </tr>
         </thead>
         <tbody>
@@ -103,9 +103,26 @@
         </tbody>
     </table>
 
+    <!-- Tanda Tangan -->
+    <div style="margin-top: 40px; width: 100%;">
+        <table style="width: 100%; border: none; border-collapse: collapse;">
+            <tr>
+                <td style="width: 50%; border: none;"></td>
+                <td style="width: 50%; text-align: center; border: none;">
+                    <p style="margin: 0;">Kolaka, {{ date('d F Y') }}</p>
+                    <p style="margin: 0 0 80px 0;">Kepala Dinas Perkebunan dan Peternakan</p>
+                    <p style="margin: 0; text-decoration: underline; font-weight: bold;">
+                        ........................................
+                    </p>
+                    <p style="margin: 0;">NIP. ........................................</p>
+                </td>
+            </tr>
+        </table>
+    </div>
+
     <!-- Chart Script -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const chartData = @json(array_column($hasilPanen, 'total'));
             const chartLabels = @json(array_column($hasilPanen, 'tahun'));
 
